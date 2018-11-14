@@ -18,6 +18,7 @@ build:
     - git submodule sync
     - git submodule update --init --recursive
     - cd external_dependencies/netgen
+    - git remote update        
     - git checkout $CI_COMMIT_SHA
     - cd ../..
     - mkdir -p build
