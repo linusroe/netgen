@@ -18,8 +18,6 @@ build:
     - git submodule sync
     - git submodule update --init --recursive
     - cd external_dependencies/netgen
-    - git log | head -n 200 | grep commit | head -n 10
-    - echo "searching for $CI_COMMIT_SHA"
     - git checkout $CI_COMMIT_SHA
     - cd ../..
     - mkdir -p build
