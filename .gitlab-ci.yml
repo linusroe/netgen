@@ -1,213 +1,34 @@
-stages:
-  - build
-  - test
-  - deploy
-  - cleanup
-
-############################################
-# System templates
-############################################
-
-# Windows
-.template_windows_32: &win32
-  tags:
-    - windows
-    - x86
-  before_script:
-    - "echo off"
-    - 'call "%VS140COMNTOOLS%\..\..\VC\bin\vcvars32.bat"'
-    - set CMAKE_GENERATOR=Visual Studio 14 2015
-    - set CI_DIR=C:\ci\%CI_BUILD_REF%_32
-    - set NETGEN_BUILD_DIR=%CI_DIR%\build
-    - set INSTALL_DIR=%CI_DIR%\install
-    - set NETGENDIR=%INSTALL_DIR%\bin
-    - set PYTHONPATH=%INSTALL_DIR%\lib\site-packages
-
-.template_windows_64: &win64
-  tags:
-    - windows
-    - x64
-  before_script:
-    - "echo off"
-    - 'call "%VS140COMNTOOLS%\..\..\VC\bin\amd64\vcvars64.bat"'
-    - set CMAKE_GENERATOR=Visual Studio 14 2015 Win64
-    - set CI_DIR=C:\ci\%CI_BUILD_REF%_64
-    - set NETGEN_BUILD_DIR=%CI_DIR%\build
-    - set INSTALL_DIR=%CI_DIR%\install
-    - set NETGENDIR=%INSTALL_DIR%\bin
-    - set PYTHONPATH=%INSTALL_DIR%\lib\site-packages
-
-# Linux
-.template_ubuntu: &ubuntu
-  tags:
-    - linux
-  before_script:
-    - pwd
-    - ls
-    - docker info
-
-.template_ubuntu_1510: &ubuntu_1510
-  <<: *ubuntu
-  variables:
-    UBUNTU_VERSION: "15.10"
-
-.template_ubuntu_1604: &ubuntu_1604
-  <<: *ubuntu
-  variables:
-    UBUNTU_VERSION: "16.04"
-
-############################################
-# Build stage
-############################################
-
-# Windows
-.template_build_win: &tbuild_netgen_win
+beforescript:
   stage: build
   script:
+    - echo " before script "
+    - nix-shell -p blas liblapack gcc xorg.libXmu zlib cmake mesa_glu mesa icu python36 suitesparse tcl-8_5 tk-8_5 --run "echo \"nix-shell test\" "
+
+build:
+  stage: build
+  cache:
+    key: "$CI_PIPELINE_ID"
+    paths:
+      - build/
+  script:
+    - mkdir -p ngsolve-build
+    - cd ngsolve-build
+    - git clone https://gitlab.gwdg.de/lehrenfeld/ngsolve.git --branch meshinterface --single-branch
+    - cd ngsolve
+    - git submodule sync
     - git submodule update --init --recursive
-    - rd /s /q %NETGEN_BUILD_DIR%
-    - mkdir %NETGEN_BUILD_DIR%
-    - cd %NETGEN_BUILD_DIR%
-    - >-
-        cmake %CI_PROJECT_DIR%
-        -G"%CMAKE_GENERATOR%"
-        -DINSTALL_DIR=%INSTALL_DIR%
-        -DUSE_OCC=ON
-        -DCMAKE_BUILD_TYPE=Release
-    - cmake --build . --target INSTALL --config Release
+    - cd external_dependencies/netgen
+    - git log | head -n 200 | grep commit | head -n 10
+    - echo "searching for $CI_COMMIT_SHA"
+    - git checkout $CI_COMMIT_SHA
+    - cd ../..
+    - mkdir -p build
+    - cd build
+    - nix-shell -p blas liblapack gcc gfortran gfortran.cc.lib xorg.libXmu zlib cmake mesa_glu mesa icu python36 suitesparse tcl-8_5 tk-8_5 --run "cmake -DCMAKE_INSTALL_PREFIX=`pwd`/inst -DCMAKE_BUILD_TYPE=RELEASE -DUSE_CCACHE=ON -DUSE_GUI=OFF -DTCL_INCLUDE_PATH=/usr/include/tcl8.5/ ../."
+    - nix-shell -p blas liblapack gcc gfortran gfortran.cc.lib xorg.libXmu zlib cmake mesa_glu mesa icu python36 suitesparse tcl-8_5 tk-8_5 --run "make -j12"
 
-.build_netgen_win32:
-  <<: *win32
-  <<: *tbuild_netgen_win
-  cache:
-    paths:
-      - build/
-      - src/
-    key: "netgen_win32_${CI_BUILD_REF_NAME}"
-
-build_netgen_win64:
-  <<: *win64
-  <<: *tbuild_netgen_win
-  cache:
-    paths:
-      - build/
-      - src/
-    key: "netgen_win64_${CI_BUILD_REF_NAME}"
-
-# Linux
-.template_build_linux: &build_linux
-  stage: build
-  script:
-    - docker build -t netgen_${CI_BUILD_REF_NAME}:${UBUNTU_VERSION} -f tests/docker_${UBUNTU_VERSION} .
-    - rm -f netgen_${CI_BUILD_REF_NAME}_$UBUNTU_VERSION.id
-    - docker run --cidfile netgen_${CI_BUILD_REF_NAME}_${UBUNTU_VERSION}.id -e CCACHE_DIR=/ccache -v /mnt/ccache:/ccache netgen_${CI_BUILD_REF_NAME}:${UBUNTU_VERSION} bash /root/src/netgen/tests/build.sh
-    - docker commit `cat netgen_${CI_BUILD_REF_NAME}_${UBUNTU_VERSION}.id` netgen_${CI_BUILD_REF_NAME}_installed:${UBUNTU_VERSION}
-    - rm netgen_${CI_BUILD_REF_NAME}_${UBUNTU_VERSION}.id
-
-.build_ubuntu_1510:
-  <<: *ubuntu_1510
-  <<: *build_linux
-
-build_ubuntu_1604:
-  <<: *ubuntu_1604
-  <<: *build_linux
-
-
-############################################
-# Test stage
-############################################
-
-# Windows
-.template_test_win: &test_win
-  stage: test
-  script:
-    - cd %NETGEN_BUILD_DIR%/netgen
-    - ctest -C Release -V
-    - cd ..
-
-# skip since we have no machine with 32 bits
-.test_win32:
-  <<: *win32
-  <<: *test_win
-
-test_win64:
-  <<: *win64
-  <<: *test_win
-
-# Linux
-.template_test_linux: &test_linux
-  stage: test
-  script:
-    - >-
-      docker run
-      -e NETGENDIR=/opt/netgen/bin
-      -e PYTHONPATH=/opt/netgen/lib/python3/dist-packages
-      netgen_${CI_BUILD_REF_NAME}_installed:${UBUNTU_VERSION}
-      bash -c 'cd /root/build/netgen && make test_netgen ARGS="-V"'
-
-.test_ubuntu_1510:
-  <<: *ubuntu_1510
-  <<: *test_linux
-test_ubuntu_1604:
-  <<: *ubuntu_1604
-  <<: *test_linux
-
-############################################
-# Deploy stage
-############################################
-
-deploy_sourceforge:
+cleanup:
   stage: deploy
-  tags:
-    - linux
-    - docker
   script:
-    - git remote add sourceforge ssh://mhochste@git.code.sf.net/p/netgen-mesher/git || true
-    - git remote add github git@github.com:NGSolve/netgen.git || true
-    - git remote update
-    - git checkout master
-    - git pull origin master
-    - git push sourceforge master
-    - git push github master
-  only:
-    - master
-
-############################################
-# Cleanup stage
-############################################
-
-linux_cleanup:
-  stage: cleanup
-  tags:
-    - linux
-  script:
-    # remove intermediate and old docker images and containers
-    - docker rm -f `docker ps --no-trunc -aq`
-    - docker images --no-trunc -aqf "dangling=true" | xargs docker rmi -f
-  when: always
-  allow_failure: true
-
-win64_cleanup:
-  <<: *win64
-  stage: cleanup
-  tags:
-    - windows
-    - x64
-  script:
-    - cd %CI_PROJECT_DIR%
-    - rd /s /q %CI_DIR%
-  when: always
-  allow_failure: true
-
-.win32_cleanup:
-  <<: *win32
-  stage: cleanup
-  tags:
-    - windows
-    - x86
-  script:
-    - cd %CI_PROJECT_DIR%
-    - rd /s /q %CI_DIR%
-  when: always
-  allow_failure: true
-
+    - echo " cleanup "
+    - rm -rf `pwd`/inst

@@ -31,6 +31,13 @@ namespace netgen
     return hmesh;
   }
   
+  Ngx_Mesh :: Ngx_Mesh (shared_ptr<Ngx_Mesh> amesh) 
+  {
+    if (amesh)
+      mesh = amesh->GetMesh();
+    else
+      mesh = netgen::mesh;
+  }
 
   Ngx_Mesh :: Ngx_Mesh (shared_ptr<Mesh> amesh) 
   {

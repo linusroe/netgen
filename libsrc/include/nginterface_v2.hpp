@@ -225,6 +225,7 @@ namespace netgen
     // Ngx_Mesh () { ; }
     // Ngx_Mesh(class Mesh * amesh) : mesh(amesh) { ; }
     Ngx_Mesh(shared_ptr<Mesh> amesh = NULL);
+    Ngx_Mesh(shared_ptr<Ngx_Mesh> angxmesh = NULL);
     void LoadMesh (const string & filename);
 
     void LoadMesh (istream & str);
