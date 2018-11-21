@@ -216,16 +216,17 @@ namespace netgen
   { func(0,1); }
   inline void DummyTracer2 (string, bool) { ; } 
   
+  template <typename meshtype>
   class DLL_HEADER Ngx_Mesh
   {
   private:
-    shared_ptr<Mesh> mesh;
+    shared_ptr<meshtype> mesh;
     
   public:
     // Ngx_Mesh () { ; }
     // Ngx_Mesh(class Mesh * amesh) : mesh(amesh) { ; }
-    Ngx_Mesh(shared_ptr<Mesh> amesh = NULL);
-    Ngx_Mesh(shared_ptr<Ngx_Mesh> angxmesh = NULL);
+    Ngx_Mesh(shared_ptr<meshtype> amesh = NULL);
+    //Ngx_Mesh(shared_ptr<Ngx_Mesh> angxmesh = NULL);
     void LoadMesh (const string & filename);
 
     void LoadMesh (istream & str);
@@ -317,14 +318,15 @@ namespace netgen
     std::tuple<int,int*> GetDistantProcs (int nodetype, int locnum) const;
 #endif
 
-    shared_ptr<Mesh> GetMesh () const { return mesh; } 
-    shared_ptr<Mesh> SelectMesh () const;
+    shared_ptr<meshtype> GetMesh () const { return mesh; } 
+    shared_ptr<meshtype> SelectMesh () const;
     inline auto GetTimeStamp() const;
   };
 
 
 
-  DLL_HEADER Ngx_Mesh * LoadMesh (const string & filename);
+  template <typename meshtype>
+  DLL_HEADER Ngx_Mesh<meshtype> * LoadMesh (const string & filename);
 }
 
 
