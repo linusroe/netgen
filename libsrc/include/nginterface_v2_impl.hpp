@@ -1,17 +1,15 @@
-NGX_INLINE DLL_HEADER Ng_Point Ngx_Mesh :: GetPoint (int nr) const
+NGX_INLINE DLL_HEADER Ng_Point Ngx_netgen_Mesh :: GetPoint (int nr) const
 {
   return Ng_Point (&mesh->Point(PointIndex(nr+PointIndex::BASE))(0));
 }
 
 
-template <>
-NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<0> (size_t nr) const
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetElementIndex0 (size_t nr) const
 {
   return (*mesh).pointelements[nr].index;
 }
 
-template <>
-NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<1> (size_t nr) const
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetElementIndex1 (size_t nr) const
 {
   /*
   if(mesh->GetDimension()==3)
@@ -25,22 +23,19 @@ NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<1> (size_t nr) const
     return mesh->LineSegments()[nr].si;    
 }
   
-template <>
-NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<2> (size_t nr) const
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetElementIndex2 (size_t nr) const
 {
   int ind = (*mesh)[SurfaceElementIndex(nr)].GetIndex(); 
   return mesh->GetFaceDescriptor(ind).BCProperty();
 }
 
-template <>
-NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<3> (size_t nr) const
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetElementIndex3 (size_t nr) const
 {
   return (*mesh)[ElementIndex(nr)].GetIndex();
 }
 
 
-template <>
-NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (size_t nr) const
+NGX_INLINE DLL_HEADER Ng_Element Ngx_netgen_Mesh :: GetElement0 (size_t nr) const
 {
   const Element0d & el = mesh->pointelements[nr];
   
@@ -69,8 +64,7 @@ NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (size_t nr) const
 
 
 
-template <> 
-NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<1> (size_t nr) const
+NGX_INLINE DLL_HEADER Ng_Element Ngx_netgen_Mesh :: GetElement1 (size_t nr) const
 {
   // const Segment & el = mesh->LineSegment (SegmentIndex(nr));
   const Segment & el = mesh->LineSegments()[nr];
@@ -122,8 +116,7 @@ NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<1> (size_t nr) const
   return ret;
 }
 
-template <> 
-NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<2> (size_t nr) const
+NGX_INLINE DLL_HEADER Ng_Element Ngx_netgen_Mesh :: GetElement2 (size_t nr) const
 {
   // const Element2d & el = mesh->SurfaceElement (SurfaceElementIndex (nr));
   const Element2d & el = mesh->SurfaceElements()[nr];
@@ -164,8 +157,7 @@ NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<2> (size_t nr) const
   return ret;
 }
 
-template <> 
-NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<3> (size_t nr) const
+NGX_INLINE DLL_HEADER Ng_Element Ngx_netgen_Mesh :: GetElement3 (size_t nr) const
 {
   // const Element & el = mesh->VolumeElement (ElementIndex (nr));
   const Element & el = mesh->VolumeElements()[nr];
@@ -196,26 +188,26 @@ NGX_INLINE DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<3> (size_t nr) const
 
 
 
-template <> NGX_INLINE DLL_HEADER
-const string &  Ngx_Mesh :: GetMaterialCD<0> (int region_nr) const
+NGX_INLINE DLL_HEADER
+const string &  Ngx_netgen_Mesh :: GetMaterialCD0 (int region_nr) const
 {
   return mesh->GetMaterial(region_nr+1);
 }
 
-template <> NGX_INLINE DLL_HEADER
-const string &  Ngx_Mesh :: GetMaterialCD<1> (int region_nr) const
+NGX_INLINE DLL_HEADER
+const string &  Ngx_netgen_Mesh :: GetMaterialCD1 (int region_nr) const
 {
   return mesh->GetBCName(region_nr);
 }
 
-template <> NGX_INLINE DLL_HEADER
-const string &  Ngx_Mesh :: GetMaterialCD<2> (int region_nr) const
+NGX_INLINE DLL_HEADER
+const string &  Ngx_netgen_Mesh :: GetMaterialCD2 (int region_nr) const
 {
   return mesh->GetCD2Name(region_nr);
 }
 
-template <> NGX_INLINE DLL_HEADER
-const string &  Ngx_Mesh :: GetMaterialCD<3> (int region_nr) const
+NGX_INLINE DLL_HEADER
+const string &  Ngx_netgen_Mesh :: GetMaterialCD3 (int region_nr) const
 {
   return mesh->GetCD3Name(region_nr);
 }
@@ -224,17 +216,17 @@ const string &  Ngx_Mesh :: GetMaterialCD<3> (int region_nr) const
 
 
 
-template <> NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetNNodes<1> ()
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes<1> ()
 {
   return mesh->GetTopology().GetNEdges();
 }
 
-template <> NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetNNodes<2> ()
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes<2> ()
 {
   return mesh->GetTopology().GetNFaces();
 }
 
-template <> NGX_INLINE DLL_HEADER const Ng_Node<0> Ngx_Mesh :: GetNode<0> (int vnr) const
+NGX_INLINE DLL_HEADER const Ng_Node<0> Ngx_netgen_Mesh :: GetNode<0> (int vnr) const
 {
   Ng_Node<0> node;
   vnr++;
@@ -279,14 +271,14 @@ template <> NGX_INLINE DLL_HEADER const Ng_Node<0> Ngx_Mesh :: GetNode<0> (int v
   return node;
 }
   
-template <> NGX_INLINE DLL_HEADER const Ng_Node<1> Ngx_Mesh :: GetNode<1> (int nr) const
+NGX_INLINE DLL_HEADER const Ng_Node<1> Ngx_netgen_Mesh :: GetNode<1> (int nr) const
 {
   Ng_Node<1> node;
   node.vertices.ptr = mesh->GetTopology().GetEdgeVerticesPtr(nr);
   return node;
 }
 
-template <> NGX_INLINE DLL_HEADER const Ng_Node<2> Ngx_Mesh :: GetNode<2> (int nr) const
+NGX_INLINE DLL_HEADER const Ng_Node<2> Ngx_netgen_Mesh :: GetNode<2> (int nr) const
 {
   Ng_Node<2> node;
   node.vertices.ptr = mesh->GetTopology().GetFaceVerticesPtr(nr);
@@ -296,7 +288,7 @@ template <> NGX_INLINE DLL_HEADER const Ng_Node<2> Ngx_Mesh :: GetNode<2> (int n
 }
 
 
-NGX_INLINE DLL_HEADER Ng_Buffer<int[2]> Ngx_Mesh :: GetPeriodicVertices(int idnr) const
+NGX_INLINE DLL_HEADER Ng_Buffer<int[2]> Ngx_netgen_Mesh :: GetPeriodicVertices(int idnr) const
 {
   Array<INDEX_2> apairs;
   mesh->GetIdentifications().GetPairs (idnr+1, apairs);
@@ -310,7 +302,7 @@ NGX_INLINE DLL_HEADER Ng_Buffer<int[2]> Ngx_Mesh :: GetPeriodicVertices(int idnr
 }
 
 
-NGX_INLINE void Ngx_Mesh :: GetParentNodes (int ni, int * parents) const
+NGX_INLINE void Ngx_netgen_Mesh :: GetParentNodes (int ni, int * parents) const
 {
   ni++;
   if (ni <= mesh->mlbetweennodes.Size())
@@ -324,4 +316,4 @@ NGX_INLINE void Ngx_Mesh :: GetParentNodes (int ni, int * parents) const
 
 
 
-inline auto Ngx_Mesh :: GetTimeStamp() const { return mesh->GetTimeStamp(); }
+inline auto Ngx_netgen_Mesh :: GetTimeStamp() const { return mesh->GetTimeStamp(); }

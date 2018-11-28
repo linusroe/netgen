@@ -218,42 +218,46 @@ namespace netgen
   
   class DLL_HEADER Ngx_Mesh
   {
-  private:
-    shared_ptr<Mesh> mesh;
-    
   public:
     // Ngx_Mesh () { ; }
     // Ngx_Mesh(class Mesh * amesh) : mesh(amesh) { ; }
-    Ngx_Mesh(shared_ptr<Mesh> amesh = NULL);
-    Ngx_Mesh(shared_ptr<Ngx_Mesh> angxmesh = NULL);
-    void LoadMesh (const string & filename);
+    virtual void LoadMesh (const string & filename) = 0;
 
-    void LoadMesh (istream & str);
-    void SaveMesh (ostream & str) const;
-    void UpdateTopology ();
-    void DoArchive (ngstd::Archive & archive);
+    virtual void LoadMesh (istream & str) = 0;
+    virtual void SaveMesh (ostream & str) const = 0;
+    virtual void UpdateTopology () = 0;
+    virtual void DoArchive (ngstd::Archive & archive) = 0;
 
     virtual ~Ngx_Mesh();
 
-    bool Valid () { return mesh != NULL; }
+    virtual bool Valid () = 0;
     
-    int GetDimension() const;
-    int GetNLevels() const;
+    virtual int GetDimension() const = 0;
+    virtual int GetNLevels() const = 0;
 
-    int GetNElements (int dim) const;
-    int GetNNodes (int nt) const;
+    virtual int GetNElements (int dim) const = 0;
+    virtual int GetNNodes (int nt) const = 0;
 
-    Ng_Point GetPoint (int nr) const;
+    virtual Ng_Point GetPoint (int nr) const = 0;
 
-    template <int DIM> 
-    Ng_Element GetElement (size_t nr) const;
+    //template <int DIM> 
+    virtual Ng_Element GetElement0 (size_t nr) const = 0;
+    virtual Ng_Element GetElement1 (size_t nr) const = 0;
+    virtual Ng_Element GetElement2 (size_t nr) const = 0;
+    virtual Ng_Element GetElement3 (size_t nr) const = 0;
 
-    template <int DIM> 
-    int GetElementIndex (size_t nr) const;
+    //template <int DIM> 
+    virtual int GetElementIndex0 (size_t nr) const = 0;
+    virtual int GetElementIndex1 (size_t nr) const = 0;
+    virtual int GetElementIndex2 (size_t nr) const = 0;
+    virtual int GetElementIndex3 (size_t nr) const = 0;
 
     /// material/boundary label of region, template argument is co-dimension
-    template <int DIM> 
-    const string & GetMaterialCD (int region_nr) const;
+    //template <int DIM> 
+    virtual const string & GetMaterialCD0 (int region_nr) const;
+    virtual const string & GetMaterialCD1 (int region_nr) const;
+    virtual const string & GetMaterialCD2 (int region_nr) const;
+    virtual const string & GetMaterialCD3 (int region_nr) const;
 
     /// Curved Elements:
     /// elnr .. element nr
@@ -317,15 +321,63 @@ namespace netgen
     std::tuple<int,int*> GetDistantProcs (int nodetype, int locnum) const;
 #endif
 
-    shared_ptr<Mesh> GetMesh () const { return mesh; } 
-    shared_ptr<Mesh> SelectMesh () const;
+    virtual shared_ptr<Mesh> GetMesh () const = 0; 
+    virtual shared_ptr<Mesh> SelectMesh () const = 0; 
     inline auto GetTimeStamp() const;
   };
 
 
 
-  DLL_HEADER Ngx_Mesh * LoadMesh (const string & filename);
+  class DLL_HEADER Ngx_netgen_Mesh : Ngx_Mesh
+  {
+  private:
+    shared_ptr<Mesh> mesh;
+  public: 
+    Ngx_netgen_Mesh(shared_ptr<Mesh> angxmesh = NULL);
+
+    void LoadMesh (const string & filename) override;
+
+    void LoadMesh (istream & str) override;
+    void SaveMesh (ostream & str) const override;
+    void UpdateTopology () override;
+    void DoArchive (ngstd::Archive & archive) override;
+
+    virtual ~Ngx_netgen_Mesh();
+
+    bool Valid () { return mesh != NULL; }
+
+    int GetDimension() const override;
+    int GetNLevels() const override;
+
+    int GetNElements (int dim) const override;
+    int GetNNodes (int nt) const override;
+
+    Ng_Point GetPoint (int nr) const override;
+
+    int GetElementIndex0 (size_t nr) const override;
+    int GetElementIndex1 (size_t nr) const override;
+    int GetElementIndex2 (size_t nr) const override;
+    int GetElementIndex3 (size_t nr) const override;
+
+    Ng_Element GetElement0 (size_t nr) const override;
+    Ng_Element GetElement1 (size_t nr) const override;
+    Ng_Element GetElement2 (size_t nr) const override;
+    Ng_Element GetElement3 (size_t nr) const override;
+
+    const string & GetMaterialCD0 (int region_nr) const override;
+    const string & GetMaterialCD1 (int region_nr) const override;
+    const string & GetMaterialCD2 (int region_nr) const override;
+    const string & GetMaterialCD3 (int region_nr) const override;
+
+    shared_ptr<Mesh> GetMesh () const override; 
+    shared_ptr<Mesh> SelectMesh () const override; 
+
+  };
+
+DLL_HEADER Ngx_netgen_Mesh * LoadMesh (const string & filename);
 }
+
+
 
 
 #ifdef HAVE_NETGEN_SOURCES

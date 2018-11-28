@@ -21,7 +21,7 @@ namespace netgen
 #define NGX_INLINE
 #include "nginterface_v2_impl.hpp"
 
-  shared_ptr<Mesh> Ngx_Mesh :: SelectMesh () const
+  shared_ptr<Mesh> Ngx_netgen_Mesh :: SelectMesh () const
   {
     shared_ptr<Mesh> hmesh = netgen::mesh;
 
@@ -31,15 +31,17 @@ namespace netgen
     return hmesh;
   }
   
-  Ngx_Mesh :: Ngx_Mesh (shared_ptr<Ngx_Mesh> amesh) 
-  {
-    if (amesh)
-      mesh = amesh->GetMesh();
-    else
-      mesh = netgen::mesh;
-  }
+  shared_ptr<Mesh> Ngx_netgen_Mesh :: GetMesh () const { return mesh; } 
+  
+  // Ngx_netgen_Mesh :: Ngx_netgen_Mesh (shared_ptr<Ngx_Mesh> amesh) 
+  // {
+  //   if (amesh)
+  //     mesh = amesh->GetMesh();
+  //   else
+  //     mesh = netgen::mesh;
+  // }
 
-  Ngx_Mesh :: Ngx_Mesh (shared_ptr<Mesh> amesh) 
+  Ngx_netgen_Mesh :: Ngx_netgen_Mesh (shared_ptr<Mesh> amesh) 
   {
     if (amesh)
       mesh = amesh;
@@ -47,14 +49,14 @@ namespace netgen
       mesh = netgen::mesh;
   }
   
-  Ngx_Mesh * LoadMesh (const string & filename)
+  Ngx_netgen_Mesh * LoadMesh (const string & filename)
   {
     netgen::mesh.reset();
     Ng_LoadMesh (filename.c_str());
-    return new Ngx_Mesh (netgen::mesh);
+    return new Ngx_netgen_Mesh (netgen::mesh);
   }
 
-  void Ngx_Mesh :: LoadMesh (const string & filename)
+  void Ngx_netgen_Mesh :: LoadMesh (const string & filename)
   {
     netgen::mesh.reset();
     Ng_LoadMesh (filename.c_str());
@@ -62,7 +64,7 @@ namespace netgen
     mesh = netgen::mesh;
   }
 
-  void Ngx_Mesh :: LoadMesh (istream & ist)
+  void Ngx_netgen_Mesh :: LoadMesh (istream & ist)
   {
     netgen::mesh = make_shared<Mesh>();
     netgen::mesh -> Load (ist);
@@ -71,12 +73,12 @@ namespace netgen
     SetGlobalMesh (mesh);
   }
 
-  void Ngx_Mesh :: SaveMesh (ostream & ost) const
+  void Ngx_netgen_Mesh :: SaveMesh (ostream & ost) const
   {
     mesh -> Save (ost);
   }
 
-  void Ngx_Mesh :: DoArchive (ngstd::Archive & archive)
+  void Ngx_netgen_Mesh :: DoArchive (ngstd::Archive & archive)
   {
     if (archive.Input()) mesh = make_shared<Mesh>();
     mesh->DoArchive(archive);
@@ -103,7 +105,7 @@ namespace netgen
     */
   }
 
-  void Ngx_Mesh :: UpdateTopology ()
+  void Ngx_netgen_Mesh :: UpdateTopology ()
   {
     if (mesh)
       mesh -> UpdateTopology();
@@ -116,7 +118,7 @@ namespace netgen
   { ; }
   */
 
-  Ngx_Mesh :: ~Ngx_Mesh ()
+  Ngx_netgen_Mesh :: ~Ngx_netgen_Mesh ()
   { 
     // causes crashes when global variable netgen::mesh is destructed
     // before visualization data 
@@ -125,17 +127,17 @@ namespace netgen
       netgen::mesh = nullptr;
   }
 
-  int Ngx_Mesh :: GetDimension() const
+  int Ngx_netgen_Mesh :: GetDimension() const
   {
     return mesh -> GetDimension();
   }
 
-  int Ngx_Mesh :: GetNLevels() const
+  int Ngx_netgen_Mesh :: GetNLevels() const
   {
     return mesh -> mglevels;
   }
   
-  int Ngx_Mesh :: GetNElements (int dim) const
+  int Ngx_netgen_Mesh :: GetNElements (int dim) const
   {
     switch (dim)
       {
@@ -147,7 +149,7 @@ namespace netgen
     return -1;
   }
   
-  int Ngx_Mesh :: GetNNodes (int nt) const
+  int Ngx_netgen_Mesh :: GetNNodes (int nt) const
   {
     switch (nt)
       {
