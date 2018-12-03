@@ -127,9 +127,12 @@ namespace netgen
   };
 
 
-  class Ng_Node0;
 
-  class Ng_Node0
+
+  template <int DIM> class Ng_Node;
+
+  template <>
+  class Ng_Node<0>
   {
     class Ng_Elements
     {
@@ -148,9 +151,10 @@ namespace netgen
   };
 
 
-  class Ng_Node1;
 
-  class Ng_Node1
+  
+  template <>
+  class Ng_Node<1>
   {
     class Ng_Vertices
     {
@@ -167,9 +171,9 @@ namespace netgen
   };
 
 
-  class Ng_Node2;
 
-  class Ng_Node2
+  template <>
+  class Ng_Node<2>
   {
     class Ng_Vertices
     {
@@ -281,9 +285,9 @@ namespace netgen
                                      T * dxdxi, size_t sdxdxi) const;
     
 
-    virtual const Ng_Node0 GetNode0 (int nr) const = 0;
-    virtual const Ng_Node1 GetNode1 (int nr) const = 0;
-    virtual const Ng_Node2 GetNode2 (int nr) const = 0;
+    virtual const Ng_Node<0> GetNode0 (int nr) const = 0;
+    virtual const Ng_Node<1> GetNode1 (int nr) const = 0;
+    virtual const Ng_Node<2> GetNode2 (int nr) const = 0;
     
     
     virtual int GetNNodes1 () = 0;
@@ -367,10 +371,10 @@ namespace netgen
     const string & GetMaterialCD2 (int region_nr) const override;
     const string & GetMaterialCD3 (int region_nr) const override;
 
-    const Ng_Node0 GetNode0 (int nr) const override;
-    const Ng_Node1 GetNode1 (int nr) const override;
-    const Ng_Node2 GetNode2 (int nr) const override;
-    
+    const Ng_Node<0> GetNode0 (int nr) const override;
+    const Ng_Node<1> GetNode1 (int nr) const override;
+    const Ng_Node<2> GetNode2 (int nr) const override;
+
     int GetNNodes1 () override;
     int GetNNodes2 () override;
 
@@ -384,8 +388,8 @@ namespace netgen
 
     shared_ptr<Mesh> GetMesh () const override; 
     shared_ptr<Mesh> SelectMesh () const override; 
-    inline int GetTimeStamp() const override;
 
+    inline int GetTimeStamp() const override;
   };
 
 DLL_HEADER Ngx_netgen_Mesh * LoadMesh (const string & filename);
