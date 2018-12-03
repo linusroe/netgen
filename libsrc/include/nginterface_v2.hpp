@@ -127,12 +127,9 @@ namespace netgen
   };
 
 
+  class Ng_Node0;
 
-
-  template <int DIM> class Ng_Node;
-
-  template <>
-  class Ng_Node<0>
+  class Ng_Node0
   {
     class Ng_Elements
     {
@@ -151,10 +148,9 @@ namespace netgen
   };
 
 
+  class Ng_Node1;
 
-  
-  template <>
-  class Ng_Node<1>
+  class Ng_Node1
   {
     class Ng_Vertices
     {
@@ -171,9 +167,9 @@ namespace netgen
   };
 
 
+  class Ng_Node2;
 
-  template <>
-  class Ng_Node<2>
+  class Ng_Node2
   {
     class Ng_Vertices
     {
@@ -228,7 +224,7 @@ namespace netgen
     virtual void UpdateTopology () = 0;
     virtual void DoArchive (ngstd::Archive & archive) = 0;
 
-    virtual ~Ngx_Mesh();
+    virtual ~Ngx_Mesh() = 0;
 
     virtual bool Valid () = 0;
     
@@ -254,10 +250,10 @@ namespace netgen
 
     /// material/boundary label of region, template argument is co-dimension
     //template <int DIM> 
-    virtual const string & GetMaterialCD0 (int region_nr) const;
-    virtual const string & GetMaterialCD1 (int region_nr) const;
-    virtual const string & GetMaterialCD2 (int region_nr) const;
-    virtual const string & GetMaterialCD3 (int region_nr) const;
+    virtual const string & GetMaterialCD0 (int region_nr) const = 0;
+    virtual const string & GetMaterialCD1 (int region_nr) const = 0;
+    virtual const string & GetMaterialCD2 (int region_nr) const = 0;
+    virtual const string & GetMaterialCD3 (int region_nr) const = 0;
 
     /// Curved Elements:
     /// elnr .. element nr
@@ -285,12 +281,13 @@ namespace netgen
                                      T * dxdxi, size_t sdxdxi) const;
     
 
-    template <int DIM>
-    const Ng_Node<DIM> GetNode (int nr) const;
+    virtual const Ng_Node0 GetNode0 (int nr) const = 0;
+    virtual const Ng_Node1 GetNode1 (int nr) const = 0;
+    virtual const Ng_Node2 GetNode2 (int nr) const = 0;
     
     
-    template <int DIM>
-    int GetNNodes ();
+    virtual int GetNNodes1 () = 0;
+    virtual int GetNNodes2 () = 0;
 
     // returns domain numbers of domains next to boundary bnr -> (domin, domout)
     // 3D only
@@ -301,13 +298,13 @@ namespace netgen
                  void (*taskmanager)(function<void(int,int)>) = &DummyTaskManager2,
                  void (*tracer)(string, bool) = &DummyTracer2);
 
-    void GetParentNodes (int ni, int * parents) const;
-    int GetParentElement (int ei) const;
-    int GetParentSElement (int ei) const;
+    virtual void GetParentNodes (int ni, int * parents) const = 0;
+    virtual int GetParentElement (int ei) const = 0;
+    virtual int GetParentSElement (int ei) const = 0;
 
-    int GetNIdentifications() const;
-    int GetIdentificationType(int idnr) const;
-    Ng_Buffer<int[2]> GetPeriodicVertices(int idnr) const;
+    virtual int GetNIdentifications() const = 0;
+    virtual int GetIdentificationType(int idnr) const = 0;
+    virtual Ng_Buffer<int[2]> GetPeriodicVertices(int idnr) const = 0;
 
     // Find element of point, returns local coordinates
     template <int DIM>
@@ -323,9 +320,10 @@ namespace netgen
 
     virtual shared_ptr<Mesh> GetMesh () const = 0; 
     virtual shared_ptr<Mesh> SelectMesh () const = 0; 
-    inline auto GetTimeStamp() const;
+    virtual inline int GetTimeStamp() const = 0;
   };
 
+  Ngx_Mesh :: ~Ngx_Mesh(){};
 
 
   class DLL_HEADER Ngx_netgen_Mesh : Ngx_Mesh
@@ -369,8 +367,24 @@ namespace netgen
     const string & GetMaterialCD2 (int region_nr) const override;
     const string & GetMaterialCD3 (int region_nr) const override;
 
+    const Ng_Node0 GetNode0 (int nr) const override;
+    const Ng_Node1 GetNode1 (int nr) const override;
+    const Ng_Node2 GetNode2 (int nr) const override;
+    
+    int GetNNodes1 () override;
+    int GetNNodes2 () override;
+
+    void GetParentNodes (int ni, int * parents) const override;
+    int GetParentElement (int ei) const override;
+    int GetParentSElement (int ei) const override;
+
+    int GetNIdentifications() const override;
+    int GetIdentificationType(int idnr) const override;
+    Ng_Buffer<int[2]> GetPeriodicVertices(int idnr) const override;
+
     shared_ptr<Mesh> GetMesh () const override; 
     shared_ptr<Mesh> SelectMesh () const override; 
+    inline int GetTimeStamp() const override;
 
   };
 

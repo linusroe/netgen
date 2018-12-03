@@ -684,7 +684,7 @@ namespace netgen
   }
 
 
-  int Ngx_Mesh :: GetParentElement (int ei) const
+  int Ngx_netgen_Mesh :: GetParentElement (int ei) const
   {
       ei++;
       if (mesh->GetDimension() == 3)
@@ -701,7 +701,7 @@ namespace netgen
   }
 
 
-  int Ngx_Mesh :: GetParentSElement (int ei) const
+  int Ngx_netgen_Mesh :: GetParentSElement (int ei) const
   {
       ei++;
       if (mesh->GetDimension() == 3)
@@ -716,12 +716,12 @@ namespace netgen
       return -1;
   }
 
-  int Ngx_Mesh :: GetNIdentifications () const
+  int Ngx_netgen_Mesh :: GetNIdentifications () const
   {
     return mesh->GetIdentifications().GetMaxNr();
   }
 
-  int Ngx_Mesh :: GetIdentificationType(int idnr) const
+  int Ngx_netgen_Mesh :: GetIdentificationType(int idnr) const
   {
     return mesh->GetIdentifications().GetType(idnr+1);
   }

@@ -213,22 +213,19 @@ const string &  Ngx_netgen_Mesh :: GetMaterialCD3 (int region_nr) const
 }
 
 
-
-
-
-NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes<1> ()
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes1 ()
 {
   return mesh->GetTopology().GetNEdges();
 }
 
-NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes<2> ()
+NGX_INLINE DLL_HEADER int Ngx_netgen_Mesh :: GetNNodes2 ()
 {
   return mesh->GetTopology().GetNFaces();
 }
 
-NGX_INLINE DLL_HEADER const Ng_Node<0> Ngx_netgen_Mesh :: GetNode<0> (int vnr) const
+NGX_INLINE DLL_HEADER const Ng_Node0 Ngx_netgen_Mesh :: GetNode0 (int vnr) const
 {
-  Ng_Node<0> node;
+  Ng_Node0 node;
   vnr++;
   switch (mesh->GetDimension())
     {
@@ -271,16 +268,16 @@ NGX_INLINE DLL_HEADER const Ng_Node<0> Ngx_netgen_Mesh :: GetNode<0> (int vnr) c
   return node;
 }
   
-NGX_INLINE DLL_HEADER const Ng_Node<1> Ngx_netgen_Mesh :: GetNode<1> (int nr) const
+NGX_INLINE DLL_HEADER const Ng_Node1 Ngx_netgen_Mesh :: GetNode1 (int nr) const
 {
-  Ng_Node<1> node;
+  Ng_Node1 node;
   node.vertices.ptr = mesh->GetTopology().GetEdgeVerticesPtr(nr);
   return node;
 }
 
-NGX_INLINE DLL_HEADER const Ng_Node<2> Ngx_netgen_Mesh :: GetNode<2> (int nr) const
+NGX_INLINE DLL_HEADER const Ng_Node2 Ngx_netgen_Mesh :: GetNode2 (int nr) const
 {
-  Ng_Node<2> node;
+  Ng_Node2 node;
   node.vertices.ptr = mesh->GetTopology().GetFaceVerticesPtr(nr);
   node.vertices.nv = (node.vertices.ptr[3] == 0) ? 3 : 4;
   node.surface_el = mesh->GetTopology().GetFace2SurfaceElement (nr+1)-1;
@@ -316,4 +313,4 @@ NGX_INLINE void Ngx_netgen_Mesh :: GetParentNodes (int ni, int * parents) const
 
 
 
-inline auto Ngx_netgen_Mesh :: GetTimeStamp() const { return mesh->GetTimeStamp(); }
+inline int Ngx_netgen_Mesh :: GetTimeStamp() const { return mesh->GetTimeStamp(); }
