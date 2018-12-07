@@ -264,13 +264,51 @@ namespace netgen
     /// xi..... DIM_EL local coordinates
     /// x ..... DIM_SPACE global coordinates 
     /// dxdxi...DIM_SPACE x DIM_EL Jacobian matrix (row major storage)
-    template <int DIM_EL, int DIM_SPACE> 
-    void ElementTransformation (int elnr,
+    virtual void ElementTransformation3x3 (int elnr,
                                 const double * xi, 
                                 double * x, 
-                                double * dxdxi) const;
-    
-    
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation2x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation1x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation0x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation2x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation1x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation1x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation0x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
+    virtual void ElementTransformation0x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const = 0;
+
     /// Curved Elements:
     /// elnr .. element nr
     /// npts .. number of points
@@ -370,6 +408,51 @@ namespace netgen
     const string & GetMaterialCD1 (int region_nr) const override;
     const string & GetMaterialCD2 (int region_nr) const override;
     const string & GetMaterialCD3 (int region_nr) const override;
+
+    void ElementTransformation3x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation2x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation2x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
 
     const Ng_Node<0> GetNode0 (int nr) const override;
     const Ng_Node<1> GetNode1 (int nr) const override;

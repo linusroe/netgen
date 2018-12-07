@@ -430,8 +430,8 @@ namespace netgen
 
   
   
-  template <> DLL_HEADER void Ngx_Mesh :: 
-  ElementTransformation<3,3> (int elnr, 
+  DLL_HEADER void Ngx_netgen_Mesh :: 
+  ElementTransformation3x3 (int elnr, 
                               const double * xi,
                               double * x, 
                               double * dxdxi) const
@@ -453,8 +453,8 @@ namespace netgen
         }
   }
 
-  template <> DLL_HEADER void Ngx_Mesh ::
-  ElementTransformation<2,3> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh ::
+  ElementTransformation2x3 (int elnr,
                               const double * xi, 
                               double * x, 
                               double * dxdxi) const
@@ -476,8 +476,8 @@ namespace netgen
         }
   }
 
-  template <> DLL_HEADER void Ngx_Mesh ::
-  ElementTransformation<1,3> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh ::
+  ElementTransformation1x3 (int elnr,
 			      const double * xi,
 			      double * x,
 			      double * dxdxi) const
@@ -492,8 +492,8 @@ namespace netgen
       for(int i=0;i<3;i++) dxdxi[i] = dx(i);
   }
 
-  template <> DLL_HEADER void Ngx_Mesh ::
-  ElementTransformation<0,3> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh ::
+  ElementTransformation0x3 (int elnr,
 			      const double * xi,
 			      double * x,
 			      double * dxdxi) const
@@ -505,8 +505,8 @@ namespace netgen
   }
 
   
-  template <> DLL_HEADER void Ngx_Mesh ::
-  ElementTransformation<2,2> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh ::
+  ElementTransformation2x2 (int elnr,
                                  const double * xi, 
                                  double * x, 
                                  double * dxdxi) const
@@ -531,8 +531,8 @@ namespace netgen
 
 
 
-  template <> DLL_HEADER void Ngx_Mesh :: 
-  ElementTransformation<1,2> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh :: 
+  ElementTransformation1x2 (int elnr,
                               const double * xi,
                               double * x,
                               double * dxdxi) const
@@ -552,8 +552,8 @@ namespace netgen
 
 
 
-  template <> DLL_HEADER void Ngx_Mesh :: 
-  ElementTransformation<1,1> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh :: 
+  ElementTransformation1x1 (int elnr,
                               const double * xi,
                               double * x,
                               double * dxdxi) const
@@ -567,8 +567,8 @@ namespace netgen
     if (dxdxi) dxdxi[0] = dx(0);
   }
 
-  template <> DLL_HEADER void Ngx_Mesh ::
-  ElementTransformation<0,2> (int elnr,
+  DLL_HEADER void Ngx_netgen_Mesh ::
+  ElementTransformation0x2 (int elnr,
 			      const double *xi,
 			      double * x,
 			      double * dxdxi) const
@@ -579,8 +579,8 @@ namespace netgen
   }
 
 
-  template <> DLL_HEADER void Ngx_Mesh :: 
-  ElementTransformation<0,1> (int elnr, 
+  DLL_HEADER void Ngx_netgen_Mesh :: 
+  ElementTransformation0x1 (int elnr, 
                               const double * xi,
                               double * x,
                               double * dxdxi) const
@@ -640,7 +640,7 @@ namespace netgen
                                    double * dxdxi, size_t sdxdxi) const
   {
     for (int i = 0; i < npts; i++)
-      ElementTransformation<0,3> (elnr, xi+i*sxi, x+i*sx, dxdxi+i*sdxdxi);
+      ElementTransformation0x3 (elnr, xi+i*sxi, x+i*sx, dxdxi+i*sdxdxi);
   }
     
   template <> DLL_HEADER void Ngx_Mesh :: 
@@ -659,7 +659,7 @@ namespace netgen
                                    double * dxdxi, size_t sdxdxi) const
   {
     for (int i = 0; i < npts; i++)
-      ElementTransformation<1,1> (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
+      ElementTransformation1x1 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
   }
 
   template <> DLL_HEADER void Ngx_Mesh ::
@@ -669,7 +669,7 @@ namespace netgen
                                    double * dxdxi, size_t sdxdxi) const
   {
     for (int i = 0; i < npts; i++)
-      ElementTransformation<0,2> (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
+      ElementTransformation0x2 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
   }
 
 
@@ -680,7 +680,7 @@ namespace netgen
                                    double * dxdxi, size_t sdxdxi) const
   {
     for (int i = 0; i < npts; i++)
-      ElementTransformation<0,1> (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
+      ElementTransformation0x1 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
   }
 
 
