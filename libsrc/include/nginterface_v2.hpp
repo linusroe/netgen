@@ -316,12 +316,96 @@ namespace netgen
     /// sxi ... step xi
     /// x ..... DIM_SPACE global coordinates
     /// dxdxi...DIM_SPACE x DIM_EL Jacobian matrix (row major storage)
-    template <int DIM_EL, int DIM_SPACE, typename T> 
-    void MultiElementTransformation (int elnr, int npts,
-                                     const T * xi, size_t sxi,
-                                     T * x, size_t sx,
-                                     T * dxdxi, size_t sdxdxi) const;
-    
+
+    virtual void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
+
+    virtual void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const = 0;
 
     virtual const Ng_Node<0> GetNode0 (int nr) const = 0;
     virtual const Ng_Node<1> GetNode1 (int nr) const = 0;
@@ -453,6 +537,96 @@ namespace netgen
                                 const double * xi, 
                                 double * x, 
                                 double * dxdxi) const override;
+
+    void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
 
     const Ng_Node<0> GetNode0 (int nr) const override;
     const Ng_Node<1> GetNode1 (int nr) const override;
