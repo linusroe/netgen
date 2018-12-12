@@ -452,7 +452,7 @@ namespace netgen
   Ngx_Mesh :: ~Ngx_Mesh(){};
 
 
-  class DLL_HEADER Ngx_netgen_Mesh : Ngx_Mesh
+  class DLL_HEADER Ngx_netgen_Mesh : public Ngx_Mesh
   {
   private:
     shared_ptr<Mesh> mesh;
