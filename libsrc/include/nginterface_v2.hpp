@@ -449,8 +449,6 @@ namespace netgen
     virtual inline int GetTimeStamp() const = 0;
   };
 
-  Ngx_Mesh :: ~Ngx_Mesh(){};
-
 
   class DLL_HEADER Ngx_netgen_Mesh : public Ngx_Mesh
   {

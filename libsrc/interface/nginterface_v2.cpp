@@ -117,6 +117,7 @@ namespace netgen
     : mesh(amesh)
   { ; }
   */
+  Ngx_Mesh :: ~Ngx_Mesh(){};
 
   Ngx_netgen_Mesh :: ~Ngx_netgen_Mesh ()
   { 
