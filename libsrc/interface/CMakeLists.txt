@@ -1,6 +1,6 @@
 add_definitions(-DNGINTERFACE_EXPORTS)
 add_library(interface ${NG_LIB_TYPE}
-        nginterface.cpp nginterface_v2.cpp 
+        nginterface.cpp nginterface_v2.cpp mymeshinterface.cpp
         read_fnf_mesh.cpp readtetmesh.cpp readuser.cpp writeabaqus.cpp writediffpack.cpp 
         writedolfin.cpp writeelmer.cpp writefeap.cpp writefluent.cpp writegmsh.cpp writejcm.cpp 
         writepermas.cpp writetecplot.cpp writetet.cpp writetochnog.cpp writeuser.cpp

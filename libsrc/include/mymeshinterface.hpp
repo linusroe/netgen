@@ -1,0 +1,3 @@
+#ifndef MYMESHINTERFACE
+#define MYMESHINTERFACE
+#endif
