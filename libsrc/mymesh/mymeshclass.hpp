@@ -2,4 +2,7 @@
 #define MYMESHCLASS
 #endif
 
-class MyMesh{};
+namespace netgen
+{
+    class MyMesh{};
+}

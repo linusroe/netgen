@@ -8,7 +8,7 @@ add_library(interface ${NG_LIB_TYPE}
         )
 
 if(NOT WIN32)
-    target_link_libraries(interface mesh csg geom2d)
+    target_link_libraries(interface mymesh mesh csg geom2d)
     if(USE_GUI)
         target_link_libraries(interface visual)
     endif(USE_GUI)
