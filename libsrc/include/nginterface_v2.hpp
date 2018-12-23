@@ -449,6 +449,20 @@ namespace netgen
     virtual inline int GetTimeStamp() const = 0;
   };
 
+  class MyMesh;
+
+  class DLL_HEADER Ngx_MyMesh : public Ngx_Mesh
+  {
+  private:
+    shared_ptr<MyMesh> mesh;
+  public: 
+    Ngx_MyMesh(shared_ptr<MyMesh> angxmesh = NULL);
+    virtual ~Ngx_MyMesh ();
+    void LoadMesh (const string & filename) override;
+
+    int GetNNodes1 () override;
+    int GetNNodes2 () override;
+  };
 
   class DLL_HEADER Ngx_netgen_Mesh : public Ngx_Mesh
   {
