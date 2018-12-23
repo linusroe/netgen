@@ -457,8 +457,21 @@ namespace netgen
     shared_ptr<MyMesh> mesh;
   public: 
     Ngx_MyMesh(shared_ptr<MyMesh> angxmesh = NULL);
-    virtual ~Ngx_MyMesh ();
+
     void LoadMesh (const string & filename) override;
+
+    void LoadMesh (istream & str) override;
+    void SaveMesh (ostream & str) const override;
+    void UpdateTopology () override;
+    void DoArchive (ngstd::Archive & archive) override;
+
+    virtual ~Ngx_MyMesh ();
+
+    int GetDimension() const override;
+    int GetNLevels() const override;
+
+    int GetNElements (int dim) const override;
+    int GetNNodes (int nt) const override;
 
     int GetNNodes1 () override;
     int GetNNodes2 () override;
