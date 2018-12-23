@@ -1,11 +1,20 @@
 add_definitions(-DNGINTERFACE_EXPORTS)
+if(NOT WIN32)
+    set(mymesh_object_libs 
+        $<TARGET_OBJECTS:la>
+        $<TARGET_OBJECTS:gprim>
+        $<TARGET_OBJECTS:gen>
+        )
+endif(NOT WIN32)
 
 add_library(mymesh ${NG_LIB_TYPE}
     mymeshclass.cpp
+    ${mymesh_object_libs}
+
 )
 
 if(APPLE)
-    set_target_properties( mesh PROPERTIES SUFFIX ".so")
+    set_target_properties( mymesh PROPERTIES SUFFIX ".so")
 endif(APPLE)
 
 if(NOT WIN32)
