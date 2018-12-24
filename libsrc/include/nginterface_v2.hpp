@@ -473,6 +473,18 @@ namespace netgen
     int GetNElements (int dim) const override;
     int GetNNodes (int nt) const override;
 
+    Ng_Point GetPoint (int nr) const override;
+
+    int GetElementIndex0 (size_t nr) const override;
+    int GetElementIndex1 (size_t nr) const override;
+    int GetElementIndex2 (size_t nr) const override;
+    int GetElementIndex3 (size_t nr) const override;
+
+    Ng_Element GetElement0 (size_t nr) const override;
+    Ng_Element GetElement1 (size_t nr) const override;
+    Ng_Element GetElement2 (size_t nr) const override;
+    Ng_Element GetElement3 (size_t nr) const override;
+
     int GetNNodes1 () override;
     int GetNNodes2 () override;
   };
