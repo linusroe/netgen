@@ -485,8 +485,162 @@ namespace netgen
     Ng_Element GetElement2 (size_t nr) const override;
     Ng_Element GetElement3 (size_t nr) const override;
 
+    const string & GetMaterialCD0 (int region_nr) const override;
+    const string & GetMaterialCD1 (int region_nr) const override;
+    const string & GetMaterialCD2 (int region_nr) const override;
+    const string & GetMaterialCD3 (int region_nr) const override;
+
+    void ElementTransformation3x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation2x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x3 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation2x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation1x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x2 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void ElementTransformation0x1 (int elnr,
+                                const double * xi, 
+                                double * x, 
+                                double * dxdxi) const override;
+
+    void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const double * xi, size_t sxi,
+                                     double * x, size_t sx,
+                                     double * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation3x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation2x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x3 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation1x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x2 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    void MultiElementTransformation0x1 (int elnr, int npts,
+                                     const tAVXd * xi, size_t sxi,
+                                     tAVXd * x, size_t sx,
+                                     tAVXd * dxdxi, size_t sdxdxi) const override;
+
+    const Ng_Node<0> GetNode0 (int nr) const override;
+    const Ng_Node<1> GetNode1 (int nr) const override;
+    const Ng_Node<2> GetNode2 (int nr) const override;
+
     int GetNNodes1 () override;
     int GetNNodes2 () override;
+
+    void GetParentNodes (int ni, int * parents) const override;
+    int GetParentElement (int ei) const override;
+    int GetParentSElement (int ei) const override;
+
+    int GetNIdentifications() const override;
+    int GetIdentificationType(int idnr) const override;
+    Ng_Buffer<int[2]> GetPeriodicVertices(int idnr) const override;
+
+    inline int GetTimeStamp() const override;
   };
 
   class DLL_HEADER Ngx_netgen_Mesh : public Ngx_Mesh
