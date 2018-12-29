@@ -26,3 +26,10 @@ install(FILES
     mymeshclass.hpp
     DESTINATION ${NG_INSTALL_DIR_INCLUDE}/mymesh COMPONENT netgen_devel
 )
+
+add_executable(mymeshtest
+    mymeshclasstest.cpp
+    )
+
+target_link_libraries( mymeshtest mesh mymesh stlvis stl geom2dvis interface geom2d csg stl visual csgvis )
+

@@ -20,6 +20,12 @@ namespace netgen
 
       Node(double x_ = 0, double y_ = 0, double z_ = 0) :
       x{x_}, y{y_}, z{z_} {}
+      std::string print() const
+      {
+        std::string s(std::string("( ") + std::to_string(x) + std::string(", ") +
+        std::to_string(y) + std::string(", ") + std::to_string(z) + std::string(")"));
+        return s;
+      }
     };
     class Edge
     {
@@ -58,6 +64,8 @@ namespace netgen
     int getNumEdges(){return numEdges;}
     int getNumFaces(){return numFaces;}
     int getNumVolumes(){return numVolumes;}
+
+    std::vector<Node> getNodes(){return nodes;}
   };
 
   bool operator==(const MyMesh::Node& lhs, const MyMesh::Node& rhs)
@@ -68,5 +76,10 @@ namespace netgen
   }
 
   bool operator!=(const MyMesh::Node& lhs, const MyMesh::Node& rhs) {return !(lhs == rhs);}
+  std::ostream& operator<<(std::ostream& os, const MyMesh::Node& node)
+  {
+    os << node.print();
+    return os;
+  }
 
 }
