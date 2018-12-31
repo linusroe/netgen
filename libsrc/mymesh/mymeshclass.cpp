@@ -24,16 +24,25 @@ MyMesh :: MyMesh(std::size_t dimX,
         }
     }
 
-    for (Node from : nodes)
+    for (std::size_t i = 0; i < getNumNodes(); ++i)
     {
-        for(Node to : nodes)
+        for (std::size_t j = i + 1; j < getNumNodes(); ++j)
         {
-            if(from != to && ((from.x - to.x <= ptStepX)  && dimX ||
-               (from.y - to.y <= ptStepY) && dimY || (from.z - to.z <= ptStepZ) && dimZ))
+            double diffX = std::abs(nodes[i].x - nodes[j].x);
+            double diffY = std::abs(nodes[i].y - nodes[j].y);
+            double diffZ = std::abs(nodes[i].z - nodes[j].z);
+            if(diffX <= ptStepX && diffY <= ptStepY && diffZ <= ptStepZ)
                 {
-                    Edge e{from, to};
-                    edges.push_back(e);
-                    numEdges++;
+                    short total = diffX == ptStepX ? 1 : 0;
+                    total += diffY == ptStepY ? 1 : 0; 
+                    total += diffZ == ptStepZ ? 1 : 0; 
+
+                    if(total == 1)
+                    { 
+                        Edge e{nodes[i], nodes[j]};
+                        edges.push_back(e);
+                        numEdges++;
+                    }
                 }
         }
     }

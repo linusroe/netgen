@@ -22,7 +22,7 @@ namespace netgen
       x{x_}, y{y_}, z{z_} {}
       std::string print() const
       {
-        std::string s(std::string("( ") + std::to_string(x) + std::string(", ") +
+        std::string s(std::string("(") + std::to_string(x) + std::string(", ") +
         std::to_string(y) + std::string(", ") + std::to_string(z) + std::string(")"));
         return s;
       }
@@ -34,6 +34,12 @@ namespace netgen
       Node b;
       Edge(Node a_, Node b_) :
       a{a_}, b{b_} {}
+      std::string print() const
+      {
+        std::string s(std::string("(") + a.print() + std::string(", ") +
+          b.print() + std::string(")"));
+        return s;
+      }
     };
 
     class Face
@@ -66,6 +72,7 @@ namespace netgen
     int getNumVolumes(){return numVolumes;}
 
     std::vector<Node> getNodes(){return nodes;}
+    std::vector<Edge> getEdges(){return edges;}
   };
 
   bool operator==(const MyMesh::Node& lhs, const MyMesh::Node& rhs)
@@ -79,6 +86,12 @@ namespace netgen
   std::ostream& operator<<(std::ostream& os, const MyMesh::Node& node)
   {
     os << node.print();
+    return os;
+  }
+
+  std::ostream& operator<<(std::ostream& os, const MyMesh::Edge& edge)
+  {
+    os << edge.print();
     return os;
   }
 
