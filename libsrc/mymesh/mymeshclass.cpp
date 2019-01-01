@@ -60,33 +60,5 @@ MyMesh :: MyMesh(std::size_t dimX,
             }
         }   
     }
-
-/*         for (std::size_t j = i + 1; j < getNumNodes(); ++j)
-        {
-            double diffX = std::abs(nodes[i].x - nodes[j].x);
-            double diffY = std::abs(nodes[i].y - nodes[j].y);
-            double diffZ = std::abs(nodes[i].z - nodes[j].z);
-            double eps = pow(10., -4.);
-            
-            // std::cout << nodes[i] << " " << nodes[j] << "\n";
-            // std::cout << diffX << " " << diffY << "\n";
-            // std::cout << ptStepX << " " << ptStepY << "\n";
-            // std::cout << (ptStepX <= diffX) << " " << (ptStepY <= diffY) << "\n";
-
-            if(diffX <= 1.2 * ptStepX && diffY <= 1.2 * ptStepY &&
-                diffZ <= 1.2 * ptStepZ)
-                {
-                    short total = diffX <= 1.2 * ptStepX ? 1 : 0;
-                    total += diffY <= 1.2 * ptStepY ? 1 : 0; 
-                    total += diffZ <= 1.2 * ptStepZ ? 1 : 0; 
-
-                    if(total == 1)
-                    { 
-                        Edge e{nodes[i], nodes[j]};
-                        edges.push_back(e);
-                        numEdges++;
-                    }
-                }
-        } */
 }
 }
