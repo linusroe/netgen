@@ -85,6 +85,17 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesFront.push_back(nodes[right]);
                     faceNodesFront.push_back(nodes[below]);
                     faceNodesFront.push_back(nodes[across]);
+
+                    for(auto edge : edges)
+                    {
+                        if(edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[below]))
+                            faceEdgesFront.push_back(edge);
+                        if(edge.a == nodes[right] && edge.b == nodes[across])
+                            faceEdgesFront.push_back(edge);
+                        if(edge.a == nodes[below] && edge.b == nodes[across])
+                            faceEdgesFront.push_back(edge);
+                    }
+
                     Face f{faceNodesFront, faceEdgesFront, numFaces};
                     faces.push_back(f);
                     numFaces++;
@@ -103,6 +114,17 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesTop.push_back(nodes[right]);
                     faceNodesTop.push_back(nodes[behind]);
                     faceNodesTop.push_back(nodes[across]);
+
+                    for(auto edge : edges)
+                    {
+                        if(edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[behind]))
+                            faceEdgesTop.push_back(edge);
+                        if(edge.a == nodes[right] && edge.b == nodes[across])
+                            faceEdgesTop.push_back(edge);
+                        if(edge.a == nodes[behind] && edge.b == nodes[across])
+                            faceEdgesTop.push_back(edge);
+                    }
+
                     Face f{faceNodesTop, faceEdgesTop, numFaces};
                     faces.push_back(f);
                     numFaces++;
@@ -121,6 +143,17 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesSide.push_back(nodes[below]);
                     faceNodesSide.push_back(nodes[behind]);
                     faceNodesSide.push_back(nodes[across]);
+
+                    for(auto edge : edges)
+                    {
+                        if(edge.a == nodes[nodepos] && (edge.b == nodes[below] || edge.b == nodes[behind]))
+                            faceEdgesSide.push_back(edge);
+                        if(edge.a == nodes[below] && edge.b == nodes[across])
+                            faceEdgesSide.push_back(edge);
+                        if(edge.a == nodes[behind] && edge.b == nodes[across])
+                            faceEdgesSide.push_back(edge);
+                    }
+
                     Face f{faceNodesSide, faceEdgesSide, numFaces};
                     faces.push_back(f);
                     numFaces++;
