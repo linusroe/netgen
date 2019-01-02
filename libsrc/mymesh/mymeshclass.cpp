@@ -1,17 +1,16 @@
 #include "mymeshclass.hpp"
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 namespace netgen
 {
-MyMesh :: MyMesh(std::size_t dimX,
+MyMesh ::MyMesh(std::size_t dimX,
                 std::size_t dimY,
-                std::size_t dimZ) :
-                numNodes{0}, numEdges{0}, numFaces{0}, numVolumes{0}
+                std::size_t dimZ) : numNodes{0}, numEdges{0}, numFaces{0}, numVolumes{0}
 {
-    double ptStepX = dimX ? 1.0/dimX : 0; 
-    double ptStepY = dimY ? 1.0/dimY : 0; 
-    double ptStepZ = dimZ ? 1.0/dimZ : 0; 
+    double ptStepX = dimX ? 1.0 / dimX : 0;
+    double ptStepY = dimY ? 1.0 / dimY : 0;
+    double ptStepZ = dimZ ? 1.0 / dimZ : 0;
 
     //Compute Nodes
     for (std::size_t k = 0; k <= dimZ; ++k)
@@ -20,7 +19,7 @@ MyMesh :: MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i <= dimX; ++i)
             {
-                Node p{i*ptStepX, j*ptStepY, k*ptStepZ, numNodes};
+                Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes};
                 nodes.push_back(p);
                 numNodes++;
             }
@@ -33,34 +32,34 @@ MyMesh :: MyMesh(std::size_t dimX,
         for (std::size_t j = 0; j <= dimY; ++j)
         {
             for (std::size_t i = 0; i <= dimX; ++i)
-            { 
+            {
                 std::size_t nodepos = k * (dimZ + 1) * (dimY + 1) + j * (dimX + 1) + i;
 
-                if(i + 1 <= dimX)
-                { 
+                if (i + 1 <= dimX)
+                {
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
                     Edge e{nodes[nodepos], nodes[right], numEdges};
                     edges.push_back(e);
                     numEdges++;
                 }
 
-                if(j + 1  <= dimY)
-                { 
+                if (j + 1 <= dimY)
+                {
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
                     Edge e{nodes[nodepos], nodes[below], numEdges};
                     edges.push_back(e);
                     numEdges++;
                 }
 
-                if(k + 1 <= dimZ)
-                { 
+                if (k + 1 <= dimZ)
+                {
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     Edge e{nodes[nodepos], nodes[behind], numEdges};
                     edges.push_back(e);
                     numEdges++;
                 }
             }
-        }   
+        }
     }
 
     //Compute Faces
@@ -69,11 +68,11 @@ MyMesh :: MyMesh(std::size_t dimX,
         for (std::size_t j = 0; j <= dimY; ++j)
         {
             for (std::size_t i = 0; i <= dimX; ++i)
-            { 
+            {
                 std::size_t nodepos = k * (dimZ + 1) * (dimY + 1) + j * (dimX + 1) + i;
 
-                if(i + 1 <= dimX && j + 1  <= dimY)
-                { 
+                if (i + 1 <= dimX && j + 1 <= dimY)
+                {
                     std::vector<Node> faceNodesFront;
                     std::vector<Edge> faceEdgesFront;
 
@@ -86,13 +85,13 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesFront.push_back(nodes[below]);
                     faceNodesFront.push_back(nodes[across]);
 
-                    for(auto edge : edges)
+                    for (auto edge : edges)
                     {
-                        if(edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[below]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[below]))
                             faceEdgesFront.push_back(edge);
-                        if(edge.a == nodes[right] && edge.b == nodes[across])
+                        if (edge.a == nodes[right] && edge.b == nodes[across])
                             faceEdgesFront.push_back(edge);
-                        if(edge.a == nodes[below] && edge.b == nodes[across])
+                        if (edge.a == nodes[below] && edge.b == nodes[across])
                             faceEdgesFront.push_back(edge);
                     }
 
@@ -101,8 +100,8 @@ MyMesh :: MyMesh(std::size_t dimX,
                     numFaces++;
                 }
 
-                if(i + 1 <= dimX && k + 1  <= dimZ)
-                { 
+                if (i + 1 <= dimX && k + 1 <= dimZ)
+                {
                     std::vector<Node> faceNodesTop;
                     std::vector<Edge> faceEdgesTop;
 
@@ -115,13 +114,13 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesTop.push_back(nodes[behind]);
                     faceNodesTop.push_back(nodes[across]);
 
-                    for(auto edge : edges)
+                    for (auto edge : edges)
                     {
-                        if(edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[behind]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[behind]))
                             faceEdgesTop.push_back(edge);
-                        if(edge.a == nodes[right] && edge.b == nodes[across])
+                        if (edge.a == nodes[right] && edge.b == nodes[across])
                             faceEdgesTop.push_back(edge);
-                        if(edge.a == nodes[behind] && edge.b == nodes[across])
+                        if (edge.a == nodes[behind] && edge.b == nodes[across])
                             faceEdgesTop.push_back(edge);
                     }
 
@@ -130,8 +129,8 @@ MyMesh :: MyMesh(std::size_t dimX,
                     numFaces++;
                 }
 
-                if(j + 1 <= dimY && k + 1  <= dimZ)
-                { 
+                if (j + 1 <= dimY && k + 1 <= dimZ)
+                {
                     std::vector<Node> faceNodesSide;
                     std::vector<Edge> faceEdgesSide;
 
@@ -144,13 +143,13 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesSide.push_back(nodes[behind]);
                     faceNodesSide.push_back(nodes[across]);
 
-                    for(auto edge : edges)
+                    for (auto edge : edges)
                     {
-                        if(edge.a == nodes[nodepos] && (edge.b == nodes[below] || edge.b == nodes[behind]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[below] || edge.b == nodes[behind]))
                             faceEdgesSide.push_back(edge);
-                        if(edge.a == nodes[below] && edge.b == nodes[across])
+                        if (edge.a == nodes[below] && edge.b == nodes[across])
                             faceEdgesSide.push_back(edge);
-                        if(edge.a == nodes[behind] && edge.b == nodes[across])
+                        if (edge.a == nodes[behind] && edge.b == nodes[across])
                             faceEdgesSide.push_back(edge);
                     }
 
@@ -159,7 +158,7 @@ MyMesh :: MyMesh(std::size_t dimX,
                     numFaces++;
                 }
             }
-        }   
+        }
     }
 }
-}
+} // namespace netgen
