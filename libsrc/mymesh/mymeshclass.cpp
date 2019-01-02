@@ -90,14 +90,15 @@ MyMesh :: MyMesh(std::size_t dimX,
                     numFaces++;
                 }
 
-
                 if(i + 1 <= dimX && k + 1  <= dimZ)
                 { 
                     std::vector<Node> faceNodesTop;
                     std::vector<Edge> faceEdgesTop;
+
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     std::size_t across = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
+
                     faceNodesTop.push_back(nodes[nodepos]);
                     faceNodesTop.push_back(nodes[right]);
                     faceNodesTop.push_back(nodes[behind]);
@@ -107,20 +108,23 @@ MyMesh :: MyMesh(std::size_t dimX,
                     numFaces++;
                 }
 
-/*                 if(j + 1  <= dimY)
+                if(j + 1 <= dimY && k + 1  <= dimZ)
                 { 
-                    std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
-                    faceNodesFront.push_back(below);
-                    numEdges++;
-                }
+                    std::vector<Node> faceNodesSide;
+                    std::vector<Edge> faceEdgesSide;
 
-                if(k + 1 <= dimZ)
-                { 
+                    std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
-                    Edge e{nodes[nodepos], nodes[behind]};
-                    edges.push_back(e);
-                    numEdges++;
-                } */
+                    std::size_t across = (k + 1) * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
+
+                    faceNodesSide.push_back(nodes[nodepos]);
+                    faceNodesSide.push_back(nodes[below]);
+                    faceNodesSide.push_back(nodes[behind]);
+                    faceNodesSide.push_back(nodes[across]);
+                    Face f{faceNodesSide, faceEdgesSide, numFaces};
+                    faces.push_back(f);
+                    numFaces++;
+                }
             }
         }   
     }
