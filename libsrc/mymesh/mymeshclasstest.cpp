@@ -7,7 +7,7 @@ int main()
     std::cout << m.getNumNodes() << "\n";
     unsigned short x = 0;
     for(auto i : m.getNodes())
-        std::cout << x++ << i << "\n";
+        std::cout << i << "\n";
 
     std::cout << m.getNumEdges() << "\n";
     for(auto i : m.getEdges())

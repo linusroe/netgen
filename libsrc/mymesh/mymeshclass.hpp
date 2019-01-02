@@ -17,27 +17,30 @@ namespace netgen
       double x;
       double y;
       double z;
+      std::size_t idx;
 
-      Node(double x_ = 0, double y_ = 0, double z_ = 0) :
-      x{x_}, y{y_}, z{z_} {}
+      Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0) :
+      x{x_}, y{y_}, z{z_}, idx{idx_} {}
       std::string print() const
       {
-        std::string s(std::string("(") + std::to_string(x) + std::string(", ") +
-        std::to_string(y) + std::string(", ") + std::to_string(z) + std::string(")"));
+        std::string s(std::string("V") + std::to_string(idx) + std::string(" (") + std::to_string(x) +
+         std::string(", ") + std::to_string(y) + std::string(", ") + std::to_string(z) + std::string(")"));
         return s;
       }
     };
+
     class Edge
     {
     public:
       Node a;
       Node b;
-      Edge(Node a_, Node b_) :
-      a{a_}, b{b_} {}
+      std::size_t idx;
+      Edge(Node a_, Node b_, std::size_t idx_ = 0) :
+      a{a_}, b{b_}, idx{idx_} {}
       std::string print() const
       {
-        std::string s(std::string("(") + a.print() + std::string(", ") +
-          b.print() + std::string(")"));
+        std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") + std::to_string(a.idx) + std::string(", V") +
+          std::to_string(b.idx) + std::string(")"));
         return s;
       }
     };
@@ -53,10 +56,10 @@ namespace netgen
 
   private:
     int dim;
-    int numNodes;
-    int numEdges;
-    int numFaces;
-    int numVolumes;
+    std::size_t numNodes;
+    std::size_t numEdges;
+    std::size_t numFaces;
+    std::size_t numVolumes;
     std::vector<Node> nodes;
     std::vector<Edge> edges;
     std::vector<Face> faces;
