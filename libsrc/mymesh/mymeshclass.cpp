@@ -85,20 +85,27 @@ MyMesh :: MyMesh(std::size_t dimX,
                     faceNodesFront.push_back(nodes[right]);
                     faceNodesFront.push_back(nodes[below]);
                     faceNodesFront.push_back(nodes[across]);
+                    Face f{faceNodesFront, faceEdgesFront, numFaces};
+                    faces.push_back(f);
+                    numFaces++;
                 }
 
 
-           /*      if(i + 1 <= dimX && k + 1  <= dimZ)
+                if(i + 1 <= dimX && k + 1  <= dimZ)
                 { 
                     std::vector<Node> faceNodesTop;
+                    std::vector<Edge> faceEdgesTop;
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     std::size_t across = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
-                    faceNodesFront.push_back(nodes[nodepos]);
-                    faceNodesFront.push_back(nodes[right]);
-                    faceNodesFront.push_back(nodes[behind]);
-                    faceNodesFront.push_back(nodes[across]);
-                } */
+                    faceNodesTop.push_back(nodes[nodepos]);
+                    faceNodesTop.push_back(nodes[right]);
+                    faceNodesTop.push_back(nodes[behind]);
+                    faceNodesTop.push_back(nodes[across]);
+                    Face f{faceNodesTop, faceEdgesTop, numFaces};
+                    faces.push_back(f);
+                    numFaces++;
+                }
 
 /*                 if(j + 1  <= dimY)
                 { 

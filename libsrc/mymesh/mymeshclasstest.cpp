@@ -3,7 +3,7 @@
 
 int main()
 {
-    netgen::MyMesh m = netgen::MyMesh(5, 5, 0);
+    netgen::MyMesh m = netgen::MyMesh(2, 3, 2);
     std::cout << m.getNumNodes() << "\n";
     unsigned short x = 0;
     for(auto i : m.getNodes())
@@ -11,5 +11,9 @@ int main()
 
     std::cout << m.getNumEdges() << "\n";
     for(auto i : m.getEdges())
+        std::cout << i << "\n";
+
+    std::cout << m.getNumFaces() << "\n";
+    for(auto i : m.getFaces())
         std::cout << i << "\n";
 }

@@ -23,8 +23,9 @@ namespace netgen
       x{x_}, y{y_}, z{z_}, idx{idx_} {}
       std::string print() const
       {
-        std::string s(std::string("V") + std::to_string(idx) + std::string(" (") + std::to_string(x) +
-         std::string(", ") + std::to_string(y) + std::string(", ") + std::to_string(z) + std::string(")"));
+        std::string s(std::string("V") + std::to_string(idx) + std::string(" (") +
+                      std::to_string(x) + std::string(", ") + std::to_string(y) +
+                      std::string(", ") + std::to_string(z) + std::string(")"));
         return s;
       }
     };
@@ -39,8 +40,9 @@ namespace netgen
       a{a_}, b{b_}, idx{idx_} {}
       std::string print() const
       {
-        std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") + std::to_string(a.idx) + std::string(", V") +
-          std::to_string(b.idx) + std::string(")"));
+        std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") +
+                      std::to_string(a.idx) + std::string(", V") +
+                      std::to_string(b.idx) + std::string(")"));
         return s;
       }
     };
@@ -50,8 +52,21 @@ namespace netgen
     public:
       std::vector<Node> nodes;
       std::vector<Edge> edges;
-      Face(std::vector<Node> nodes_, std::vector<Edge> edges_) :
-      nodes{nodes_}, edges{edges_} {}
+      std::size_t idx;
+      Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0) :
+      nodes{nodes_}, edges{edges_}, idx{idx_} {}
+      std::string print() const
+      {
+        std::string s(std::string("F") + std::to_string(idx) + std::string(" (("));
+        for(auto node : nodes)
+          s += std::string("V") + std::to_string(node.idx) + std::string(" ");
+        s += std::string("), (");
+
+        for(auto edge : edges)
+          s += std::string("E") + std::to_string(edge.idx) + std::string(" ");
+        s += std::string("))");
+        return s;
+      }
     };
 
   private:
@@ -76,6 +91,7 @@ namespace netgen
 
     std::vector<Node> getNodes(){return nodes;}
     std::vector<Edge> getEdges(){return edges;}
+    std::vector<Face> getFaces(){return faces;}
   };
 
   bool operator==(const MyMesh::Node& lhs, const MyMesh::Node& rhs)
@@ -95,6 +111,12 @@ namespace netgen
   std::ostream& operator<<(std::ostream& os, const MyMesh::Edge& edge)
   {
     os << edge.print();
+    return os;
+  }
+
+  std::ostream& operator<<(std::ostream& os, const MyMesh::Face& face)
+  {
+    os << face.print();
     return os;
   }
 
