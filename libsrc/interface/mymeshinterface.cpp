@@ -1,9 +1,9 @@
-#include <mymesh.hpp>
-#include <mymeshinterface.hpp>
 #include <mystdlib.h>
+#include <mymeshinterface.hpp>
+#include <mymesh.hpp>
 
-#include "writeuser.hpp"
 #include <meshing.hpp>
+#include "writeuser.hpp"
 
 #ifdef SOCKETS
 #include "../sockets/sockets.hpp"
