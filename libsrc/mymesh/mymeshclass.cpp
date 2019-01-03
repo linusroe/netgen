@@ -1,6 +1,7 @@
 #include "mymeshclass.hpp"
 #include <cmath>
 #include <iostream>
+#include <set>
 
 namespace netgen
 {
@@ -157,6 +158,33 @@ MyMesh ::MyMesh(std::size_t dimX,
                     faces.push_back(f);
                     numFaces++;
                 }
+            }
+        }
+    }
+    //Compute Volumes
+    std::size_t faceIdx{0};
+    for (std::size_t k = 0; k < dimZ; ++k)
+    {
+        for (std::size_t j = 0; j < dimY; ++j)
+        {
+            for (std::size_t i = 0; i < dimX; ++i)
+            {
+                std::set<Node> volNodes;
+                std::vector<Edge> volEdges;
+                std::vector<Face> volFaces;
+
+                volFaces.push_back(faces[faceIdx]);
+                //volNodes.insert(faces[faceIdx].nodes.begin(), faces[faceIdx].nodes.end());
+                volFaces.push_back(faces[faceIdx + 1]);
+                volFaces.push_back(faces[faceIdx + 2]);
+                volFaces.push_back(faces[faceIdx + 5]);
+                volFaces.push_back(faces[faceIdx + dimX * 3 + 1]);
+                volFaces.push_back(faces[faceIdx + (dimY + dimX) * 3 + 1]);
+
+                faceIdx += i == dimX ? 1 : 3;
+                Volume v(std::vector<Node>(volNodes.begin(), volNodes.end()), volEdges, volFaces, numVolumes);
+                volumes.push_back(v);
+                ++numVolumes;
             }
         }
     }

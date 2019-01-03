@@ -16,4 +16,8 @@ int main()
     std::cout << m.getNumFaces() << "\n";
     for (auto i : m.getFaces())
         std::cout << i << "\n";
+
+    std::cout << m.getNumVolumes() << "\n";
+    for (auto i : m.getVolumes())
+        std::cout << i << "\n";
 }

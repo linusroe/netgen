@@ -21,6 +21,7 @@ public:
 
         Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0) :
         x{x_}, y{y_}, z{z_}, idx{idx_} {}
+
         std::string print() const
         {
             std::string s(std::string("V") + std::to_string(idx) + std::string(" (") +
@@ -36,7 +37,9 @@ public:
         Node a;
         Node b;
         std::size_t idx;
+
         Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} {}
+
         std::string print() const
         {
             std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") +
@@ -52,8 +55,10 @@ public:
         std::vector<Node> nodes;
         std::vector<Edge> edges;
         std::size_t idx;
+
         Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0) :
         nodes{nodes_}, edges{edges_}, idx{idx_} {}
+
         std::string print() const
         {
             std::string s(std::string("F") + std::to_string(idx) + std::string(" (("));
@@ -68,6 +73,36 @@ public:
         }
     };
 
+    class Volume
+    {
+    public:
+        std::vector<Node> nodes;
+        std::vector<Edge> edges;
+        std::vector<Face> faces;
+        std::size_t idx;
+
+        Volume(std::vector<Node> nodes_, std::vector<Edge> edges_,
+              std::vector<Face> faces_, std::size_t idx_ = 0) :
+        nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} {}
+
+        std::string print() const
+        {
+            std::string s(std::string("Vo") + std::to_string(idx) + std::string(" (("));
+            for (auto node : nodes)
+                s += std::string("V") + std::to_string(node.idx) + std::string(" ");
+            s += std::string("), (");
+
+            for (auto edge : edges)
+                s += std::string("E") + std::to_string(edge.idx) + std::string(" ");
+            s += std::string("), (");
+
+            for (auto face : faces)
+                s += std::string("F") + std::to_string(face.idx) + std::string(" ");
+            s += std::string("))");
+            return s;
+        }
+    };
+
 private:
     int dim;
     std::size_t numNodes;
@@ -77,6 +112,7 @@ private:
     std::vector<Node> nodes;
     std::vector<Edge> edges;
     std::vector<Face> faces;
+    std::vector<Volume> volumes;
 
 public:
     MyMesh(std::size_t dimX = 0, std::size_t dimY = 0, std::size_t dimZ = 0);
@@ -90,6 +126,7 @@ public:
     std::vector<Node> getNodes() { return nodes; }
     std::vector<Edge> getEdges() { return edges; }
     std::vector<Face> getFaces() { return faces; }
+    std::vector<Volume> getVolumes() { return volumes; }
 };
 
 bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)
@@ -115,6 +152,12 @@ std::ostream &operator<<(std::ostream &os, const MyMesh::Edge &edge)
 std::ostream &operator<<(std::ostream &os, const MyMesh::Face &face)
 {
     os << face.print();
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const MyMesh::Volume &volume)
+{
+    os << volume.print();
     return os;
 }
 }
