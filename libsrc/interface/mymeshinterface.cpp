@@ -32,7 +32,23 @@ void Ngx_MyMesh ::DoArchive(ngstd::Archive &archive) {}
 int Ngx_MyMesh ::GetDimension() const { return mesh->getDim(); }
 int Ngx_MyMesh ::GetNLevels() const { return 0; }
 
-int Ngx_MyMesh ::GetNElements(int dim) const { return -1; }
+//Difference btw NElements and NNodes
+int Ngx_MyMesh ::GetNElements(int dim) const
+{
+    switch (dim)
+    {
+    case 0:
+        return mesh->getNumNodes();
+    case 1:
+        return mesh->getNumEdges();
+    case 2:
+        return mesh->getNumFaces();
+    case 3:
+        return mesh->getNumVolumes();
+    default:
+        return -1;
+    }
+}
 
 int Ngx_MyMesh ::GetNNodes(int nt) const
 {
@@ -53,24 +69,59 @@ int Ngx_MyMesh ::GetNNodes(int nt) const
 
 Ng_Point Ngx_MyMesh ::GetPoint(int nr) const
 {
-    double points[mesh->getDim()] = {0};
+    std::size_t dim = mesh->getDim();
+
+    double points[dim];
+    if(dim <= 1)
+        points[0] = mesh->getNodes()[nr].x;
+    if(dim <= 2)
+        points[1] = mesh->getNodes()[nr].y;
+    if(dim <= 3)
+        points[2] = mesh->getNodes()[nr].z;
     return Ng_Point(points);
 }
 
-int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return -1; }
-int Ngx_MyMesh ::GetElementIndex1(size_t nr) const { return -1; }
-int Ngx_MyMesh ::GetElementIndex2(size_t nr) const { return -1; }
-int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return -1; }
+int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return nr; }
+int Ngx_MyMesh ::GetElementIndex1(size_t nr) const { return nr; }
+int Ngx_MyMesh ::GetElementIndex2(size_t nr) const { return nr; }
+int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return nr; }
 
-Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const {}
+//Dont understand purpose of ptr members
+Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
+{
+  const MyMesh::Node & node = mesh->getNodes()[nr];
+  
+  Ng_Element ret;
+  ret.type = NG_PNT;
+  ret.index = node.idx;
+  
+  ret.points.num = 1;
+  ret.points.ptr = nullptr;
+  
+  ret.vertices.num = 1;
+  ret.vertices.ptr = nullptr;
+  
+  ret.edges.num = 0;
+  ret.edges.ptr = NULL;
+  
+  ret.faces.num = 0;
+  ret.faces.ptr = NULL;
+
+  ret.facets.num = 1;
+  ret.facets.base = 1;
+  ret.facets.ptr = nullptr;
+  
+  return ret;
+}
+
 Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const {}
 Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const {}
 Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const {}
 
-const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const {};
-const string &Ngx_MyMesh ::GetMaterialCD1(int region_nr) const {};
-const string &Ngx_MyMesh ::GetMaterialCD2(int region_nr) const {};
-const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const {};
+const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const { return "default"; };
+const string &Ngx_MyMesh ::GetMaterialCD1(int region_nr) const { return "default"; };
+const string &Ngx_MyMesh ::GetMaterialCD2(int region_nr) const { return "default"; };
+const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const { return "default"; };
 
 void Ngx_MyMesh ::ElementTransformation3x3(int elnr,
                                            const double *xi,

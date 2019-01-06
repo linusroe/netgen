@@ -9,6 +9,10 @@ MyMesh ::MyMesh(std::size_t dimX,
                 std::size_t dimY,
                 std::size_t dimZ) : numNodes{0}, numEdges{0}, numFaces{0}, numVolumes{0}
 {
+    dim = dimX ? 1 : 0;
+    dim += dimY ? 1 : 0;
+    dim += dimZ ? 1 : 0;
+
     double ptStepX = dimX ? 1.0 / dimX : 0;
     double ptStepY = dimY ? 1.0 / dimY : 0;
     double ptStepZ = dimZ ? 1.0 / dimZ : 0;
@@ -169,7 +173,7 @@ MyMesh ::MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i < dimX; ++i)
             {
-                std::set<Node> volNodes;
+/*                 std::set<Node> volNodes;
                 std::vector<Edge> volEdges;
                 std::vector<Face> volFaces;
 
@@ -178,13 +182,29 @@ MyMesh ::MyMesh(std::size_t dimX,
                 volFaces.push_back(faces[faceIdx + 1]);
                 volFaces.push_back(faces[faceIdx + 2]);
                 volFaces.push_back(faces[faceIdx + 5]);
-                volFaces.push_back(faces[faceIdx + dimX * 3 + 1]);
-                volFaces.push_back(faces[faceIdx + (dimY + dimX) * 3 + 1]);
+                volFaces.push_back(faces[faceIdx + dimX * 3 + 2]);
+                volFaces.push_back(faces[faceIdx + (dimY + dimX) * 3 + 2]);
 
-                faceIdx += i == dimX ? 1 : 3;
+                bool outerX{i == dimX - 1};
+                bool outerY{j == dimY - 1};
+                bool outerZ{k == dimZ - 1};
+
+                if (outerX && outerY && outerZ)
+                  faceIdx += 6;
+                else if (outerX && outerY)
+                  faceIdx += 6;
+                else if (outerX && outerZ || outerY && outerZ)
+                  faceIdx += 5;
+                else if (outerX || outerY || outerZ)
+                  faceIdx += 4;
+                else
+                  faceIdx += 3;
+                //faceIdx += i == dimX - 1 || j == dimY - 1 || k == dimZ - 1 ? 4 : 3;
                 Volume v(std::vector<Node>(volNodes.begin(), volNodes.end()), volEdges, volFaces, numVolumes);
                 volumes.push_back(v);
                 ++numVolumes;
+
+              std::cout << numVolumes << " " << faceIdx << "\n"; */
             }
         }
     }

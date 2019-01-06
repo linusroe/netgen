@@ -104,7 +104,7 @@ public:
     };
 
 private:
-    int dim;
+    std::size_t dim;
     std::size_t numNodes;
     std::size_t numEdges;
     std::size_t numFaces;
