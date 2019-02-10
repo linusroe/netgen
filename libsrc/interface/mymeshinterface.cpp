@@ -96,25 +96,51 @@ Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
   ret.index = node.idx;
   
   ret.points.num = 1;
-  ret.points.ptr = nullptr;
+  ret.points.ptr = reinterpret_cast<const int *>(&node.idx);
   
   ret.vertices.num = 1;
-  ret.vertices.ptr = nullptr;
+  ret.vertices.ptr = reinterpret_cast<const int *>(&node.idx);
   
   ret.edges.num = 0;
-  ret.edges.ptr = NULL;
+  ret.edges.ptr = nullptr;
   
   ret.faces.num = 0;
-  ret.faces.ptr = NULL;
+  ret.faces.ptr = nullptr;
 
-  ret.facets.num = 1;
-  ret.facets.base = 1;
+  ret.facets.num = 0;
+  ret.facets.base = 0;
   ret.facets.ptr = nullptr;
   
   return ret;
 }
 
-Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const {}
+Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const 
+{
+
+  const MyMesh::Edge & edge = mesh->getEdges()[nr];
+
+  Ng_Element ret;
+  ret.type = NG_SEGM;
+  ret.index = edge.idx;
+  
+  ret.points.num = 2;
+  ret.points.ptr = &edge.nodeIdx[0];
+  
+  ret.vertices.num = 2;
+  ret.vertices.ptr = &edge.nodeIdx[0];
+  
+  ret.edges.num = 1;
+  ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&edge.edgestruct);
+  
+  ret.faces.num = 0;
+  ret.faces.ptr = nullptr;
+
+  ret.facets.num = 0;
+  ret.facets.base = 0;
+  ret.facets.ptr = nullptr;
+  
+  return ret;
+}
 Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const {}
 Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const {}
 

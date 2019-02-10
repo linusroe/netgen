@@ -5,12 +5,20 @@
 #include <cstdlib>
 #include <memory>
 #include <vector>
+//#include "../meshing/topology.hpp"
 
 namespace netgen
 {
+
+struct MY_T_EDGE
+{
+    int nr;
+};
+
 class MyMesh
 {
 public:
+
     class Node
     {
     public:
@@ -36,9 +44,16 @@ public:
     public:
         Node a;
         Node b;
+        std::vector<int> nodeIdx;
         std::size_t idx;
+        struct MY_T_EDGE edgestruct;
 
-        Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} {}
+        Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} 
+        {
+            nodeIdx.push_back(a.idx);
+            nodeIdx.push_back(b.idx);
+            edgestruct.nr = idx;
+        }
 
         std::string print() const
         {
