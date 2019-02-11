@@ -208,5 +208,58 @@ MyMesh ::MyMesh(std::size_t dimX,
             }
         }
     }
+
+    for (MyMesh::Node &n : nodes)
+        computeNeighborNodes(n);
+
+    for (MyMesh::Edge &e : edges)
+        computeNeighborEdges(e);
+
+    for (MyMesh::Face &f : faces)
+        computeNeighborFaces(f);
 }
+
+void MyMesh::computeNeighborNodes(MyMesh::Node &n)
+{
+    for (MyMesh::Edge e : edges)
+    {
+        if (e.a == n)
+            n.neighbors.push_back(static_cast<int>(e.b.idx));
+
+        if (e.b == n)
+            n.neighbors.push_back(static_cast<int>(e.a.idx));
+    }
+}
+
+void MyMesh::computeNeighborEdges(MyMesh::Edge &e)
+{
+    for (MyMesh::Edge posNeighEdge : edges)
+    {
+        if (e.a != posNeighEdge.a && e.b == posNeighEdge.b)
+                e.neighbors.push_back(static_cast<int>(posNeighEdge.idx));
+
+        if (e.b != posNeighEdge.b && e.a == posNeighEdge.a)
+                e.neighbors.push_back(static_cast<int>(posNeighEdge.idx));
+    }
+}
+
+void MyMesh::computeNeighborFaces(MyMesh::Face &f)
+{
+    for (MyMesh::Face posNeighFace : faces)
+    {
+        unsigned short numSharedNodes = 0;
+        for (Node nodeFace : f.nodes)
+        {
+            for (Node nodeNeighFace : posNeighFace.nodes)
+            {
+                if(nodeFace == nodeNeighFace)
+                    ++numSharedNodes;
+            }
+        }
+        if (numSharedNodes == 2)
+            f.neighbors.push_back(static_cast<int>(posNeighFace.idx));
+    }
+
+}
+
 } // namespace netgen

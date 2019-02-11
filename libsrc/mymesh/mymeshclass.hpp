@@ -26,6 +26,7 @@ public:
         double y;
         double z;
         std::size_t idx;
+        std::vector<int> neighbors;
 
         Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0) :
         x{x_}, y{y_}, z{z_}, idx{idx_} {}
@@ -46,6 +47,7 @@ public:
         Node b;
         std::vector<int> nodeIdx;
         std::size_t idx;
+        std::vector<int> neighbors;
         struct MY_T_EDGE edgestruct;
 
         Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} 
@@ -69,6 +71,7 @@ public:
     public:
         std::vector<Node> nodes;
         std::vector<Edge> edges;
+        std::vector<int> neighbors;
         std::size_t idx;
 
         Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0) :
@@ -129,6 +132,10 @@ private:
     std::vector<Face> faces;
     std::vector<Volume> volumes;
 
+    void computeNeighborNodes(Node &n);
+    void computeNeighborEdges(Edge &e);
+    void computeNeighborFaces(Face &f);
+
 public:
     MyMesh(std::size_t dimX = 0, std::size_t dimY = 0, std::size_t dimZ = 0);
 
@@ -152,6 +159,7 @@ bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)
 }
 
 bool operator!=(const MyMesh::Node &lhs, const MyMesh::Node &rhs) { return !(lhs == rhs); }
+
 std::ostream &operator<<(std::ostream &os, const MyMesh::Node &node)
 {
     os << node.print();
