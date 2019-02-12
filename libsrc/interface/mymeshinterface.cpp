@@ -72,11 +72,11 @@ Ng_Point Ngx_MyMesh ::GetPoint(int nr) const
     std::size_t dim = mesh->getDim();
 
     double points[dim];
-    if(dim <= 1)
+    if (dim <= 1)
         points[0] = mesh->getNodes()[nr].x;
-    if(dim <= 2)
+    if (dim <= 2)
         points[1] = mesh->getNodes()[nr].y;
-    if(dim <= 3)
+    if (dim <= 3)
         points[2] = mesh->getNodes()[nr].z;
     return Ng_Point(points);
 }
@@ -89,87 +89,87 @@ int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return nr; }
 //Dont understand purpose of ptr members
 Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
 {
-  const MyMesh::Node & node = mesh->getNodes()[nr];
-  
-  Ng_Element ret;
-  ret.type = NG_PNT;
-  ret.index = node.idx;
-  
-  ret.points.num = 1;
-  ret.points.ptr = reinterpret_cast<const int *>(&node.idx);
-  
-  ret.vertices.num = 1;
-  ret.vertices.ptr = reinterpret_cast<const int *>(&node.idx);
-  
-  ret.edges.num = 0;
-  ret.edges.ptr = nullptr;
-  
-  ret.faces.num = 0;
-  ret.faces.ptr = nullptr;
+    const MyMesh::Node &node = mesh->getNodes()[nr];
 
-  ret.facets.num = 0;
-  ret.facets.base = 0;
-  ret.facets.ptr = nullptr;
-  
-  return ret;
+    Ng_Element ret;
+    ret.type = NG_PNT;
+    ret.index = node.idx;
+
+    ret.points.num = 1;
+    ret.points.ptr = reinterpret_cast<const int *>(&node.idx);
+
+    ret.vertices.num = 1;
+    ret.vertices.ptr = reinterpret_cast<const int *>(&node.idx);
+
+    ret.edges.num = 0;
+    ret.edges.ptr = nullptr;
+
+    ret.faces.num = 0;
+    ret.faces.ptr = nullptr;
+
+    ret.facets.num = 0;
+    ret.facets.base = 0;
+    ret.facets.ptr = nullptr;
+
+    return ret;
 }
 
-Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const 
+Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
 {
 
-  const MyMesh::Edge & edge = mesh->getEdges()[nr];
+    const MyMesh::Edge &edge = mesh->getEdges()[nr];
 
-  Ng_Element ret;
-  ret.type = NG_SEGM;
-  ret.index = edge.idx;
-  
-  ret.points.num = 2;
-  ret.points.ptr = &edge.nodeIdx[0];
-  
-  ret.vertices.num = 2;
-  ret.vertices.ptr = &edge.nodeIdx[0];
-  
-  ret.edges.num = 1;
-  ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&edge.edgestruct);
-  
-  ret.faces.num = 0;
-  ret.faces.ptr = nullptr;
+    Ng_Element ret;
+    ret.type = NG_SEGM;
+    ret.index = edge.idx;
 
-  ret.facets.num = 0;
-  ret.facets.base = 0;
-  ret.facets.ptr = nullptr;
-  
-  return ret;
+    ret.points.num = 2;
+    ret.points.ptr = &edge.nodeIdx[0];
+
+    ret.vertices.num = 2;
+    ret.vertices.ptr = &edge.nodeIdx[0];
+
+    ret.edges.num = 1;
+    ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&edge.edgestruct);
+
+    ret.faces.num = 0;
+    ret.faces.ptr = nullptr;
+
+    ret.facets.num = 0;
+    ret.facets.base = 0;
+    ret.facets.ptr = nullptr;
+
+    return ret;
 }
 
-Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const 
+Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
 {
 
-  const MyMesh::Face &face = mesh->getFaces()[nr];
+    const MyMesh::Face &face = mesh->getFaces()[nr];
 
-  Ng_Element ret;
-  ret.type = NG_QUAD;
-  ret.index = face.idx;
-  
-  ret.points.num = 4;
-  ret.points.ptr = &face.nodeIdx[0];
-  
-  ret.vertices.num = 4;
-  ret.vertices.ptr = &face.nodeIdx[0];
-  
-  ret.edges.num = 4;
-  ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&face.t_edges[0]);
-  
-  ret.faces.num = 1;
-  ret.faces.ptr = reinterpret_cast<const T_FACE2 *>(&face.facestruct);
+    Ng_Element ret;
+    ret.type = NG_QUAD;
+    ret.index = face.idx;
 
-  ret.facets.num = 0;
-  ret.facets.base = 0;
-  ret.facets.ptr = nullptr;
+    ret.points.num = 4;
+    ret.points.ptr = &face.nodeIdx[0];
 
-  ret.is_curved = false;
-  
-  return ret;
+    ret.vertices.num = 4;
+    ret.vertices.ptr = &face.nodeIdx[0];
+
+    ret.edges.num = 4;
+    ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&face.t_edges[0]);
+
+    ret.faces.num = 1;
+    ret.faces.ptr = reinterpret_cast<const T_FACE2 *>(&face.facestruct);
+
+    ret.facets.num = 0;
+    ret.facets.base = 0;
+    ret.facets.ptr = nullptr;
+
+    ret.is_curved = false;
+
+    return ret;
 }
 
 Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const {}
