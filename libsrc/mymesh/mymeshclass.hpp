@@ -15,6 +15,11 @@ struct MY_T_EDGE
     int nr;
 };
 
+struct MY_T_FACE
+{
+    int nr;
+};
+
 class MyMesh
 {
 public:
@@ -52,9 +57,9 @@ public:
 
         Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} 
         {
-            nodeIdx.push_back(a.idx);
-            nodeIdx.push_back(b.idx);
-            edgestruct.nr = idx;
+            nodeIdx.push_back(static_cast<int>(a.idx));
+            nodeIdx.push_back(static_cast<int>(b.idx));
+            edgestruct.nr = static_cast<int>(idx);
         }
 
         std::string print() const
@@ -70,12 +75,27 @@ public:
     {
     public:
         std::vector<Node> nodes;
+        std::vector<int> nodeIdx;
+
         std::vector<Edge> edges;
+        std::vector<struct MY_T_EDGE> t_edges;
+
         std::vector<int> neighbors;
         std::size_t idx;
 
+        struct MY_T_FACE facestruct;
+
         Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0) :
-        nodes{nodes_}, edges{edges_}, idx{idx_} {}
+        nodes{nodes_}, edges{edges_}, idx{idx_} 
+        {
+            for (Node node : nodes)
+                nodeIdx.push_back(static_cast<int>(node.idx));
+
+            for (Edge edge : edges)
+                t_edges.push_back(edge.edgestruct);
+
+            facestruct.nr = static_cast<int>(idx);
+        }
 
         std::string print() const
         {

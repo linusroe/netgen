@@ -141,7 +141,37 @@ Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
   
   return ret;
 }
-Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const {}
+
+Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const 
+{
+
+  const MyMesh::Face &face = mesh->getFaces()[nr];
+
+  Ng_Element ret;
+  ret.type = NG_QUAD;
+  ret.index = face.idx;
+  
+  ret.points.num = 4;
+  ret.points.ptr = &face.nodeIdx[0];
+  
+  ret.vertices.num = 4;
+  ret.vertices.ptr = &face.nodeIdx[0];
+  
+  ret.edges.num = 4;
+  ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&face.t_edges[0]);
+  
+  ret.faces.num = 1;
+  ret.faces.ptr = reinterpret_cast<const T_FACE2 *>(&face.facestruct);
+
+  ret.facets.num = 0;
+  ret.facets.base = 0;
+  ret.facets.ptr = nullptr;
+
+  ret.is_curved = false;
+  
+  return ret;
+}
+
 Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const {}
 
 const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const { return "default"; };
