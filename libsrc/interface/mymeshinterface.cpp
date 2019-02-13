@@ -314,9 +314,41 @@ void Ngx_MyMesh ::MultiElementTransformation0x1(int elnr, int npts,
                                                 tAVXd *x, size_t sx,
                                                 tAVXd *dxdxi, size_t sdxdxi) const {};
 
-NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const {};
-NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const {};
-NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const {};
+NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const 
+{
+    MyMesh::Node node{mesh->getNodes()[nr]};
+    Ng_Node<0> n;
+
+    n.elements.ne = node.neighbors.size();
+    n.elements.ptr = &node.neighbors[0];
+
+    n.bnd_elements.ne = node.neighbors.size();
+    n.bnd_elements.ptr = &node.neighbors[0];
+
+    return n;
+};
+
+NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const 
+{
+    MyMesh::Edge edge{mesh->getEdges()[nr]};
+    Ng_Node<1> n;
+
+    n.vertices.ptr = &edge.nodeIdx[0];
+};
+
+NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const 
+{
+    MyMesh::Face face{mesh->getFaces()[nr]};
+    Ng_Node<2> n;
+
+    n.vertices.nv = face.nodeIdx.size();
+    n.vertices.ptr = &face.nodeIdx[0];
+
+    n.edges.ned = face.edgeIdx.size();
+    n.edges.ptr = &face.edgeIdx[0];
+
+    n.surface_el = -1;
+};
 
 int Ngx_MyMesh ::GetNNodes1() { return mesh->getNumNodes(); }
 int Ngx_MyMesh ::GetNNodes2() { return mesh->getNumEdges(); }

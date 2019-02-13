@@ -78,6 +78,7 @@ public:
         std::vector<int> nodeIdx;
 
         std::vector<Edge> edges;
+        std::vector<int> edgeIdx;
         std::vector<struct MY_T_EDGE> t_edges;
 
         std::vector<int> neighbors;
@@ -92,7 +93,10 @@ public:
                 nodeIdx.push_back(static_cast<int>(node.idx));
 
             for (Edge edge : edges)
+            {
                 t_edges.push_back(edge.edgestruct);
+                edgeIdx.push_back(static_cast<int>(edge.idx));
+            }
 
             facestruct.nr = static_cast<int>(idx);
         }
