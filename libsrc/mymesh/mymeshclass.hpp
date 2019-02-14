@@ -31,7 +31,9 @@ public:
         double y;
         double z;
         std::size_t idx;
+        bool boundary = false;
         std::vector<int> neighbors;
+        std::vector<int> boundary_neighbors;
 
         Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0) :
         x{x_}, y{y_}, z{z_}, idx{idx_} {}
@@ -50,6 +52,7 @@ public:
     public:
         Node a;
         Node b;
+        bool boundary = false;
         std::vector<int> nodeIdx;
         std::size_t idx;
         std::vector<int> neighbors;
@@ -60,6 +63,8 @@ public:
             nodeIdx.push_back(static_cast<int>(a.idx));
             nodeIdx.push_back(static_cast<int>(b.idx));
             edgestruct.nr = static_cast<int>(idx);
+            if (a.boundary && b.boundary)
+                boundary = true;
         }
 
         std::string print() const
@@ -81,8 +86,9 @@ public:
         std::vector<int> edgeIdx;
         std::vector<struct MY_T_EDGE> t_edges;
 
-        std::vector<int> neighbors;
+        bool boundary = false;
         std::size_t idx;
+        std::vector<int> neighbors;
 
         struct MY_T_FACE facestruct;
 
@@ -92,11 +98,16 @@ public:
             for (Node node : nodes)
                 nodeIdx.push_back(static_cast<int>(node.idx));
 
+            bool checkboundary = true;
             for (Edge edge : edges)
             {
                 t_edges.push_back(edge.edgestruct);
                 edgeIdx.push_back(static_cast<int>(edge.idx));
+
+                if (checkboundary && !edge.boundary)
+                    checkboundary = false;
             }
+            boundary = checkboundary;
 
             facestruct.nr = static_cast<int>(idx);
         }

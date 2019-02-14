@@ -25,6 +25,23 @@ MyMesh ::MyMesh(std::size_t dimX,
             for (std::size_t i = 0; i <= dimX; ++i)
             {
                 Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes};
+
+                if (dim == 3)
+                {
+                    if (k == 0 || k == dimZ || j == 0 || j == dimY || i == 0 || i == dimX)
+                        p.boundary = true;
+                }
+                else if (dim == 2)
+                {
+                    if (j == 0 || j == dimY || i == 0 || i == dimX)
+                        p.boundary = true;
+                }
+                else
+                {
+                    if (i == 0 || i == dimX)
+                        p.boundary = true;
+                }
+
                 nodes.push_back(p);
                 numNodes++;
             }
@@ -224,10 +241,18 @@ void MyMesh::computeNeighborNodes(MyMesh::Node &n)
     for (MyMesh::Edge e : edges)
     {
         if (e.a == n)
+        {
             n.neighbors.push_back(static_cast<int>(e.b.idx));
+            if (e.boundary)
+                n.boundary_neighbors.push_back(static_cast<int>(e.b.idx));
+        }
 
         if (e.b == n)
+        {
             n.neighbors.push_back(static_cast<int>(e.a.idx));
+            if (e.boundary)
+                n.boundary_neighbors.push_back(static_cast<int>(e.b.idx));
+        }
     }
 }
 

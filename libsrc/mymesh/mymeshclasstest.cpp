@@ -3,12 +3,12 @@
 
 int main()
 {
-    netgen::MyMesh m = netgen::MyMesh(2, 3, 0);
+    netgen::MyMesh m = netgen::MyMesh(2, 3, 2);
     std::cout << "Number of Nodes:" << m.getNumNodes() << "\n";
     unsigned short x = 0;
     for (auto i : m.getNodes())
     { 
-        std::cout << i << "\n";
+        std::cout << i << " at boundary " << i.boundary << "\n";
         std::cout << "Number of neighbors: " << 
                     i.neighbors.size() << "\n";
         for(auto j : i.neighbors)
@@ -20,7 +20,7 @@ int main()
     std::cout << "Number of Edges: " << m.getNumEdges() << "\n";
     for (auto i : m.getEdges())
     {
-        std::cout << i << "\n";
+        std::cout << i << " at boundary " << i.boundary << "\n";
         std::cout << "Number of neighbors: " << 
                     i.neighbors.size() << "\n";
         for(auto j : i.neighbors)
@@ -32,7 +32,7 @@ int main()
     std::cout << "Number of Faces: " <<  m.getNumFaces() << "\n";
     for (auto i : m.getFaces())
     {
-        std::cout << i << "\n";
+        std::cout << i << " at boundary " << i.boundary << "\n";
         std::cout << "Number of neighbors: " << 
                     i.neighbors.size() << "\n";
         for(auto j : i.neighbors)
