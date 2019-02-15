@@ -322,8 +322,8 @@ NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const
     n.elements.ne = node.neighbors.size();
     n.elements.ptr = &node.neighbors[0];
 
-    n.bnd_elements.ne = node.neighbors.size();
-    n.bnd_elements.ptr = &node.neighbors[0];
+    n.bnd_elements.ne = node.boundary_neighbors.size();
+    n.bnd_elements.ptr = &node.boundary_neighbors[0];
 
     return n;
 };
