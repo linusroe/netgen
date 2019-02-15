@@ -287,4 +287,37 @@ void MyMesh::computeNeighborFaces(MyMesh::Face &f)
 
 }
 
+bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)
+{
+    if (lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z)
+        return true;
+    return false;
+}
+
+bool operator!=(const MyMesh::Node &lhs, const MyMesh::Node &rhs) { return !(lhs == rhs); }
+
+std::ostream &operator<<(std::ostream &os, const MyMesh::Node &node)
+{
+    os << node.print();
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const MyMesh::Edge &edge)
+{
+    os << edge.print();
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const MyMesh::Face &face)
+{
+    os << face.print();
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const MyMesh::Volume &volume)
+{
+    os << volume.print();
+    return os;
+}
+
 } // namespace netgen

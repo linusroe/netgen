@@ -17,6 +17,7 @@ void DLL_HEADER ExportCSGVis(py::module &m);
 void DLL_HEADER ExportGeom2d(py::module &m);
 void DLL_HEADER ExportSTL(py::module &m);
 void DLL_HEADER ExportSTLVis(py::module &m);
+void DLL_HEADER ExportMyMesh(py::module &m);
 #ifdef OCCGEOMETRY
 void DLL_HEADER ExportNgOCC(py::module &m);
 #endif // OCCGEOMETRY
@@ -31,6 +32,8 @@ PYBIND11_MODULE(libngpy, ngpy)
     ExportGeom2d(geom2d);
     py::module stl = ngpy.def_submodule("_stl", "pybind stl module");
     ExportSTL(stl);
+    py::module mymesh = ngpy.def_submodule("_mymesh", "pybind mymesh module");
+    ExportMyMesh(mymesh);
 #ifdef OCCGEOMETRY
     py::module NgOCC = ngpy.def_submodule("_NgOCC", "pybind NgOCC module");
     ExportNgOCC(NgOCC);

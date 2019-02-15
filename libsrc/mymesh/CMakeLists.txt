@@ -8,7 +8,7 @@ if(NOT WIN32)
 endif(NOT WIN32)
 
 add_library(mymesh ${NG_LIB_TYPE}
-    mymeshclass.cpp
+    mymeshclass.cpp mymesh_python.cpp
     ${mymesh_object_libs}
 
 )
