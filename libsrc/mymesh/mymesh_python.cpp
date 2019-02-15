@@ -12,15 +12,21 @@ using namespace netgen;
 DLL_HEADER void ExportMyMesh(py::module &m) 
 {
     py::class_<MyMesh> (m, "MyMesh")
-    .def(py::init<std::size_t, std::size_t, std::size_t>());
+        .def(py::init<std::size_t, std::size_t, std::size_t>());
 
-    py::class_<MyMesh::Node> (m, "Node");
+    py::class_<MyMesh::Node> (m, "Node")
+        .def("__str__", &MyMesh::Node::print);
 
-    py::class_<MyMesh::Edge> (m, "Edge");
+    py::class_<MyMesh::Edge> (m, "Edge")
+        .def("__str__", &MyMesh::Edge::print);
 
-    py::class_<MyMesh::Face> (m, "Face");
+    py::class_<MyMesh::Face> (m, "Face")
+        .def("__str__", &MyMesh::Face::print);
 
-    py::class_<MyMesh::Volume> (m, "Volume");
+    py::class_<MyMesh::Volume> (m, "Volume")
+        .def("__str__", &MyMesh::Volume::print);
 }
 
-
+PYBIND11_MODULE(libmesh, m) {
+  ExportMyMesh(m);
+}
