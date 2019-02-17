@@ -265,14 +265,17 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
-    for (MyMesh::Node &n : nodes)
+    for (Node &n : nodes)
         computeNeighborNodes(n);
 
-    for (MyMesh::Edge &e : edges)
+    for (Edge &e : edges)
         computeNeighborEdges(e);
 
-    for (MyMesh::Face &f : faces)
+    for (Face &f : faces)
         computeNeighborFaces(f);
+
+    for (Volume &v : volumes)
+        computeNeighborVolumes(v);
 }
 
 void MyMesh::computeNeighborNodes(MyMesh::Node &n)
@@ -307,9 +310,9 @@ void MyMesh::computeNeighborEdges(MyMesh::Edge &e)
     }
 }
 
-void MyMesh::computeNeighborFaces(MyMesh::Face &f)
+void MyMesh::computeNeighborFaces(Face &f)
 {
-    for (MyMesh::Face posNeighFace : faces)
+    for (Face posNeighFace : faces)
     {
         unsigned short numSharedNodes = 0;
         for (Node nodeFace : f.nodes)
@@ -324,6 +327,31 @@ void MyMesh::computeNeighborFaces(MyMesh::Face &f)
             f.neighbors.push_back(static_cast<int>(posNeighFace.idx));
     }
 
+}
+
+void MyMesh::computeNeighborVolumes(Volume &v)
+{
+    for (Volume posNeighVolume : volumes)
+    {
+        if (posNeighVolume.idx == v.idx)
+            continue;
+
+        bool isNeigh = false;
+        for (Face volumeNeighFace : posNeighVolume.faces)
+        {
+            for (Face volumeFace : v.faces)
+            {
+                if(!isNeigh && volumeFace.idx == volumeNeighFace.idx)
+                {
+                    isNeigh = true;
+                    v.neighbors.push_back(static_cast<int>(volumeNeighFace.idx));
+                    break;
+                }
+            }
+            if (isNeigh)
+                break;
+        }
+    }
 }
 
 bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)

@@ -3,7 +3,7 @@
 
 int main()
 {
-    netgen::MyMesh m = netgen::MyMesh(2, 3, 2);
+    netgen::MyMesh m = netgen::MyMesh(3, 3, 3);
     std::cout << "Number of Nodes:" << m.getNumNodes() << "\n";
     unsigned short x = 0;
     for (auto i : m.getNodes())
@@ -42,5 +42,12 @@ int main()
 
     std::cout << m.getNumVolumes() << "\n";
     for (auto i : m.getVolumes())
+    {
         std::cout << i << "\n";
+        std::cout << "Number of neighbors: " << 
+                    i.neighbors.size() << "\n";
+        for(auto j : i.neighbors)
+            std::cout << j << " ";
+        std::cout << "\n\n";
+    }
 }

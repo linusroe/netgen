@@ -133,6 +133,7 @@ public:
         std::vector<Edge> edges;
         std::vector<Face> faces;
         std::size_t idx;
+        std::vector<int> neighbors;
 
         Volume(std::vector<Node> nodes_, std::vector<Edge> edges_,
               std::vector<Face> faces_, std::size_t idx_ = 0) :
@@ -170,6 +171,8 @@ private:
     void computeNeighborNodes(Node &n);
     void computeNeighborEdges(Edge &e);
     void computeNeighborFaces(Face &f);
+    void computeNeighborVolumes(Volume &v);
+
 
 public:
     MyMesh(std::size_t dimX = 0, std::size_t dimY = 0, std::size_t dimZ = 0);
