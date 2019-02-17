@@ -183,13 +183,34 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
     //Compute Volumes
-    std::size_t faceIdx{0};
     for (std::size_t k = 0; k < dimZ; ++k)
     {
         for (std::size_t j = 0; j < dimY; ++j)
         {
             for (std::size_t i = 0; i < dimX; ++i)
             {
+                std::cout << i << " " << j << " " << k << "\n";
+
+                std::vector<Node> volNodes;
+                for (std::size_t l = 0; l < 2; ++l)
+                {
+                    for (std::size_t m = 0; m < 2; ++m)
+                    {
+                        for (std::size_t n = 0; n < 2; ++n)
+                        {
+                            std::cout << "HI\n";
+                            std::size_t idx = (k + l) * (dimY + 1) * (dimX + 1) 
+                                            + (j + m) * (dimX + 1) + (i + n);
+                            volNodes.push_back(nodes[idx]);
+                        }
+                    }
+                }
+
+                std::vector<Edge> volEdges;
+                std::vector<Face> volFaces;
+                Volume v{volNodes, volEdges, volFaces, numVolumes};
+                ++numVolumes;
+                volumes.push_back(v);
 /*                 std::set<Node> volNodes;
                 std::vector<Edge> volEdges;
                 std::vector<Face> volFaces;
