@@ -40,10 +40,11 @@ int main()
         std::cout << "\n\n";
     }
 
-    std::cout << m.getNumVolumes() << "\n";
+    std::cout << "\n----------------\n\n";
+    std::cout << "Number of Volumes: " <<  m.getNumVolumes() << "\n";
     for (auto i : m.getVolumes())
     {
-        std::cout << i << "\n";
+        std::cout << i << " at boundary " << i.boundary << "\n";
         std::cout << "Number of neighbors: " << 
                     i.neighbors.size() << "\n";
         for(auto j : i.neighbors)

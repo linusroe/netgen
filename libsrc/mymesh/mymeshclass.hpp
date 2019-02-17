@@ -132,12 +132,22 @@ public:
         std::vector<Node> nodes;
         std::vector<Edge> edges;
         std::vector<Face> faces;
+
+        bool boundary = false;
         std::size_t idx;
         std::vector<int> neighbors;
 
         Volume(std::vector<Node> nodes_, std::vector<Edge> edges_,
               std::vector<Face> faces_, std::size_t idx_ = 0) :
-        nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} {}
+        nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} 
+        {
+            for (Face f : faces)
+                if (f.boundary)
+                {
+                    boundary = true;
+                    break;
+                }
+        }
 
         std::string print() const
         {
