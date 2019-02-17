@@ -237,41 +237,30 @@ MyMesh ::MyMesh(std::size_t dimX,
                 }
 
                 std::vector<Face> volFaces;
+                for (Face f : faces)
+                {
+                    if (f.nodes[0] == volNodes[0])
+                        volFaces.push_back(f);
+
+                    if (f.nodes[0] == volNodes[1] &&
+                        f.nodes[1] == volNodes[3] &&
+                        f.nodes[2] == volNodes[5])
+                        volFaces.push_back(f);
+
+                    if (f.nodes[0] == volNodes[2] &&
+                        f.nodes[1] == volNodes[3] &&
+                        f.nodes[2] == volNodes[6])
+                        volFaces.push_back(f);
+
+                    if (f.nodes[0] == volNodes[4] &&
+                        f.nodes[1] == volNodes[5] &&
+                        f.nodes[2] == volNodes[6])
+                        volFaces.push_back(f);
+                }
+
                 Volume v{volNodes, volEdges, volFaces, numVolumes};
                 ++numVolumes;
                 volumes.push_back(v);
-/*                 std::set<Node> volNodes;
-                std::vector<Edge> volEdges;
-                std::vector<Face> volFaces;
-
-                volFaces.push_back(faces[faceIdx]);
-                //volNodes.insert(faces[faceIdx].nodes.begin(), faces[faceIdx].nodes.end());
-                volFaces.push_back(faces[faceIdx + 1]);
-                volFaces.push_back(faces[faceIdx + 2]);
-                volFaces.push_back(faces[faceIdx + 5]);
-                volFaces.push_back(faces[faceIdx + dimX * 3 + 2]);
-                volFaces.push_back(faces[faceIdx + (dimY + dimX) * 3 + 2]);
-
-                bool outerX{i == dimX - 1};
-                bool outerY{j == dimY - 1};
-                bool outerZ{k == dimZ - 1};
-
-                if (outerX && outerY && outerZ)
-                  faceIdx += 6;
-                else if (outerX && outerY)
-                  faceIdx += 6;
-                else if (outerX && outerZ || outerY && outerZ)
-                  faceIdx += 5;
-                else if (outerX || outerY || outerZ)
-                  faceIdx += 4;
-                else
-                  faceIdx += 3;
-                //faceIdx += i == dimX - 1 || j == dimY - 1 || k == dimZ - 1 ? 4 : 3;
-                Volume v(std::vector<Node>(volNodes.begin(), volNodes.end()), volEdges, volFaces, numVolumes);
-                volumes.push_back(v);
-                ++numVolumes;
-
-              std::cout << numVolumes << " " << faceIdx << "\n"; */
             }
         }
     }
