@@ -109,7 +109,8 @@ MyMesh ::MyMesh(std::size_t dimX,
 
                     for (auto edge : edges)
                     {
-                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[below]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] 
+                            || edge.b == nodes[below]))
                             faceEdgesFront.push_back(edge);
                         if (edge.a == nodes[right] && edge.b == nodes[across])
                             faceEdgesFront.push_back(edge);
@@ -138,7 +139,8 @@ MyMesh ::MyMesh(std::size_t dimX,
 
                     for (auto edge : edges)
                     {
-                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] || edge.b == nodes[behind]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[right] 
+                            || edge.b == nodes[behind]))
                             faceEdgesTop.push_back(edge);
                         if (edge.a == nodes[right] && edge.b == nodes[across])
                             faceEdgesTop.push_back(edge);
@@ -167,7 +169,8 @@ MyMesh ::MyMesh(std::size_t dimX,
 
                     for (auto edge : edges)
                     {
-                        if (edge.a == nodes[nodepos] && (edge.b == nodes[below] || edge.b == nodes[behind]))
+                        if (edge.a == nodes[nodepos] && (edge.b == nodes[below] 
+                            || edge.b == nodes[behind]))
                             faceEdgesSide.push_back(edge);
                         if (edge.a == nodes[below] && edge.b == nodes[across])
                             faceEdgesSide.push_back(edge);
@@ -189,7 +192,6 @@ MyMesh ::MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i < dimX; ++i)
             {
-                std::cout << i << " " << j << " " << k << "\n";
 
                 std::vector<Node> volNodes;
                 for (std::size_t l = 0; l < 2; ++l)
@@ -198,7 +200,6 @@ MyMesh ::MyMesh(std::size_t dimX,
                     {
                         for (std::size_t n = 0; n < 2; ++n)
                         {
-                            std::cout << "HI\n";
                             std::size_t idx = (k + l) * (dimY + 1) * (dimX + 1) 
                                             + (j + m) * (dimX + 1) + (i + n);
                             volNodes.push_back(nodes[idx]);
@@ -207,6 +208,34 @@ MyMesh ::MyMesh(std::size_t dimX,
                 }
 
                 std::vector<Edge> volEdges;
+                for (Edge e : edges)
+                {
+                    if (e.a == volNodes[0] && (e.b == volNodes[1] ||
+                        e.b ==volNodes[2] || e.b == volNodes[4]))
+                            volEdges.push_back(e);
+
+                    if (e.a == volNodes[1] && (e.b == volNodes[3] ||
+                        e.b ==volNodes[5]))
+                            volEdges.push_back(e);
+
+                    if (e.a == volNodes[2] && (e.b == volNodes[3] ||
+                        e.b ==volNodes[6]))
+                            volEdges.push_back(e);
+
+                    if (e.a == volNodes[3] && e.b == volNodes[7])
+                        volEdges.push_back(e);
+
+                    if (e.a == volNodes[4] && (e.b == volNodes[5] ||
+                        e.b ==volNodes[6]))
+                            volEdges.push_back(e);
+
+                    if (e.a == volNodes[5] && e.b == volNodes[7])
+                        volEdges.push_back(e);
+
+                    if (e.a == volNodes[6] && e.b == volNodes[7])
+                        volEdges.push_back(e);
+                }
+
                 std::vector<Face> volFaces;
                 Volume v{volNodes, volEdges, volFaces, numVolumes};
                 ++numVolumes;
