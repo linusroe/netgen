@@ -130,8 +130,13 @@ public:
     {
     public:
         std::vector<Node> nodes;
+        std::vector<int> nodeIdx;
+
         std::vector<Edge> edges;
+        std::vector<struct MY_T_EDGE> t_edges;
+
         std::vector<Face> faces;
+        std::vector<struct MY_T_FACE> t_faces;
 
         bool boundary = false;
         std::size_t idx;
@@ -141,12 +146,21 @@ public:
               std::vector<Face> faces_, std::size_t idx_ = 0) :
         nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} 
         {
+            for (Node n : nodes)
+                nodeIdx.push_back(static_cast<int>(n.idx));
+
+            for (Edge e : edges)
+                t_edges.push_back(e.edgestruct);
+
             for (Face f : faces)
+            {
                 if (f.boundary)
                 {
                     boundary = true;
                     break;
                 }
+                t_faces.push_back(f.facestruct);
+            }
         }
 
         std::string print() const

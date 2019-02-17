@@ -116,7 +116,6 @@ Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
 
 Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
 {
-
     const MyMesh::Edge &edge = mesh->getEdges()[nr];
 
     Ng_Element ret;
@@ -144,7 +143,6 @@ Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
 
 Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
 {
-
     const MyMesh::Face &face = mesh->getFaces()[nr];
 
     Ng_Element ret;
@@ -172,7 +170,35 @@ Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
     return ret;
 }
 
-Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const {}
+Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const 
+{
+  const MyMesh::Volume &volume = mesh->getVolumes()[nr];
+  
+  Ng_Element ret;
+  ret.type = NG_HEX;
+  ret.index = volume.idx;
+
+  //Material??
+
+  ret.points.num = 8;
+  ret.points.ptr = &volume.nodeIdx[0];
+
+  ret.vertices.num = 8;
+  ret.vertices.ptr = &volume.nodeIdx[0];
+
+  ret.edges.num = 12;
+  ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&volume.t_edges[0]);
+
+  ret.faces.num = 6;
+  ret.faces.ptr = reinterpret_cast<const T_FACE2 *>(&volume.t_faces[0]);
+
+  ret.facets.num = 0;
+  ret.facets.base = 0;
+  ret.facets.ptr = nullptr;
+
+  ret.is_curved = false;
+  return ret;
+}
 
 const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const { return "default"; };
 const string &Ngx_MyMesh ::GetMaterialCD1(int region_nr) const { return "default"; };
