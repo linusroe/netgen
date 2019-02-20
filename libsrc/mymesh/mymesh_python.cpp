@@ -1,3 +1,5 @@
+#ifdef NG_PYTHON
+
 #include "../general/ngpython.hpp"
 #include "mymeshclass.hpp"
 
@@ -30,3 +32,5 @@ DLL_HEADER void ExportMyMesh(py::module &m)
 PYBIND11_MODULE(libmesh, m) {
   ExportMyMesh(m);
 }
+
+#endif

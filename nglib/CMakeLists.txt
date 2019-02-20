@@ -3,6 +3,7 @@ add_definitions(-DNGLIB_EXPORTS)
 if(WIN32)
     set(nglib_objects 
           $<TARGET_OBJECTS:mesh>
+          $<TARGET_OBJECTS:mymesh>
           $<TARGET_OBJECTS:stl>
           $<TARGET_OBJECTS:interface>
           $<TARGET_OBJECTS:geom2d>
@@ -26,7 +27,7 @@ endif(WIN32)
 
 add_library(nglib SHARED nglib.cpp ${nglib_objects})
 if(NOT WIN32)
-      target_link_libraries( nglib mesh stl interface geom2d csg stl visual)
+      target_link_libraries( nglib mesh mymesh stl interface geom2d csg stl visual)
       if(USE_GUI)
           target_link_libraries( nglib stlvis geom2dvis csgvis )
       endif(USE_GUI)
