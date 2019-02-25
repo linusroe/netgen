@@ -5,7 +5,6 @@ int main()
 {
     netgen::MyMesh m = netgen::MyMesh(3, 3, 3);
     std::cout << "Number of Nodes:" << m.getNumNodes() << "\n";
-    unsigned short x = 0;
     for (auto i : m.getNodes())
     { 
         std::cout << i << " at boundary " << i.boundary << "\n";

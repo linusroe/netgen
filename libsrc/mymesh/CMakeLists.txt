@@ -10,7 +10,6 @@ endif(NOT WIN32)
 add_library(mymesh ${NG_LIB_TYPE}
     mymeshclass.cpp mymesh_python.cpp
     ${mymesh_object_libs}
-
 )
 
 if(APPLE)
@@ -29,7 +28,7 @@ install(FILES
 
 add_executable(mymeshtest
     mymeshclasstest.cpp
-    )
+)
 
 target_link_libraries( mymeshtest mesh mymesh stlvis stl geom2dvis interface geom2d csg stl visual csgvis )
 
