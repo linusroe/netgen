@@ -641,6 +641,12 @@ namespace netgen
     Ng_Buffer<int[2]> GetPeriodicVertices(int idnr) const override;
 
     inline int GetTimeStamp() const override;
+
+
+    virtual shared_ptr<Mesh> GetMesh () const override { return nullptr; } 
+    virtual shared_ptr<Mesh> SelectMesh () const override{ return nullptr; }
+    bool Valid () override { return true; }
+    
   };
 
   class DLL_HEADER Ngx_netgen_Mesh : public Ngx_Mesh
@@ -842,7 +848,6 @@ namespace netgen
 
 DLL_HEADER Ngx_netgen_Mesh * LoadMesh (const string & filename);
 }
-
 
 
 

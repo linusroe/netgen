@@ -1,6 +1,4 @@
-#ifndef MYMESHCLASS
-#define MYMESHCLASS
-#endif
+#pragma once
 
 #include <cstdlib>
 #include <memory>
