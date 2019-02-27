@@ -44,3 +44,12 @@ ngxmymesh = Ngx_MyMesh(mesh)
 from ngsolve import *
 ngsmesh = Mesh(ngxmymesh)
 
+print("Mesh works up to H1")
+
+V=H1(ngsmesh,order=1)
+gfu = GridFunction(V)
+gfu.Set(sin(10*x))
+integral = Integrate(gfu,mesh)
+
+# Draw(gfu,mesh,"u")
+print(integral, " =!= ", 0.183129283601153)
