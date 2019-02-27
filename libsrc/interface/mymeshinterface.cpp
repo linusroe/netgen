@@ -93,7 +93,8 @@ Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
 
     Ng_Element ret;
     ret.type = NG_PNT;
-    ret.index = node.idx;
+    //ret.index = node.idx;
+    ret.index = 3;
 
     ret.points.num = 1;
     ret.points.ptr = reinterpret_cast<const int *>(&node.idx);
@@ -120,7 +121,8 @@ Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
 
     Ng_Element ret;
     ret.type = NG_SEGM;
-    ret.index = edge.idx;
+    //ret.index = edge.idx;
+    ret.index = 3;
 
     ret.points.num = 2;
     ret.points.ptr = &edge.nodeIdx[0];
@@ -156,7 +158,8 @@ Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
 
     Ng_Element ret;
     ret.type = NG_QUAD;
-    ret.index = face.idx;
+    //ret.index = face.idx;
+    ret.index = 3;
 
     ret.points.num = 4;
     ret.points.ptr = &face.nodeIdx[0];
@@ -194,7 +197,8 @@ Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const
     
     Ng_Element ret;
     ret.type = NG_HEX;
-    ret.index = volume.idx;
+    //ret.index = volume.idx;
+    ret.index = 3;
 
     //Material??
 
@@ -401,9 +405,9 @@ void Ngx_MyMesh ::GetParentNodes(int ni, int *parents) const {};
 int Ngx_MyMesh ::GetParentElement(int ei) const {};
 int Ngx_MyMesh ::GetParentSElement(int ei) const {};
 
-int Ngx_MyMesh ::GetNIdentifications() const {};
-int Ngx_MyMesh ::GetIdentificationType(int idnr) const {};
+int Ngx_MyMesh ::GetNIdentifications() const { return 3; };
+int Ngx_MyMesh ::GetIdentificationType(int idnr) const { return 3; };
 Ng_Buffer<int[2]> Ngx_MyMesh ::GetPeriodicVertices(int idnr) const {};
 
-inline int Ngx_MyMesh ::GetTimeStamp() const {};
+inline int Ngx_MyMesh ::GetTimeStamp() const { return 0; };
 }
