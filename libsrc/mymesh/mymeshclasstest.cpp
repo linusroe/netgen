@@ -55,5 +55,9 @@ int main()
         std::cout << "\n\n";
     }
     
+
+
+    std::cout << "\n\n\n---------Testing Interface-------\n\n";
     netgen::Ngx_MyMesh ngsmym(spm);
+    std::cout << ngsmym.GetDimension() << "\n";
 }
