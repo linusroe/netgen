@@ -665,7 +665,7 @@ namespace netgen
 
     virtual ~Ngx_netgen_Mesh();
 
-    bool Valid () { return mesh != NULL; }
+    bool Valid () override { return mesh != NULL; }
 
     int GetDimension() const override;
     int GetNLevels() const override;

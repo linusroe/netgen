@@ -222,10 +222,10 @@ Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const
     return ret;
 }
 
-const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const { return "default"; };
-const string &Ngx_MyMesh ::GetMaterialCD1(int region_nr) const { return "default"; };
-const string &Ngx_MyMesh ::GetMaterialCD2(int region_nr) const { return "default"; };
-const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const { return "default"; };
+const string &Ngx_MyMesh ::GetMaterialCD0(int region_nr) const { return mesh->getMaterial(); };
+const string &Ngx_MyMesh ::GetMaterialCD1(int region_nr) const { return mesh->getMaterial(); };
+const string &Ngx_MyMesh ::GetMaterialCD2(int region_nr) const { return mesh->getMaterial(); };
+const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const { return mesh->getMaterial(); };
 
 void Ngx_MyMesh ::ElementTransformation3x3(int elnr,
                                            const double *xi,
@@ -382,6 +382,8 @@ NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const
     Ng_Node<1> n;
 
     n.vertices.ptr = &edge.nodeIdx[0];
+
+    return n;
 };
 
 NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const 
@@ -396,14 +398,16 @@ NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const
     n.edges.ptr = &face.edgeIdx[0];
 
     n.surface_el = face.boundary ? 1 : -1;
+
+    return n;
 };
 
 int Ngx_MyMesh ::GetNNodes1() { return mesh->getNumNodes(); }
 int Ngx_MyMesh ::GetNNodes2() { return mesh->getNumEdges(); }
 
 void Ngx_MyMesh ::GetParentNodes(int ni, int *parents) const {};
-int Ngx_MyMesh ::GetParentElement(int ei) const {};
-int Ngx_MyMesh ::GetParentSElement(int ei) const {};
+int Ngx_MyMesh ::GetParentElement(int ei) const { return 0; };
+int Ngx_MyMesh ::GetParentSElement(int ei) const { return 0; };
 
 int Ngx_MyMesh ::GetNIdentifications() const { return 3; };
 int Ngx_MyMesh ::GetIdentificationType(int idnr) const { return 3; };

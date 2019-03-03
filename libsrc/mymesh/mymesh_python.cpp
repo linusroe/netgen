@@ -9,12 +9,6 @@
 #include "../include/nginterface_v2.hpp"
 // #include <meshing.hpp>
 
-#ifdef WIN32
-#define DLL_HEADER __declspec(dllimport)
-#else
-#define DLL_HEADER
-#endif
-
 using namespace netgen;
 
 DLL_HEADER void ExportMyMesh(py::module &m) 
