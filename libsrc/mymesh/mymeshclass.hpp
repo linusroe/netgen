@@ -190,6 +190,8 @@ private:
     std::vector<Face> faces;
     std::vector<Volume> volumes;
 
+    std::string material;
+
     void computeNeighborNodes(Node &n);
     void computeNeighborEdges(Edge &e);
     void computeNeighborFaces(Face &f);
@@ -209,6 +211,8 @@ public:
     std::vector<Edge> getEdges() { return edges; }
     std::vector<Face> getFaces() { return faces; }
     std::vector<Volume> getVolumes() { return volumes; }
+
+    std::string &getMaterial();
 };
 
 bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs);

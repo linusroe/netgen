@@ -7,7 +7,9 @@ namespace netgen
 {
 MyMesh ::MyMesh(std::size_t dimX,
                 std::size_t dimY,
-                std::size_t dimZ) : numNodes{0}, numEdges{0}, numFaces{0}, numVolumes{0}
+                std::size_t dimZ) :
+                numNodes{0}, numEdges{0}, numFaces{0},
+                numVolumes{0}, material{"default"}
 {
     dim = dimX ? 1 : 0;
     dim += dimY ? 1 : 0;
@@ -352,6 +354,11 @@ void MyMesh::computeNeighborVolumes(Volume &v)
                 break;
         }
     }
+}
+
+std::string &MyMesh::getMaterial()
+{
+    return material;
 }
 
 bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)
