@@ -86,8 +86,25 @@ int main()
     std::cout << "Testing ElementTransformation(): NOT IMPLEMENTED" << "\n\n";
     std::cout << "Testing MultiElementTransformation(): NOT IMPLEMENTED" << "\n\n";
 
-    std::cout << "Testing GetNode(): ADD TEST" << "\n\n";
+    // Node<0>
+    std::cout << "Testing GetNode0(4): " << "\n";
+    netgen::Ng_Node<0> nd0{ngsmym.GetNode0(4)};
+    std::cout << "nd0.elements.nd: " << nd0.elements.ne <<
+        " nd0.bnd_elements.nd: " << nd0.bnd_elements.ne << "\n";
+    
+    std::cout << "nd0.elements[]: ";
+    for (auto i = 0; i < nd0.elements.ne; ++i)
+        std::cout << nd0.elements[i] << " ";
 
+    std::cout << "\nnd0.bnd_elements[]: ";
+    for (auto i = 0; i < nd0.bnd_elements.ne; ++i)
+        std::cout << nd0.bnd_elements[i] << " ";
+
+    std::cout << "\n\n";
+    // Node<1>
+    std::cout << "Testing GetNode1(4): " << "\n\n";
+
+    // NNodes
     std::cout << "Testing GetNNodes1(): " << ngsmym.GetNNodes1() << "\n";
     std::cout << "Testing GetNNodes2(): " << ngsmym.GetNNodes2() << "\n";
 
