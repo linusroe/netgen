@@ -28,13 +28,16 @@ public:
         double x;
         double y;
         double z;
+
         std::size_t idx;
+        std::size_t bnd_idx;
         bool boundary = false;
+
         std::vector<int> neighbors;
         std::vector<int> boundary_neighbors;
 
-        Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0) :
-        x{x_}, y{y_}, z{z_}, idx{idx_} {}
+        Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
+        x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} {}
 
         std::string print() const
         {
@@ -50,9 +53,13 @@ public:
     public:
         Node a;
         Node b;
+
         bool boundary = false;
         std::vector<int> nodeIdx;
+
         std::size_t idx;
+        std::size_t bnd_idx;
+
         std::vector<int> neighbors;
         struct MY_T_EDGE edgestruct;
 
@@ -85,7 +92,10 @@ public:
         std::vector<struct MY_T_EDGE> t_edges;
 
         bool boundary = false;
+
         std::size_t idx;
+        std::size_t bnd_idx;
+
         std::vector<int> neighbors;
 
         struct MY_T_FACE facestruct;
@@ -185,10 +195,19 @@ private:
     std::size_t numEdges;
     std::size_t numFaces;
     std::size_t numVolumes;
+
     std::vector<Node> nodes;
     std::vector<Edge> edges;
     std::vector<Face> faces;
     std::vector<Volume> volumes;
+
+    std::size_t numBndNodes = 0;
+    std::size_t numBndEdges = 0;
+    std::size_t numBndFaces = 0;
+
+    std::vector<Node> bnd_nodes;
+    std::vector<Edge> bnd_edges;
+    std::vector<Face> bnd_faces;
 
     std::string material;
 
@@ -211,6 +230,10 @@ public:
     std::vector<Edge> getEdges() { return edges; }
     std::vector<Face> getFaces() { return faces; }
     std::vector<Volume> getVolumes() { return volumes; }
+
+    std::vector<Node> getBndNodes() { return bnd_nodes; }
+    std::vector<Edge> getBndEdges() { return bnd_edges; }
+    std::vector<Face> getBndFaces() { return bnd_faces; }
 
     std::string &getMaterial();
 };

@@ -19,6 +19,12 @@ int main()
         std::cout << "\n\n";
     }
 
+    for (auto i : m.getBndNodes())
+    { 
+        std::cout << i << " at boundary " << i.boundary << "\n";
+    }
+
+
     std::cout << "\n----------------\n\n";
     std::cout << "Number of Edges: " << m.getNumEdges() << "\n";
     for (auto i : m.getEdges())

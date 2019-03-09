@@ -26,26 +26,40 @@ MyMesh ::MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i <= dimX; ++i)
             {
-                Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes};
+
+                bool boundary = false;
 
                 if (dim == 3)
                 {
                     if (k == 0 || k == dimZ || j == 0 || j == dimY || i == 0 || i == dimX)
-                        p.boundary = true;
+                        boundary = true;
                 }
                 else if (dim == 2)
                 {
                     if (j == 0 || j == dimY || i == 0 || i == dimX)
-                        p.boundary = true;
+                        boundary = true;
                 }
                 else
                 {
                     if (i == 0 || i == dimX)
-                        p.boundary = true;
+                        boundary = true;
                 }
 
-                nodes.push_back(p);
-                numNodes++;
+                if (boundary)
+                {
+                    Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes, numBndNodes};
+                    p.boundary = true;
+                    bnd_nodes.push_back(p);
+                    numBndNodes++;
+                    nodes.push_back(p);
+                    numNodes++;
+                }
+                else
+                {
+                    Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes};
+                    nodes.push_back(p);
+                    numNodes++;
+                }
             }
         }
     }
