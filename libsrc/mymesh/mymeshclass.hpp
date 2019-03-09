@@ -63,7 +63,8 @@ public:
         std::vector<int> neighbors;
         struct MY_T_EDGE edgestruct;
 
-        Edge(Node a_, Node b_, std::size_t idx_ = 0) : a{a_}, b{b_}, idx{idx_} 
+        Edge(Node a_, Node b_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) : 
+        a{a_}, b{b_}, idx{idx_}, bnd_idx{bnd_idx_}
         {
             nodeIdx.push_back(static_cast<int>(a.idx));
             nodeIdx.push_back(static_cast<int>(b.idx));
@@ -231,6 +232,9 @@ public:
     std::vector<Face> getFaces() { return faces; }
     std::vector<Volume> getVolumes() { return volumes; }
 
+    int getNumBndNodes() { return numBndNodes; }
+    int getNumBndEdges() { return numBndEdges; }
+    int getNumBndFaces() { return numBndFaces; }
     std::vector<Node> getBndNodes() { return bnd_nodes; }
     std::vector<Edge> getBndEdges() { return bnd_edges; }
     std::vector<Face> getBndFaces() { return bnd_faces; }

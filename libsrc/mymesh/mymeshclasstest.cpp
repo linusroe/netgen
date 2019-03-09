@@ -19,6 +19,7 @@ int main()
         std::cout << "\n\n";
     }
 
+    std::cout << "\nNumber of bnd Nodes:" << m.getNumBndNodes() << "\n";
     for (auto i : m.getBndNodes())
     { 
         std::cout << i << " at boundary " << i.boundary << "\n";
@@ -35,6 +36,12 @@ int main()
         for(auto j : i.neighbors)
             std::cout << j << " ";
         std::cout << "\n\n";
+    }
+
+    std::cout << "\nNumber of bnd Edges:" << m.getNumBndEdges() << "\n";
+    for (auto i : m.getBndEdges())
+    { 
+        std::cout << i << " at boundary " << i.boundary << "\n";
     }
 
     std::cout << "\n----------------\n\n";
