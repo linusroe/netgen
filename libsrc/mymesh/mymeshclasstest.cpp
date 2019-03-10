@@ -6,7 +6,7 @@
 
 int main()
 {
-    auto spm = make_shared<netgen::MyMesh>(3, 3, 3);
+    auto spm = make_shared<netgen::MyMesh>(3, 2, 2);
     netgen::MyMesh & m(*spm);
     std::cout << "Number of Nodes:" << m.getNumNodes() << "\n";
     for (auto i : m.getNodes())
@@ -54,6 +54,12 @@ int main()
         for(auto j : i.neighbors)
             std::cout << j << " ";
         std::cout << "\n\n";
+    }
+
+    std::cout << "\nNumber of bnd Faces:" << m.getNumBndFaces() << "\n";
+    for (auto i : m.getBndFaces())
+    { 
+        std::cout << i << " at boundary " << i.boundary << "\n";
     }
 
     std::cout << "\n----------------\n\n";

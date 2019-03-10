@@ -149,16 +149,16 @@ MyMesh ::MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i <= dimX; ++i)
             {
-                std::size_t nodepos = k * (dimZ + 1) * (dimY + 1) + j * (dimX + 1) + i;
+                std::size_t nodepos = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
 
                 if (i + 1 <= dimX && j + 1 <= dimY)
                 {
                     std::vector<Node> faceNodesFront;
                     std::vector<Edge> faceEdgesFront;
 
-                    std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
+                    std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + (i + 1);
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
-                    std::size_t across = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i + 1;
+                    std::size_t across = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + (i + 1);
 
                     faceNodesFront.push_back(nodes[nodepos]);
                     faceNodesFront.push_back(nodes[right]);
@@ -170,15 +170,39 @@ MyMesh ::MyMesh(std::size_t dimX,
                         if (edge.a == nodes[nodepos] && (edge.b == nodes[right] 
                             || edge.b == nodes[below]))
                             faceEdgesFront.push_back(edge);
+
                         if (edge.a == nodes[right] && edge.b == nodes[across])
                             faceEdgesFront.push_back(edge);
+
                         if (edge.a == nodes[below] && edge.b == nodes[across])
                             faceEdgesFront.push_back(edge);
                     }
 
-                    Face f{faceNodesFront, faceEdgesFront, numFaces};
-                    faces.push_back(f);
-                    numFaces++;
+                    bool boundary = true;
+                    for (Node n : faceNodesFront)
+                    {
+                        if (!n.boundary)
+                        {
+                            boundary = false;
+                            break;
+                        }
+                    }
+
+                    if(boundary)
+                    {
+                        Face f{faceNodesFront, faceEdgesFront, numFaces, numBndFaces};
+                        f.boundary = true;
+                        bnd_faces.push_back(f);
+                        numBndFaces++;
+                        faces.push_back(f);
+                        numFaces++;
+                    }
+                    else
+                    {
+                        Face f{faceNodesFront, faceEdgesFront, numFaces};
+                        faces.push_back(f);
+                        numFaces++;
+                    }
                 }
 
                 if (i + 1 <= dimX && k + 1 <= dimZ)
@@ -206,9 +230,31 @@ MyMesh ::MyMesh(std::size_t dimX,
                             faceEdgesTop.push_back(edge);
                     }
 
-                    Face f{faceNodesTop, faceEdgesTop, numFaces};
-                    faces.push_back(f);
-                    numFaces++;
+                    bool boundary = true;
+                    for (Node n : faceNodesTop)
+                    {
+                        if (!n.boundary)
+                        {
+                            boundary = false;
+                            break;
+                        }
+                    }
+
+                    if(boundary)
+                    {
+                        Face f{faceNodesTop, faceEdgesTop, numFaces, numBndFaces};
+                        f.boundary = true;
+                        bnd_faces.push_back(f);
+                        numBndFaces++;
+                        faces.push_back(f);
+                        numFaces++;
+                    }
+                    else
+                    {
+                        Face f{faceNodesTop, faceEdgesTop, numFaces};
+                        faces.push_back(f);
+                        numFaces++;
+                    }
                 }
 
                 if (j + 1 <= dimY && k + 1 <= dimZ)
@@ -236,9 +282,32 @@ MyMesh ::MyMesh(std::size_t dimX,
                             faceEdgesSide.push_back(edge);
                     }
 
-                    Face f{faceNodesSide, faceEdgesSide, numFaces};
-                    faces.push_back(f);
-                    numFaces++;
+
+                    bool boundary = true;
+                    for (Node n : faceNodesSide)
+                    {
+                        if (!n.boundary)
+                        {
+                            boundary = false;
+                            break;
+                        }
+                    }
+
+                    if(boundary)
+                    {
+                        Face f{faceNodesSide, faceEdgesSide, numFaces, numBndFaces};
+                        f.boundary = true;
+                        bnd_faces.push_back(f);
+                        numBndFaces++;
+                        faces.push_back(f);
+                        numFaces++;
+                    }
+                    else
+                    {
+                        Face f{faceNodesSide, faceEdgesSide, numFaces};
+                        faces.push_back(f);
+                        numFaces++;
+                    }
                 }
             }
         }

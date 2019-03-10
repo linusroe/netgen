@@ -101,8 +101,8 @@ public:
 
         struct MY_T_FACE facestruct;
 
-        Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0) :
-        nodes{nodes_}, edges{edges_}, idx{idx_} 
+        Face(std::vector<Node> nodes_, std::vector<Edge> edges_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
+        nodes{nodes_}, edges{edges_}, idx{idx_}, bnd_idx{bnd_idx_}
         {
             for (Node node : nodes)
                 nodeIdx.push_back(static_cast<int>(node.idx));
