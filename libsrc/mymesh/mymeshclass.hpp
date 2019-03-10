@@ -3,8 +3,6 @@
 #include <cstdlib>
 #include <memory>
 #include <vector>
-#include <iostream>
-//#include "../meshing/topology.hpp"
 
 namespace netgen
 {
@@ -33,6 +31,9 @@ public:
         std::size_t idx;
         std::size_t bnd_idx;
         bool boundary = false;
+
+        std::vector<int> partOfElement;
+        std::vector<int> partOfBndElement;
 
         std::vector<int> neighbors;
         std::vector<int> boundary_neighbors;
@@ -111,14 +112,12 @@ public:
             bool checkboundary = true;
             for (Edge *edge : edges)
             {
-                std::cout << edge->idx << ", ";
                 t_edges.push_back(edge->edgestruct);
                 edgeIdx.push_back(static_cast<int>(edge->idx));
 
                 if (checkboundary && !edge->boundary)
                     checkboundary = false;
             }
-            std::cout << "\n";
             boundary = checkboundary;
 
             facestruct.nr = static_cast<int>(idx);

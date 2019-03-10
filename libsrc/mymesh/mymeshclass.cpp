@@ -397,16 +397,40 @@ MyMesh ::MyMesh(std::size_t dimX,
     for (Edge &e : edges)
         computeNeighborEdges(e);
 
-    for (Face &f : faces)
-        computeNeighborFaces(f);
+    if (dim == 3)
+    {
+        for (Volume &v : volumes)
+        {
+            for (Node *n : v.nodes)
+                n->partOfElement.push_back(static_cast<int>(v.idx));
+        }
 
-    for (Volume &v : volumes)
-        computeNeighborVolumes(v);
+        for (Face &f : faces)
+        {
+            for (Node *n : f.nodes)
+                n->partOfBndElement.push_back(static_cast<int>(f.idx));
+        }
+    }
+
+    if (dim == 2)
+    {
+        for (Face &f : faces)
+        {
+            for (Node *n : f.nodes)
+                n->partOfElement.push_back(static_cast<int>(f.idx));
+        }
+
+        for (Edge &e : edges)
+        {
+                e.a->partOfBndElement.push_back(static_cast<int>(e.idx));
+                e.b->partOfBndElement.push_back(static_cast<int>(e.idx));
+        }
+    }
 }
 
 void MyMesh::computeNeighborNodes(MyMesh::Node &n)
 {
-    for (MyMesh::Edge e : edges)
+/*     for (MyMesh::Edge e : edges)
     {
         if (e.a == n)
         {
