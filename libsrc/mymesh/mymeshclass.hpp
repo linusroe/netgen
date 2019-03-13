@@ -229,10 +229,10 @@ public:
     int getNumFaces() { return numFaces; }
     int getNumVolumes() { return numVolumes; }
 
-    std::vector<Node> getNodes() { return nodes; }
-    std::vector<Edge> getEdges() { return edges; }
-    std::vector<Face> getFaces() { return faces; }
-    std::vector<Volume> getVolumes() { return volumes; }
+    std::vector<Node> &getNodes() { return nodes; }
+    std::vector<Edge> &getEdges() { return edges; }
+    std::vector<Face> &getFaces() { return faces; }
+    std::vector<Volume> &getVolumes() { return volumes; }
 
     int getNumBndNodes() { return numBndNodes; }
     int getNumBndEdges() { return numBndEdges; }
