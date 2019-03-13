@@ -55,7 +55,7 @@ namespace netgen
       const int * ptr;
   
       size_t Size() const { return num; }
-      int operator[] (size_t i) const { return ptr[i]-POINTINDEX_BASE; }
+      int operator[] (size_t i) const { return ptr[i];}//-POINTINDEX_BASE; }
     };
 
 
@@ -66,7 +66,7 @@ namespace netgen
       const int * ptr;
   
       size_t Size() const { return num; }
-      int operator[] (size_t i) const { return ptr[i]-POINTINDEX_BASE; }
+      int operator[] (size_t i) const { return ptr[i];}//-POINTINDEX_BASE; }
     };
 
     class Ng_Edges
@@ -97,7 +97,7 @@ namespace netgen
       const int * ptr;
       
       size_t Size() const { return num; }
-      int operator[] (size_t i) const { return ptr[i]-base; }
+      int operator[] (size_t i) const { return ptr[i];}//-base; }
     };
 
     
@@ -159,10 +159,11 @@ namespace netgen
     class Ng_Vertices
     {
     public:
+      size_t ne = 2;
       const int * ptr;
   
-      size_t Size() const { return 2; }
-      int operator[] (size_t i) const { return ptr[i]-POINTINDEX_BASE; }
+      size_t Size() const { return ne; }
+      int operator[] (size_t i) const { return ptr[i];}//-POINTINDEX_BASE; }
     };
 
 
@@ -182,7 +183,7 @@ namespace netgen
       const int * ptr;
   
       size_t Size() const { return nv; }
-      int operator[] (size_t i) const { return ptr[i]-POINTINDEX_BASE; }
+      int operator[] (size_t i) const { return ptr[i];}//-POINTINDEX_BASE; }
     };
 
     class Ng_Edges
@@ -192,7 +193,7 @@ namespace netgen
       const int * ptr;
   
       size_t Size() const { return ned; }
-      int operator[] (size_t i) const { return ptr[i]-1; }
+      int operator[] (size_t i) const { return ptr[i];}//-1; }
     };
 
 
