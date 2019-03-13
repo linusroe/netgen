@@ -1,29 +1,29 @@
 #import netgen.gui
-#from ngsolve import *
-#from netgen.csg import unit_cube
-#from ngsolve.meshes import *
+from ngsolve import *
+from netgen.csg import unit_cube
+from ngsolve.meshes import *
 
-#mesh = MakeQuadMesh(nx=5,ny=5)
+mesh = MakeQuadMesh(nx=5,ny=5)
 #asdf
 
-# for v in mesh.vertices:
-#     print (v, v.point)
-    
+for v in mesh.vertices:
+    print (v, v.point)
+
 # input("step 1 done")
 
-# for e in mesh.edges:
-#     print (e, e.elements)
-    
+for e in mesh.edges:
+    print (e)# e.elements)
+
 # input("step 2 done")
 
 # for el in mesh.Elements(VOL):
 #     print (el, el.vertices, el.edges)
-    
+
 # input("step 3 done")
 
 # for el in mesh.Elements(BND):
 #     print (el, el.vertices, el.edges)
-    
+
 # input("step 4 done")
 
 
@@ -43,6 +43,26 @@ ngxmymesh = Ngx_MyMesh(mesh)
 
 from ngsolve import *
 ngsmesh = Mesh(ngxmymesh)
+
+for v in ngsmesh.vertices:
+    print (v, v.point)
+
+input("step 1 done")
+
+for e in ngsmesh.edges:
+    print (e, e.elements)
+
+# input("step 2 done")
+
+# for el in mesh.Elements(VOL):
+#     print (el, el.vertices, el.edges)
+
+# input("step 3 done")
+
+# for el in mesh.Elements(BND):
+#     print (el, el.vertices, el.edges)
+
+# input("step 4 done")
 
 print("Mesh works up to H1")
 

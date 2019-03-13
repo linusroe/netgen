@@ -12,9 +12,13 @@ int main()
     for (auto i : m.getNodes())
     { 
         std::cout << i << " at boundary " << i.boundary << "\n";
-        std::cout << "Number of neighbors: " << 
-                    i.neighbors.size() << "\n";
-        for(auto j : i.neighbors)
+        std::cout << "Part of elements: " << 
+                    i.partOfElement.size() << "\n";
+        for(auto j : i.partOfElement)
+            std::cout << j << " ";
+        std::cout << "\nPart of bnd_elements: " << 
+                    i.partOfBndElement.size() << "\n";
+        for(auto j : i.partOfBndElement)
             std::cout << j << " ";
         std::cout << "\n\n";
     }
@@ -31,9 +35,7 @@ int main()
     for (auto i : m.getEdges())
     {
         std::cout << i << " at boundary " << i.boundary << "\n";
-        std::cout << "Number of neighbors: " << 
-                    i.neighbors.size() << "\n";
-        for(auto j : i.neighbors)
+        for (auto j : i.nodeIdx)
             std::cout << j << " ";
         std::cout << "\n\n";
     }
@@ -49,10 +51,6 @@ int main()
     for (auto i : m.getFaces())
     {
         std::cout << i << " at boundary " << i.boundary << "\n";
-        std::cout << "Number of neighbors: " << 
-                    i.neighbors.size() << "\n";
-        for(auto j : i.neighbors)
-            std::cout << j << " ";
         std::cout << "\n\n";
     }
 
@@ -67,10 +65,6 @@ int main()
     for (auto i : m.getVolumes())
     {
         std::cout << i << " at boundary " << i.boundary << "\n";
-        std::cout << "Number of neighbors: " << 
-                    i.neighbors.size() << "\n";
-        for(auto j : i.neighbors)
-            std::cout << j << " ";
         std::cout << "\n\n";
     }
     
@@ -87,7 +81,7 @@ int main()
     std::cout << "Testing GetNElemts(3): " << ngsmym.GetNElements(3) << "\n\n";
 
     std::cout << "Testing GetNNodes1(): " << ngsmym.GetNNodes1() << "\n";
-    std::cout << "Testing GetNNodes2(): " << ngsmym.GetNNodes1() << "\n";
+    std::cout << "Testing GetNNodes2(): " << ngsmym.GetNNodes2() << "\n";
 
     std::cout << "Testing GetPoint(): MISSING!!" << "\n\n";
 
@@ -96,7 +90,24 @@ int main()
     std::cout << "Return type: " << ngel0.type << " Return index: " << ngel0.index << " !!HARDCODED!!\n";
     std::cout << "Points number: " << ngel0.points.num << "\n";
     std::cout << "Points array: " << ngel0.points[0] << "\n";
+    std::cout << "\n";
 
+    std::cout << "Testing GetElement1(5): " << "\n";
+    netgen::Ng_Element ngel1{ngsmym.GetElement1(5)};
+    std::cout << "Return type: " << ngel1.type << " Return index: " << ngel0.index << " !!HARDCODED!!\n";
+    std::cout << "Points number: " << ngel1.points.num << "\n";
+    std::cout << "Points array: " << ngel1.points[0] << "\n";
+    std::cout << "Points array: " << ngel1.points[1] << "\n";
+    std::cout << "Points array: " << ngel1.points[2] << "\n";
+    std::cout << "\n";
+
+    std::cout << "Testing GetElement2(5): " << "\n";
+    netgen::Ng_Element ngel2{ngsmym.GetElement2(5)};
+    std::cout << "Return type: " << ngel2.type << " Return index: " << ngel0.index << " !!HARDCODED!!\n";
+    std::cout << "Points number: " << ngel2.points.num << "\n";
+    std::cout << "Points array: " << ngel2.points[0] << "\n";
+    std::cout << "Edge number: " << ngel2.edges.num << "\n";
+    std::cout << "Edge array: " << ngel2.edges[0] << "\n";
     std::cout << "\n";
 
     std::cout << "Testing GetMaterialCD0(0): " << ngsmym.GetMaterialCD0(0) << "\n";
