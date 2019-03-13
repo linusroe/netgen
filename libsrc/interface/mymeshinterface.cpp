@@ -32,18 +32,18 @@ void Ngx_MyMesh ::DoArchive(ngstd::Archive &archive) {}
 int Ngx_MyMesh ::GetDimension() const { return mesh->getDim(); }
 int Ngx_MyMesh ::GetNLevels() const { return 0; }
 
-//Difference btw NElements and NNodes
 int Ngx_MyMesh ::GetNElements(int dim) const
 {
     switch (dim)
     {
     case 0:
-        return mesh->getNumNodes();
+        return mesh->getNumBndNodes();
     case 1:
-        return mesh->getNumEdges();
+        return mesh->getNumBndEdges();
     case 2:
-        return mesh->getNumFaces();
+        return mesh->getNumBndFaces();
     case 3:
+        //Same as volumes in 3d case?!
         return mesh->getNumVolumes();
     default:
         return -1;
@@ -81,20 +81,19 @@ Ng_Point Ngx_MyMesh ::GetPoint(int nr) const
     return Ng_Point(points);
 }
 
-int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return nr; }
-int Ngx_MyMesh ::GetElementIndex1(size_t nr) const { return nr; }
-int Ngx_MyMesh ::GetElementIndex2(size_t nr) const { return nr; }
-int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return nr; }
+int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return 1; }
+int Ngx_MyMesh ::GetElementIndex1(size_t nr) const { return 1; }
+//Needs to be properly implemented
+int Ngx_MyMesh ::GetElementIndex2(size_t nr) const { return 11; }
+int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return 0; }
 
-//Dont understand purpose of ptr members
 Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
 {
     const MyMesh::Node &node = mesh->getNodes()[nr];
 
     Ng_Element ret;
     ret.type = NG_PNT;
-    //ret.index = node.idx;
-    ret.index = 3;
+    ret.index = 1;
 
     ret.points.num = 1;
     ret.points.ptr = reinterpret_cast<const int *>(&node.idx);
@@ -117,21 +116,18 @@ Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
 
 Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
 {
-    const MyMesh::Edge &edge = mesh->getEdges()[nr];
-
     Ng_Element ret;
     ret.type = NG_SEGM;
-    //ret.index = edge.idx;
-    ret.index = 3;
+    ret.index = 1;
 
     ret.points.num = 2;
-    ret.points.ptr = &edge.nodeIdx[0];
+    ret.points.ptr = &(mesh->getEdges()[nr].nodeIdx[0]);
 
     ret.vertices.num = 2;
-    ret.vertices.ptr = &edge.nodeIdx[0];
+    ret.vertices.ptr = &mesh->getEdges()[nr].nodeIdx[0];
 
     ret.edges.num = 1;
-    ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&edge.edgestruct);
+    ret.edges.ptr = reinterpret_cast<const T_EDGE2 *>(&mesh->getEdges()[nr].edgestruct);
 
     ret.faces.num = 0;
     ret.faces.ptr = nullptr;
@@ -146,7 +142,7 @@ Ng_Element Ngx_MyMesh ::GetElement1(size_t nr) const
     {
         ret.facets.num = 2;
         ret.facets.base = 0;
-        ret.facets.ptr = &edge.nodeIdx[0];
+        ret.facets.ptr = &mesh->getEdges()[nr].nodeIdx[0];
     }
 
     return ret;
@@ -158,8 +154,7 @@ Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
 
     Ng_Element ret;
     ret.type = NG_QUAD;
-    //ret.index = face.idx;
-    ret.index = 3;
+    ret.index = 1;
 
     ret.points.num = 4;
     ret.points.ptr = &face.nodeIdx[0];
@@ -197,10 +192,7 @@ Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const
     
     Ng_Element ret;
     ret.type = NG_HEX;
-    //ret.index = volume.idx;
-    ret.index = 3;
-
-    //Material??
+    ret.index = 1;
 
     ret.points.num = 8;
     ret.points.ptr = &volume.nodeIdx[0];
@@ -364,40 +356,37 @@ void Ngx_MyMesh ::MultiElementTransformation0x1(int elnr, int npts,
 
 NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const 
 {
-    MyMesh::Node node{mesh->getNodes()[nr]};
     Ng_Node<0> n;
 
-    n.elements.ne = node.neighbors.size();
-    n.elements.ptr = &node.neighbors[0];
+    n.elements.ne = mesh->getNodes()[nr].partOfElement.size();
+    n.elements.ptr = &(mesh->getNodes()[nr].partOfElement[0]);
 
-    n.bnd_elements.ne = node.boundary_neighbors.size();
-    n.bnd_elements.ptr = &node.boundary_neighbors[0];
+    n.bnd_elements.ne = mesh->getNodes()[nr].partOfBndElement.size();
+    n.bnd_elements.ptr = &mesh->getNodes()[nr].partOfBndElement[0];
 
     return n;
 };
 
 NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const 
 {
-    MyMesh::Edge edge{mesh->getEdges()[nr]};
     Ng_Node<1> n;
 
-    n.vertices.ptr = &edge.nodeIdx[0];
+    n.vertices.ptr = &mesh->getEdges()[nr].nodeIdx[0];
 
     return n;
 };
 
 NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const 
 {
-    MyMesh::Face face{mesh->getFaces()[nr]};
     Ng_Node<2> n;
 
-    n.vertices.nv = face.nodeIdx.size();
-    n.vertices.ptr = &face.nodeIdx[0];
+    n.vertices.nv = mesh->getFaces()[nr].nodeIdx.size();
+    n.vertices.ptr = &mesh->getFaces()[nr].nodeIdx[0];
 
-    n.edges.ned = face.edgeIdx.size();
-    n.edges.ptr = &face.edgeIdx[0];
+    n.edges.ned = mesh->getFaces()[nr].edgeIdx.size();
+    n.edges.ptr = &mesh->getFaces()[nr].edgeIdx[0];
 
-    n.surface_el = face.boundary ? 1 : -1;
+    n.surface_el = &mesh->getFaces()[nr].boundary ? 1 : -1;
 
     return n;
 };
