@@ -52,10 +52,10 @@ input("step 1 done")
 for e in ngsmesh.edges:
     print (e, e.elements)
 
-# input("step 2 done")
+input("step 2 done")
 
-# for el in mesh.Elements(VOL):
-#     print (el, el.vertices, el.edges)
+for el in mesh.Elements(VOL):
+    print (el, el.vertices, el.edges)
 
 # input("step 3 done")
 
