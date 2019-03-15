@@ -54,15 +54,15 @@ for e in ngsmesh.edges:
 
 input("step 2 done")
 
-for el in mesh.Elements(VOL):
+for el in ngsmesh.Elements(VOL):
     print (el, el.vertices, el.edges)
 
-# input("step 3 done")
+input("step 3 done")
 
-# for el in mesh.Elements(BND):
-#     print (el, el.vertices, el.edges)
+for el in ngsmesh.Elements(BND):
+    print (el, el.vertices, el.edges)
 
-# input("step 4 done")
+input("step 4 done")
 
 print("Mesh works up to H1")
 
