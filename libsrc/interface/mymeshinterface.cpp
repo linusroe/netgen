@@ -18,6 +18,7 @@ Ngx_MyMesh ::Ngx_MyMesh(shared_ptr<MyMesh> amesh)
 {
     if (amesh)
         mesh = amesh;
+    POINTINDEX_BASE = 0;
 }
 
 Ngx_MyMesh ::~Ngx_MyMesh() {}

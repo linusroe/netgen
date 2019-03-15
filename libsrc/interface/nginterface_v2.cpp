@@ -47,6 +47,7 @@ namespace netgen
       mesh = amesh;
     else
       mesh = netgen::mesh;
+    POINTINDEX_BASE = 1;
   }
   
   Ngx_netgen_Mesh * LoadMesh (const string & filename)
