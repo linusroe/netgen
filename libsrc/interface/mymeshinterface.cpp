@@ -386,7 +386,7 @@ NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const
     n.edges.ned = mesh->getFaces()[nr].edgeIdx.size();
     n.edges.ptr = &mesh->getFaces()[nr].edgeIdx[0];
 
-    n.surface_el = &mesh->getFaces()[nr].boundary ? 1 : -1;
+    n.surface_el = mesh->getFaces()[nr].boundary ? 1 : -1;
 
     return n;
 };
