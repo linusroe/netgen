@@ -65,6 +65,8 @@ int main()
     for (auto i : m.getVolumes())
     {
         std::cout << i << " at boundary " << i.boundary << "\n";
+        for (auto j : i.t_faces)
+            std::cout << j.nr << " ";
         std::cout << "\n\n";
     }
     

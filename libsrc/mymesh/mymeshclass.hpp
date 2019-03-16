@@ -165,12 +165,10 @@ public:
 
             for (Face *f : faces)
             {
-                if (f->boundary)
-                {
-                    boundary = true;
-                    break;
-                }
                 t_faces.push_back(f->facestruct);
+
+                if (f->boundary)
+                    boundary = true;
             }
         }
 
