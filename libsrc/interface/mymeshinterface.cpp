@@ -30,7 +30,7 @@ void Ngx_MyMesh ::UpdateTopology() {}
 void Ngx_MyMesh ::DoArchive(ngstd::Archive &archive) {}
 
 int Ngx_MyMesh ::GetDimension() const { return mesh->getDim(); }
-int Ngx_MyMesh ::GetNLevels() const { return 0; }
+int Ngx_MyMesh ::GetNLevels() const { return 1; }
 
 int Ngx_MyMesh ::GetNElements(int dim) const
 {

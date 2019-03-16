@@ -66,7 +66,7 @@ input("step 4 done")
 
 print("Mesh works up to H1")
 
-V=H1(ngsmesh,order=1)
+V=H1(ngsmesh,order=1,no_low_order_space=True)
 gfu = GridFunction(V)
 gfu.Set(sin(10*x))
 integral = Integrate(gfu,mesh)
