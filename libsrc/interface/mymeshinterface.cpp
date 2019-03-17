@@ -108,7 +108,7 @@ Ng_Element Ngx_MyMesh ::GetElement0(size_t nr) const
     ret.faces.ptr = nullptr;
 
     ret.facets.num = 1;
-    ret.facets.base = 1;
+    ret.facets.base = 0;
     ret.facets.ptr = reinterpret_cast<const int *>(&node.idx);
 
     return ret;
