@@ -27,6 +27,7 @@ public:
         double x;
         double y;
         double z;
+        std::vector<double> coord;
 
         std::size_t idx;
         std::size_t bnd_idx;
@@ -39,7 +40,12 @@ public:
         std::vector<int> boundary_neighbors;
 
         Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
-        x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} {}
+        x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} 
+        {
+                coord.push_back(x);
+                coord.push_back(y);
+                coord.push_back(z);
+        }
 
         std::string print() const
         {

@@ -69,16 +69,7 @@ int Ngx_MyMesh ::GetNNodes(int nt) const
 
 Ng_Point Ngx_MyMesh ::GetPoint(int nr) const
 {
-    std::size_t dim = mesh->getDim();
-
-    double points[dim];
-    if (dim >= 1)
-        points[0] = mesh->getNodes()[nr].x;
-    if (dim >= 2)
-        points[1] = mesh->getNodes()[nr].y;
-    if (dim >= 3)
-        points[2] = mesh->getNodes()[nr].z;
-    return Ng_Point(points);
+    return Ng_Point(&mesh->getNodes()[nr].coord[0]);
 }
 
 int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return 1; }
