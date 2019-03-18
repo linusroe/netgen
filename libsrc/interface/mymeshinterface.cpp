@@ -222,7 +222,31 @@ const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const { return mesh->ge
 void Ngx_MyMesh ::ElementTransformation3x3(int elnr,
                                            const double *xi,
                                            double *x,
-                                           double *dxdxi) const {};
+                                           double *dxdxi) const {
+    for(int i = 0; i < 9; i++)
+    {
+        dxdxi[i] = 0.;
+    }
+    
+    if (dxdxi)
+    {
+      dxdxi[0] = mesh->getVolumes()[elnr].nodes[1]->x  - mesh->getVolumes()[elnr].nodes[0]->x;
+      dxdxi[4] = mesh->getVolumes()[elnr].nodes[2]->y  - mesh->getVolumes()[elnr].nodes[0]->y;
+      dxdxi[8] = mesh->getVolumes()[elnr].nodes[4]->z  - mesh->getVolumes()[elnr].nodes[0]->z;
+    }
+    
+    if (x)
+    {
+      x[0] = (1-xi[0]) * mesh->getVolumes()[elnr].nodes[1]->x  + xi[0] * mesh->getVolumes()[elnr].nodes[0]->x;
+      x[1] = (1-xi[1]) * mesh->getVolumes()[elnr].nodes[2]->y  + xi[1] * mesh->getVolumes()[elnr].nodes[0]->y;
+      x[2] = (1-xi[2]) * mesh->getVolumes()[elnr].nodes[4]->z  + xi[2] * mesh->getVolumes()[elnr].nodes[0]->z;
+    }
+
+    cout << "xi:" << " "  <<  xi[0] << " " << xi[1]<< " "  << xi[2] << endl;
+    cout << "x:" << " "  <<  x[0] << " " << x[1]<< " "  << x[2] << endl;
+    cout << "dx:" << " " << dxdxi[0] << " " << dxdxi[4] << " " << dxdxi[8] << endl;
+    //getchar();
+    };
 
 void Ngx_MyMesh ::ElementTransformation2x3(int elnr,
                                            const double *xi,
@@ -267,7 +291,11 @@ void Ngx_MyMesh ::ElementTransformation0x1(int elnr,
 void Ngx_MyMesh ::MultiElementTransformation3x3(int elnr, int npts,
                                                 const double *xi, size_t sxi,
                                                 double *x, size_t sx,
-                                                double *dxdxi, size_t sdxdxi) const {};
+                                                double *dxdxi, size_t sdxdxi) const {
+    for (int i = 0; i < npts; i++)
+      ElementTransformation3x3 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);                                                    
+    cout << "npts:" << npts << endl;
+                                                };
 
 void Ngx_MyMesh ::MultiElementTransformation2x2(int elnr, int npts,
                                                 const double *xi, size_t sxi,
