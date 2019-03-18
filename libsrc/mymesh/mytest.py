@@ -69,7 +69,7 @@ print("Mesh works up to H1")
 V=H1(ngsmesh,order=1,no_low_order_space=True)
 gfu = GridFunction(V)
 gfu.Set(sin(10*x))
-integral = Integrate(gfu,mesh)
+integral = Integrate(gfu, ngsmesh)
 
 # Draw(gfu,mesh,"u")
 print(integral, " =!= ", 0.183129283601153)
