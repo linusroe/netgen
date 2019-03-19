@@ -228,16 +228,11 @@ void Ngx_MyMesh ::ElementTransformation3x3(int elnr,
     
     if (x)
     {
-      x[0] = (1-xi[0]) * mesh->getVolumes()[elnr].nodes[1]->x  + xi[0] * mesh->getVolumes()[elnr].nodes[0]->x;
-      x[1] = (1-xi[1]) * mesh->getVolumes()[elnr].nodes[2]->y  + xi[1] * mesh->getVolumes()[elnr].nodes[0]->y;
-      x[2] = (1-xi[2]) * mesh->getVolumes()[elnr].nodes[4]->z  + xi[2] * mesh->getVolumes()[elnr].nodes[0]->z;
+      x[0] = (1-xi[0]) * mesh->getVolumes()[elnr].nodes[0]->x  + xi[0] * mesh->getVolumes()[elnr].nodes[1]->x;
+      x[1] = (1-xi[1]) * mesh->getVolumes()[elnr].nodes[0]->y  + xi[1] * mesh->getVolumes()[elnr].nodes[2]->y;
+      x[2] = (1-xi[2]) * mesh->getVolumes()[elnr].nodes[0]->z  + xi[2] * mesh->getVolumes()[elnr].nodes[4]->z;
     }
-
-    cout << "xi:" << " "  <<  xi[0] << " " << xi[1]<< " "  << xi[2] << endl;
-    cout << "x:" << " "  <<  x[0] << " " << x[1]<< " "  << x[2] << endl;
-    cout << "dx:" << " " << dxdxi[0] << " " << dxdxi[4] << " " << dxdxi[8] << endl;
-    //getchar();
-    };
+};
 
 void Ngx_MyMesh ::ElementTransformation2x3(int elnr,
                                            const double *xi,
