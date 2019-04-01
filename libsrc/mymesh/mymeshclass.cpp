@@ -377,12 +377,6 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
-    for (Node &n : nodes)
-        computeNeighborNodes(n);
-
-    for (Edge &e : edges)
-        computeNeighborEdges(e);
-
     if (dim == 3)
     {
         for (Volume &v : volumes)
@@ -412,86 +406,6 @@ MyMesh ::MyMesh(std::size_t dimX,
                 e.b->partOfBndElement.push_back(static_cast<int>(e.idx));
         }
     }
-}
-
-void MyMesh::computeNeighborNodes(MyMesh::Node &n)
-{
-/*     for (MyMesh::Edge e : edges)
-    {
-        if (e.a == n)
-        {
-            n.neighbors.push_back(static_cast<int>(e.b.idx));
-            if (e.boundary)
-                n.boundary_neighbors.push_back(static_cast<int>(e.b.idx));
-        }
-
-        if (e.b == n)
-        {
-            n.neighbors.push_back(static_cast<int>(e.a.idx));
-            if (e.boundary)
-                n.boundary_neighbors.push_back(static_cast<int>(e.b.idx));
-        }
-    } */
-}
-
-void MyMesh::computeNeighborEdges(MyMesh::Edge &e)
-{
-/*    for (MyMesh::Edge posNeighEdge : edges)
-    {
-        if (e.a != posNeighEdge.a && e.b == posNeighEdge.b)
-                e.neighbors.push_back(static_cast<int>(posNeighEdge.idx));
-
-        if (e.b != posNeighEdge.b && e.a == posNeighEdge.a)
-                e.neighbors.push_back(static_cast<int>(posNeighEdge.idx));
-    }
-    */
-}
-
-void MyMesh::computeNeighborFaces(Face &f)
-{
-    /*
-    for (Face posNeighFace : faces)
-    {
-        unsigned short numSharedNodes = 0;
-        for (Node nodeFace : f.nodes)
-        {
-            for (Node nodeNeighFace : posNeighFace.nodes)
-            {
-                if(nodeFace == nodeNeighFace)
-                    ++numSharedNodes;
-            }
-        }
-        if (numSharedNodes == 2)
-            f.neighbors.push_back(static_cast<int>(posNeighFace.idx));
-    }
-*/
-}
-
-void MyMesh::computeNeighborVolumes(Volume &v)
-{
-    /*
-    for (Volume posNeighVolume : volumes)
-    {
-        if (posNeighVolume.idx == v.idx)
-            continue;
-
-        bool isNeigh = false;
-        for (Face volumeNeighFace : posNeighVolume.faces)
-        {
-            for (Face volumeFace : v.faces)
-            {
-                if(!isNeigh && volumeFace.idx == volumeNeighFace.idx)
-                {
-                    isNeigh = true;
-                    v.neighbors.push_back(static_cast<int>(volumeNeighFace.idx));
-                    break;
-                }
-            }
-            if (isNeigh)
-                break;
-        }
-    }
-    */
 }
 
 std::string &MyMesh::getMaterial()

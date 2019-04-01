@@ -36,8 +36,6 @@ public:
         std::vector<int> partOfElement;
         std::vector<int> partOfBndElement;
 
-        std::vector<int> neighbors;
-        std::vector<int> boundary_neighbors;
 
         Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
         x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} 
@@ -68,7 +66,6 @@ public:
         std::size_t idx;
         std::size_t bnd_idx;
 
-        std::vector<int> neighbors;
         struct MY_T_EDGE edgestruct;
 
         Edge(Node *a_, Node *b_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) : 
@@ -104,8 +101,6 @@ public:
 
         std::size_t idx;
         std::size_t bnd_idx;
-
-        std::vector<int> neighbors;
 
         struct MY_T_FACE facestruct;
 
@@ -157,7 +152,6 @@ public:
 
         bool boundary = false;
         std::size_t idx;
-        std::vector<int> neighbors;
 
         Volume(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
               std::vector<Face *> faces_, std::size_t idx_ = 0) :
@@ -217,12 +211,6 @@ private:
     std::vector<Face> bnd_faces;
 
     std::string material;
-
-    void computeNeighborNodes(Node &n);
-    void computeNeighborEdges(Edge &e);
-    void computeNeighborFaces(Face &f);
-    void computeNeighborVolumes(Volume &v);
-
 
 public:
     MyMesh(std::size_t dimX = 0, std::size_t dimY = 0, std::size_t dimZ = 0);
