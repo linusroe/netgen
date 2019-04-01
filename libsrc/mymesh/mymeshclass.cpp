@@ -29,21 +29,10 @@ MyMesh ::MyMesh(std::size_t dimX,
 
                 bool boundary = false;
 
-                //if (dim == 3)
                 {
                     if (k == 0 || k == dimZ || j == 0 || j == dimY || i == 0 || i == dimX)
                         boundary = true;
                 }
-/*                 else if (dim == 2)
-                {
-                    if (j == 0 || j == dimY || i == 0 || i == dimX)
-                        boundary = true;
-                }
-                else
-                {
-                    if (i == 0 || i == dimX)
-                        boundary = true;
-                } */
 
                 if (boundary)
                 {
@@ -71,16 +60,13 @@ MyMesh ::MyMesh(std::size_t dimX,
         {
             for (std::size_t i = 0; i <= dimX; ++i)
             {
-                std::size_t bnd_counter = 99;// ((k == 0) || (k == dimZ)) ? 1 : 0;
-                //bnd_counter += ((j == 0) || (j == dimY)) ? 1 : 0;
-                //bnd_counter += ((i == 0) || (i == dimX)) ? 1 : 0;
 
                 std::size_t nodepos = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
 
                 if (i + 1 <= dimX)
                 {
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + (i + 1);
-                    if (bnd_counter >= getDim() - 1 && (j == 0 || j == dimY) && (k == 0 || k == dimZ))
+                    if ((j == 0 || j == dimY) && (k == 0 || k == dimZ))
                     {
                         Edge e{&nodes[nodepos], &nodes[right], numEdges, numBndEdges};
                         e.boundary = true;
@@ -101,7 +87,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                 if (j + 1 <= dimY)
                 {
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
-                    if (bnd_counter >= getDim() - 1 && (k == 0 || k == dimZ) && (i == 0 || i == dimX))
+                    if ((k == 0 || k == dimZ) && (i == 0 || i == dimX))
                     {
                         Edge e{&nodes[nodepos], &nodes[below], numEdges, numBndEdges};
                         e.boundary = true;
@@ -121,7 +107,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                 if (k + 1 <= dimZ)
                 {
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
-                    if (bnd_counter >= getDim() - 1 && (j == 0 || j == dimY) && (i == 0 || i == dimX))
+                    if ((j == 0 || j == dimY) && (i == 0 || i == dimX))
                     {
                         Edge e{&nodes[nodepos], &nodes[behind], numEdges, numBndEdges};
                         e.boundary = true;
