@@ -37,21 +37,10 @@ public:
         std::vector<int> partOfBndElement;
 
 
-        Node(double x_ = 0, double y_ = 0, double z_ = 0, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
-        x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} 
-        {
-                coord.push_back(x);
-                coord.push_back(y);
-                coord.push_back(z);
-        }
+        Node(double x_ = 0, double y_ = 0, double z_ = 0,
+            std::size_t idx_ = 0, std::size_t bnd_idx_ = -1);
 
-        std::string print() const
-        {
-            std::string s(std::string("V") + std::to_string(idx) + std::string(" (") +
-                          std::to_string(x) + std::string(", ") + std::to_string(y) +
-                          std::string(", ") + std::to_string(z) + std::string(")"));
-            return s;
-        }
+        std::string print() const;
     };
 
     class Edge
@@ -68,23 +57,9 @@ public:
 
         struct MY_T_EDGE edgestruct;
 
-        Edge(Node *a_, Node *b_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) : 
-        a{a_}, b{b_}, idx{idx_}, bnd_idx{bnd_idx_}
-        {
-            nodeIdx.push_back(static_cast<int>(a->idx));
-            nodeIdx.push_back(static_cast<int>(b->idx));
-            edgestruct.nr = static_cast<int>(idx);
-            if (a->boundary && b->boundary)
-                boundary = true;
-        }
+        Edge(Node *a_, Node *b_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1);
 
-        std::string print() const
-        {
-            std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") +
-                          std::to_string(a->idx) + std::string(", V") +
-                          std::to_string(b->idx) + std::string(")"));
-            return s;
-        }
+        std::string print() const;
     };
 
     class Face
@@ -104,38 +79,10 @@ public:
 
         struct MY_T_FACE facestruct;
 
-        Face(std::vector<Node *> nodes_, std::vector<Edge *> edges_, std::size_t idx_ = 0, std::size_t bnd_idx_ = -1) :
-        nodes{nodes_}, edges{edges_}, idx{idx_}, bnd_idx{bnd_idx_}
-        {
-            for (Node *node : nodes)
-                nodeIdx.push_back(static_cast<int>(node->idx));
+        Face(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
+            std::size_t idx_ = 0, std::size_t bnd_idx_ = -1);
 
-            bool checkboundary = true;
-            for (Edge *edge : edges)
-            {
-                t_edges.push_back(edge->edgestruct);
-                edgeIdx.push_back(static_cast<int>(edge->idx));
-
-                if (checkboundary && !edge->boundary)
-                    checkboundary = false;
-            }
-            boundary = checkboundary;
-
-            facestruct.nr = static_cast<int>(idx);
-        }
-
-        std::string print() const
-        {
-            std::string s(std::string("F") + std::to_string(idx) + std::string(" (("));
-            for (Node *node : nodes)
-                s += std::string("V") + std::to_string(node->idx) + std::string(" ");
-            s += std::string("), (");
-
-            for (Edge *edge : edges)
-                s += std::string("E") + std::to_string(edge->idx) + std::string(" ");
-            s += std::string("))");
-            return s;
-        }
+        std::string print() const;
     };
 
     class Volume
@@ -154,40 +101,9 @@ public:
         std::size_t idx;
 
         Volume(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
-              std::vector<Face *> faces_, std::size_t idx_ = 0) :
-        nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} 
-        {
-            for (Node *n : nodes)
-                nodeIdx.push_back(static_cast<int>(n->idx));
+                std::vector<Face *> faces_, std::size_t idx_ = 0);
 
-            for (Edge *e : edges)
-                t_edges.push_back(e->edgestruct);
-
-            for (Face *f : faces)
-            {
-                t_faces.push_back(f->facestruct);
-
-                if (f->boundary)
-                    boundary = true;
-            }
-        }
-
-        std::string print() const
-        {
-            std::string s(std::string("Vo") + std::to_string(idx) + std::string(" (("));
-            for (Node *node : nodes)
-                s += std::string("V") + std::to_string(node->idx) + std::string(" ");
-            s += std::string("), (");
-
-            for (Edge *edge : edges)
-                s += std::string("E") + std::to_string(edge->idx) + std::string(" ");
-            s += std::string("), (");
-
-            for (Face *face : faces)
-                s += std::string("F") + std::to_string(face->idx) + std::string(" ");
-            s += std::string("))");
-            return s;
-        }
+        std::string print() const;
     };
 
 private:
@@ -215,23 +131,23 @@ private:
 public:
     MyMesh(std::size_t dimX = 0, std::size_t dimY = 0, std::size_t dimZ = 0);
 
-    int getDim() { return dim; }
-    int getNumNodes() { return numNodes; }
-    int getNumEdges() { return numEdges; }
-    int getNumFaces() { return numFaces; }
-    int getNumVolumes() { return numVolumes; }
+    int getDim();
+    int getNumNodes();
+    int getNumEdges();
+    int getNumFaces();
+    int getNumVolumes();
 
-    std::vector<Node> &getNodes() { return nodes; }
-    std::vector<Edge> &getEdges() { return edges; }
-    std::vector<Face> &getFaces() { return faces; }
-    std::vector<Volume> &getVolumes() { return volumes; }
+    std::vector<Node> &getNodes();
+    std::vector<Edge> &getEdges();
+    std::vector<Face> &getFaces();
+    std::vector<Volume> &getVolumes();
 
-    int getNumBndNodes() { return numBndNodes; }
-    int getNumBndEdges() { return numBndEdges; }
-    int getNumBndFaces() { return numBndFaces; }
-    std::vector<Node> getBndNodes() { return bnd_nodes; }
-    std::vector<Edge> getBndEdges() { return bnd_edges; }
-    std::vector<Face> getBndFaces() { return bnd_faces; }
+    int getNumBndNodes();
+    int getNumBndEdges();
+    int getNumBndFaces();
+    std::vector<Node> getBndNodes();
+    std::vector<Edge> getBndEdges();
+    std::vector<Face> getBndFaces();
 
     std::string &getMaterial();
 };

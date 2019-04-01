@@ -408,6 +408,130 @@ MyMesh ::MyMesh(std::size_t dimX,
     }
 }
 
+MyMesh::Node::Node(double x_, double y_, double z_,
+                    std::size_t idx_, std::size_t bnd_idx_) :
+    x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} 
+{
+        coord.push_back(x);
+        coord.push_back(y);
+        coord.push_back(z);
+}
+
+std::string MyMesh::Node::print() const
+{
+    std::string s(std::string("V") + std::to_string(idx) + std::string(" (") +
+                    std::to_string(x) + std::string(", ") + std::to_string(y) +
+                    std::string(", ") + std::to_string(z) + std::string(")"));
+    return s;
+}
+
+MyMesh::Edge::Edge(Node *a_, Node *b_, std::size_t idx_, std::size_t bnd_idx_) : 
+    a{a_}, b{b_}, idx{idx_}, bnd_idx{bnd_idx_}
+{
+    nodeIdx.push_back(static_cast<int>(a->idx));
+    nodeIdx.push_back(static_cast<int>(b->idx));
+    edgestruct.nr = static_cast<int>(idx);
+    if (a->boundary && b->boundary)
+        boundary = true;
+}
+
+std::string MyMesh::Edge::print() const
+{
+    std::string s(std::string("E") + std::to_string(idx) + std::string(" (V") +
+                    std::to_string(a->idx) + std::string(", V") +
+                    std::to_string(b->idx) + std::string(")"));
+    return s;
+}
+
+MyMesh::Face::Face(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
+                    std::size_t idx_, std::size_t bnd_idx_) :
+    nodes{nodes_}, edges{edges_}, idx{idx_}, bnd_idx{bnd_idx_}
+{
+    for (Node *node : nodes)
+        nodeIdx.push_back(static_cast<int>(node->idx));
+
+    bool checkboundary = true;
+    for (Edge *edge : edges)
+    {
+        t_edges.push_back(edge->edgestruct);
+        edgeIdx.push_back(static_cast<int>(edge->idx));
+
+        if (checkboundary && !edge->boundary)
+            checkboundary = false;
+    }
+    boundary = checkboundary;
+
+    facestruct.nr = static_cast<int>(idx);
+}
+
+std::string MyMesh::Face::print() const
+{
+    std::string s(std::string("F") + std::to_string(idx) + std::string(" (("));
+    for (Node *node : nodes)
+        s += std::string("V") + std::to_string(node->idx) + std::string(" ");
+    s += std::string("), (");
+
+    for (Edge *edge : edges)
+        s += std::string("E") + std::to_string(edge->idx) + std::string(" ");
+    s += std::string("))");
+    return s;
+}
+
+MyMesh::Volume::Volume(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
+                        std::vector<Face *> faces_, std::size_t idx_) :
+    nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} 
+{
+    for (Node *n : nodes)
+        nodeIdx.push_back(static_cast<int>(n->idx));
+
+    for (Edge *e : edges)
+        t_edges.push_back(e->edgestruct);
+
+    for (Face *f : faces)
+    {
+        t_faces.push_back(f->facestruct);
+
+        if (f->boundary)
+            boundary = true;
+    }
+}
+
+std::string MyMesh::Volume::print() const
+{
+    std::string s(std::string("Vo") + std::to_string(idx) + std::string(" (("));
+    for (Node *node : nodes)
+        s += std::string("V") + std::to_string(node->idx) + std::string(" ");
+    s += std::string("), (");
+
+    for (Edge *edge : edges)
+        s += std::string("E") + std::to_string(edge->idx) + std::string(" ");
+    s += std::string("), (");
+
+    for (Face *face : faces)
+        s += std::string("F") + std::to_string(face->idx) + std::string(" ");
+    s += std::string("))");
+    return s;
+}
+
+int MyMesh::getDim() { return dim; }
+int MyMesh::getNumNodes() { return numNodes; }
+int MyMesh::getNumEdges() { return numEdges; }
+int MyMesh::getNumFaces() { return numFaces; }
+int MyMesh::getNumVolumes() { return numVolumes; }
+
+std::vector<MyMesh::Node> &MyMesh::getNodes() { return nodes; }
+std::vector<MyMesh::Edge> &MyMesh::getEdges() { return edges; }
+std::vector<MyMesh::Face> &MyMesh::getFaces() { return faces; }
+std::vector<MyMesh::Volume> &MyMesh::getVolumes() { return volumes; }
+
+int MyMesh::getNumBndNodes() { return numBndNodes; }
+int MyMesh::getNumBndEdges() { return numBndEdges; }
+int MyMesh::getNumBndFaces() { return numBndFaces; }
+
+std::vector<MyMesh::Node> MyMesh::getBndNodes() { return bnd_nodes; }
+std::vector<MyMesh::Edge> MyMesh::getBndEdges() { return bnd_edges; }
+std::vector<MyMesh::Face> MyMesh::getBndFaces() { return bnd_faces; }
+
 std::string &MyMesh::getMaterial()
 {
     return material;
