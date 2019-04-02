@@ -43,7 +43,6 @@ int Ngx_MyMesh ::GetNElements(int dim) const
     case 2:
         return mesh->getNumBndFaces();
     case 3:
-        //Same as volumes in 3d case?!
         return mesh->getNumVolumes();
     default:
         return -1;
@@ -171,16 +170,16 @@ Ng_Element Ngx_MyMesh ::GetElement2(size_t nr) const
         ret.facets.base = 0;
         ret.facets.ptr = (int*)ret.edges.ptr;
     }
-    
+
     ret.is_curved = false;
 
     return ret;
 }
 
-Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const 
+Ng_Element Ngx_MyMesh ::GetElement3(size_t nr) const
 {
     const MyMesh::Volume &volume = mesh->getVolumes()[nr];
-    
+
     Ng_Element ret;
     ret.type = NG_HEX;
     ret.index = 1;
@@ -213,19 +212,20 @@ const string &Ngx_MyMesh ::GetMaterialCD3(int region_nr) const { return mesh->ge
 void Ngx_MyMesh ::ElementTransformation3x3(int elnr,
                                            const double *xi,
                                            double *x,
-                                           double *dxdxi) const {
+                                           double *dxdxi) const
+{
     for(int i = 0; i < 9; i++)
     {
         dxdxi[i] = 0.;
     }
-    
+
     if (dxdxi)
     {
       dxdxi[0] = mesh->getVolumes()[elnr].nodes[1]->x  - mesh->getVolumes()[elnr].nodes[0]->x;
       dxdxi[4] = mesh->getVolumes()[elnr].nodes[2]->y  - mesh->getVolumes()[elnr].nodes[0]->y;
       dxdxi[8] = mesh->getVolumes()[elnr].nodes[4]->z  - mesh->getVolumes()[elnr].nodes[0]->z;
     }
-    
+
     if (x)
     {
       x[0] = (1-xi[0]) * mesh->getVolumes()[elnr].nodes[0]->x  + xi[0] * mesh->getVolumes()[elnr].nodes[1]->x;
@@ -252,7 +252,25 @@ void Ngx_MyMesh ::ElementTransformation0x3(int elnr,
 void Ngx_MyMesh ::ElementTransformation2x2(int elnr,
                                            const double *xi,
                                            double *x,
-                                           double *dxdxi) const {};
+                                           double *dxdxi) const
+{
+    for(int i = 0; i < 6; i++)
+    {
+        dxdxi[i] = 0.;
+    }
+
+    if (dxdxi)
+    {
+      dxdxi[0] = mesh->getFaces()[elnr].nodes[1]->x  - mesh->getFaces()[elnr].nodes[0]->x;
+      dxdxi[5] = mesh->getFaces()[elnr].nodes[2]->y  - mesh->getFaces()[elnr].nodes[0]->y;
+    }
+
+    if (x)
+    {
+      x[0] = (1-xi[0]) * mesh->getFaces()[elnr].nodes[0]->x  + xi[0] * mesh->getFaces()[elnr].nodes[1]->x;
+      x[1] = (1-xi[1]) * mesh->getFaces()[elnr].nodes[0]->y  + xi[1] * mesh->getFaces()[elnr].nodes[2]->y;
+    }
+};
 
 void Ngx_MyMesh ::ElementTransformation1x2(int elnr,
                                            const double *xi,
@@ -279,7 +297,7 @@ void Ngx_MyMesh ::MultiElementTransformation3x3(int elnr, int npts,
                                                 double *x, size_t sx,
                                                 double *dxdxi, size_t sdxdxi) const {
     for (int i = 0; i < npts; i++)
-      ElementTransformation3x3 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);                                                    
+      ElementTransformation3x3 (elnr, xi + i*sxi, x+i*sx, dxdxi+i*sdxdxi);
     cout << "npts:" << npts << endl;
                                                 };
 
@@ -368,7 +386,7 @@ void Ngx_MyMesh ::MultiElementTransformation0x1(int elnr, int npts,
                                                 tAVXd *x, size_t sx,
                                                 tAVXd *dxdxi, size_t sdxdxi) const {};
 
-NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const 
+NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const
 {
     Ng_Node<0> n;
 
@@ -381,7 +399,7 @@ NG_INLINE DLL_HEADER const Ng_Node<0> Ngx_MyMesh ::GetNode0(int nr) const
     return n;
 };
 
-NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const 
+NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const
 {
     Ng_Node<1> n;
 
@@ -390,7 +408,7 @@ NG_INLINE DLL_HEADER const Ng_Node<1> Ngx_MyMesh ::GetNode1(int nr) const
     return n;
 };
 
-NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const 
+NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const
 {
     Ng_Node<2> n;
 
