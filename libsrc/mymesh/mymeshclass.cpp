@@ -209,10 +209,6 @@ MyMesh ::MyMesh(std::size_t dimX,
                 }
 
                 // Create Face on the "top"
-                if (i + 1 <= dimX && j + 1 <= dimY)
-                {
-                    std::vector<Node *> faceNodesFront;
-                    std::vector<Edge *> faceEdgesFront;
                 if (i + 1 <= dimX && k + 1 <= dimZ)
                 {
                     std::vector<Node *> faceNodesTop;
@@ -415,7 +411,7 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
-    // Check boundary and highest dimesnional elements Nodes are part of
+    // Check boundary and highest dimesional elements Nodes are part of
     if (dim == 3)
     {
         for (Volume &v : volumes)
