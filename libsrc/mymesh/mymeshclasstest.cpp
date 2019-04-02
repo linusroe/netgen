@@ -4,19 +4,21 @@
 #include <nginterface.h>
 #include <nginterface_v2.hpp>
 
+// Tests C++ mesh functinality and interface functionlity
+
 int main()
 {
     auto spm = make_shared<netgen::MyMesh>(3, 2, 2);
     netgen::MyMesh & m(*spm);
     std::cout << "Number of Nodes:" << m.getNumNodes() << "\n";
     for (auto i : m.getNodes())
-    { 
+    {
         std::cout << i << " at boundary " << i.boundary << "\n";
-        std::cout << "Part of elements: " << 
+        std::cout << "Part of elements: " <<
                     i.partOfElement.size() << "\n";
         for(auto j : i.partOfElement)
             std::cout << j << " ";
-        std::cout << "\nPart of bnd_elements: " << 
+        std::cout << "\nPart of bnd_elements: " <<
                     i.partOfBndElement.size() << "\n";
         for(auto j : i.partOfBndElement)
             std::cout << j << " ";
@@ -25,7 +27,7 @@ int main()
 
     std::cout << "\nNumber of bnd Nodes:" << m.getNumBndNodes() << "\n";
     for (auto i : m.getBndNodes())
-    { 
+    {
         std::cout << i << " at boundary " << i.boundary << "\n";
     }
 
@@ -42,7 +44,7 @@ int main()
 
     std::cout << "\nNumber of bnd Edges:" << m.getNumBndEdges() << "\n";
     for (auto i : m.getBndEdges())
-    { 
+    {
         std::cout << i << " at boundary " << i.boundary << "\n";
     }
 
@@ -56,7 +58,7 @@ int main()
 
     std::cout << "\nNumber of bnd Faces:" << m.getNumBndFaces() << "\n";
     for (auto i : m.getBndFaces())
-    { 
+    {
         std::cout << i << " at boundary " << i.boundary << "\n";
     }
 
@@ -69,7 +71,7 @@ int main()
             std::cout << j.nr << " ";
         std::cout << "\n\n";
     }
-    
+
 
 
     std::cout << "\n\n\n---------Testing Interface-------\n\n";
@@ -115,15 +117,15 @@ int main()
     std::cout << "Testing GetMaterialCD0(0): " << ngsmym.GetMaterialCD0(0) << "\n";
     std::cout << "SAME FOR ALL OTHER\n\n";
 
-    std::cout << "Testing ElementTransformation(): NOT IMPLEMENTED" << "\n\n";
-    std::cout << "Testing MultiElementTransformation(): NOT IMPLEMENTED" << "\n\n";
+    std::cout << "Testing ElementTransformation(): TEST NOT IMPLEMENTED" << "\n\n";
+    std::cout << "Testing MultiElementTransformation(): TEST NOT IMPLEMENTED" << "\n\n";
 
     // Node<0>
     std::cout << "Testing GetNode0(4): " << "\n";
     netgen::Ng_Node<0> nd0{ngsmym.GetNode0(4)};
     std::cout << "nd0.elements.nd: " << nd0.elements.ne <<
         " nd0.bnd_elements.nd: " << nd0.bnd_elements.ne << "\n";
-    
+
     std::cout << "nd0.elements[]: ";
     for (auto i = 0; i < nd0.elements.ne; ++i)
         std::cout << nd0.elements[i] << " ";
@@ -140,5 +142,4 @@ int main()
     std::cout << "Testing GetNNodes1(): " << ngsmym.GetNNodes1() << "\n";
     std::cout << "Testing GetNNodes2(): " << ngsmym.GetNNodes2() << "\n";
 
-    std::cout << "SKIP UNIMPLEMENTED REST" << "\n\n";
 }

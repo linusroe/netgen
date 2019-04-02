@@ -4,14 +4,13 @@
 #include "mymeshclass.hpp"
 
 #include <meshing.hpp>
-// #include "nginterface.h"
 #include "nginterface.h"
 #include "../include/nginterface_v2.hpp"
-// #include <meshing.hpp>
 
 using namespace netgen;
 
-DLL_HEADER void ExportMyMesh(py::module &m) 
+// Exposes C++ mesh to python
+DLL_HEADER void ExportMyMesh(py::module &m)
 {
     py::class_<Ngx_Mesh,shared_ptr<Ngx_Mesh>> (m, "Ngx_Mesh");
 
