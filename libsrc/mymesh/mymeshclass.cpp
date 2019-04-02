@@ -11,15 +11,18 @@ MyMesh ::MyMesh(std::size_t dimX,
                 numNodes{0}, numEdges{0}, numFaces{0},
                 numVolumes{0}, material{"default"}
 {
+    // Determine number of dimensions of mesh
     dim = dimX ? 1 : 0;
     dim += dimY ? 1 : 0;
     dim += dimZ ? 1 : 0;
 
+    // Determine step size based on partition
     double ptStepX = dimX ? 1.0 / dimX : 0;
     double ptStepY = dimY ? 1.0 / dimY : 0;
     double ptStepZ = dimZ ? 1.0 / dimZ : 0;
 
-    //Compute Nodes
+    // Compute Nodes
+    // Iterate all Node positions
     for (std::size_t k = 0; k <= dimZ; ++k)
     {
         for (std::size_t j = 0; j <= dimY; ++j)
@@ -34,6 +37,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                         boundary = true;
                 }
 
+                // Create Node and put in relevant containers
                 if (boundary)
                 {
                     Node p{i * ptStepX, j * ptStepY, k * ptStepZ, numNodes, numBndNodes};
@@ -53,7 +57,8 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
-    //Compute Edges
+    // Compute Edges
+    // Iterate over all Node positions
     for (std::size_t k = 0; k <= dimZ; ++k)
     {
         for (std::size_t j = 0; j <= dimY; ++j)
@@ -61,10 +66,13 @@ MyMesh ::MyMesh(std::size_t dimX,
             for (std::size_t i = 0; i <= dimX; ++i)
             {
 
+                // Index of the current Node to be regarded
                 std::size_t nodepos = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
 
+                // Create Edge to Node on the "right"
                 if (i + 1 <= dimX)
                 {
+                    // Index of "right" Node
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + (i + 1);
                     if ((j == 0 || j == dimY) && (k == 0 || k == dimZ))
                     {
@@ -81,11 +89,13 @@ MyMesh ::MyMesh(std::size_t dimX,
                         edges.push_back(e);
                         numEdges++;
                     }
-                    
+
                 }
 
+                // Create Edge to Node "below"
                 if (j + 1 <= dimY)
                 {
+                    // Index of Node "below"
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
                     if ((k == 0 || k == dimZ) && (i == 0 || i == dimX))
                     {
@@ -104,8 +114,10 @@ MyMesh ::MyMesh(std::size_t dimX,
                     }
                 }
 
+                // Build Edge to Node "behind"
                 if (k + 1 <= dimZ)
                 {
+                    // Index of Node "behind"
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     if ((j == 0 || j == dimY) && (i == 0 || i == dimX))
                     {
@@ -127,20 +139,24 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
-    //Compute Faces
+    // Compute Faces
+    // Iterate over all Node positions
     for (std::size_t k = 0; k <= dimZ; ++k)
     {
         for (std::size_t j = 0; j <= dimY; ++j)
         {
             for (std::size_t i = 0; i <= dimX; ++i)
             {
+                // Index of the current Node
                 std::size_t nodepos = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
 
+                // Create Face on the "front"
                 if (i + 1 <= dimX && j + 1 <= dimY)
                 {
                     std::vector<Node *> faceNodesFront;
                     std::vector<Edge *> faceEdgesFront;
 
+                    // Get Indices of relevant Nodes of Face
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + (i + 1);
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
                     std::size_t across = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + (i + 1);
@@ -150,9 +166,10 @@ MyMesh ::MyMesh(std::size_t dimX,
                     faceNodesFront.push_back(&nodes[below]);
                     faceNodesFront.push_back(&nodes[across]);
 
+                    // Get relevant Edges of Face
                     for (Edge &edge : edges)
                     {
-                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[right] 
+                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[right]
                             || *(edge.b) == nodes[below]))
                                 faceEdgesFront.push_back(&edge);
 
@@ -163,6 +180,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                                 faceEdgesFront.push_back(&edge);
                     }
 
+                    // Check if Face lies on the outside
                     bool boundary = true;
                     for (Node *n : faceNodesFront)
                     {
@@ -190,11 +208,17 @@ MyMesh ::MyMesh(std::size_t dimX,
                     }
                 }
 
+                // Create Face on the "top"
+                if (i + 1 <= dimX && j + 1 <= dimY)
+                {
+                    std::vector<Node *> faceNodesFront;
+                    std::vector<Edge *> faceEdgesFront;
                 if (i + 1 <= dimX && k + 1 <= dimZ)
                 {
                     std::vector<Node *> faceNodesTop;
                     std::vector<Edge *> faceEdgesTop;
 
+                    // Get Indices of relevant Nodes of Face
                     std::size_t right = k * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     std::size_t across = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i + 1;
@@ -204,9 +228,10 @@ MyMesh ::MyMesh(std::size_t dimX,
                     faceNodesTop.push_back(&nodes[behind]);
                     faceNodesTop.push_back(&nodes[across]);
 
+                    // Get relevant Edges of Face
                     for (Edge &edge : edges)
                     {
-                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[right] 
+                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[right]
                             || *(edge.b) == nodes[behind]))
                             faceEdgesTop.push_back(&edge);
                         if (*(edge.a) == nodes[right] && *(edge.b) == nodes[across])
@@ -215,6 +240,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                             faceEdgesTop.push_back(&edge);
                     }
 
+                    // Check if Face lies on the outside
                     bool boundary = true;
                     for (Node *n : faceNodesTop)
                     {
@@ -242,11 +268,13 @@ MyMesh ::MyMesh(std::size_t dimX,
                     }
                 }
 
+                // Create Face on the "left" side
                 if (j + 1 <= dimY && k + 1 <= dimZ)
                 {
                     std::vector<Node *> faceNodesSide;
                     std::vector<Edge *> faceEdgesSide;
 
+                    // Get Indices of relevant Nodes of Face
                     std::size_t below = k * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
                     std::size_t behind = (k + 1) * (dimY + 1) * (dimX + 1) + j * (dimX + 1) + i;
                     std::size_t across = (k + 1) * (dimY + 1) * (dimX + 1) + (j + 1) * (dimX + 1) + i;
@@ -256,9 +284,10 @@ MyMesh ::MyMesh(std::size_t dimX,
                     faceNodesSide.push_back(&nodes[behind]);
                     faceNodesSide.push_back(&nodes[across]);
 
+                    // Get relevant Edges of Face
                     for (Edge &edge : edges)
                     {
-                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[below] 
+                        if (*(edge.a) == nodes[nodepos] && (*(edge.b) == nodes[below]
                             || *(edge.b) == nodes[behind]))
                             faceEdgesSide.push_back(&edge);
                         if (*(edge.a) == nodes[below] && *(edge.b) == nodes[across])
@@ -268,6 +297,7 @@ MyMesh ::MyMesh(std::size_t dimX,
                     }
 
 
+                    // Check if Face lies on the outside
                     bool boundary = true;
                     for (Node *n : faceNodesSide)
                     {
@@ -297,7 +327,9 @@ MyMesh ::MyMesh(std::size_t dimX,
             }
         }
     }
+
     //Compute Volumes
+    // Iterate over all Node positions
     for (std::size_t k = 0; k < dimZ; ++k)
     {
         for (std::size_t j = 0; j < dimY; ++j)
@@ -306,19 +338,22 @@ MyMesh ::MyMesh(std::size_t dimX,
             {
 
                 std::vector<Node *> volNodes;
+                // Find all other Nodes based on "front top left" corner
+                // position of iterated Node
                 for (std::size_t l = 0; l < 2; ++l)
                 {
                     for (std::size_t m = 0; m < 2; ++m)
                     {
                         for (std::size_t n = 0; n < 2; ++n)
                         {
-                            std::size_t idx = (k + l) * (dimY + 1) * (dimX + 1) 
+                            std::size_t idx = (k + l) * (dimY + 1) * (dimX + 1)
                                             + (j + m) * (dimX + 1) + (i + n);
                             volNodes.push_back(&nodes[idx]);
                         }
                     }
                 }
 
+                // Find all other Edges by checking all Eges for endpoints
                 std::vector<Edge *> volEdges;
                 for (Edge &e : edges)
                 {
@@ -348,12 +383,15 @@ MyMesh ::MyMesh(std::size_t dimX,
                         volEdges.push_back(&e);
                 }
 
+                // Find all Faces by checking Nodes of all Faces
                 std::vector<Face *> volFaces;
                 for (Face &f : faces)
                 {
+                    // All 3 Faces iterated Node is part of
                     if (*(f.nodes[0]) == *volNodes[0])
                         volFaces.push_back(&f);
 
+                    // Other Faces
                     if (*(f.nodes[0]) == *volNodes[1] &&
                         *(f.nodes[1]) == *volNodes[3] &&
                         *(f.nodes[2]) == *volNodes[5])
@@ -377,6 +415,7 @@ MyMesh ::MyMesh(std::size_t dimX,
         }
     }
 
+    // Check boundary and highest dimesnional elements Nodes are part of
     if (dim == 3)
     {
         for (Volume &v : volumes)
@@ -410,7 +449,7 @@ MyMesh ::MyMesh(std::size_t dimX,
 
 MyMesh::Node::Node(double x_, double y_, double z_,
                     std::size_t idx_, std::size_t bnd_idx_) :
-    x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_} 
+    x{x_}, y{y_}, z{z_}, idx{idx_}, bnd_idx{bnd_idx_}
 {
         coord.push_back(x);
         coord.push_back(y);
@@ -425,7 +464,7 @@ std::string MyMesh::Node::print() const
     return s;
 }
 
-MyMesh::Edge::Edge(Node *a_, Node *b_, std::size_t idx_, std::size_t bnd_idx_) : 
+MyMesh::Edge::Edge(Node *a_, Node *b_, std::size_t idx_, std::size_t bnd_idx_) :
     a{a_}, b{b_}, idx{idx_}, bnd_idx{bnd_idx_}
 {
     nodeIdx.push_back(static_cast<int>(a->idx));
@@ -479,7 +518,7 @@ std::string MyMesh::Face::print() const
 
 MyMesh::Volume::Volume(std::vector<Node *> nodes_, std::vector<Edge *> edges_,
                         std::vector<Face *> faces_, std::size_t idx_) :
-    nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_} 
+    nodes{nodes_}, edges{edges_}, faces{faces_}, idx{idx_}
 {
     for (Node *n : nodes)
         nodeIdx.push_back(static_cast<int>(n->idx));
@@ -532,10 +571,7 @@ std::vector<MyMesh::Node> MyMesh::getBndNodes() { return bnd_nodes; }
 std::vector<MyMesh::Edge> MyMesh::getBndEdges() { return bnd_edges; }
 std::vector<MyMesh::Face> MyMesh::getBndFaces() { return bnd_faces; }
 
-std::string &MyMesh::getMaterial()
-{
-    return material;
-}
+std::string &MyMesh::getMaterial() { return material; }
 
 bool operator==(const MyMesh::Node &lhs, const MyMesh::Node &rhs)
 {
