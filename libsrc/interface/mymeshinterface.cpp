@@ -22,14 +22,16 @@ Ngx_MyMesh ::Ngx_MyMesh(shared_ptr<MyMesh> amesh)
 
 Ngx_MyMesh ::~Ngx_MyMesh() {}
 
+// Empty definitions
 void Ngx_MyMesh ::LoadMesh(const string &filename) {}
-
 void Ngx_MyMesh ::LoadMesh(istream &str) {}
 void Ngx_MyMesh ::SaveMesh(ostream &str) const {}
 void Ngx_MyMesh ::UpdateTopology() {}
 void Ngx_MyMesh ::DoArchive(ngstd::Archive &archive) {}
 
 int Ngx_MyMesh ::GetDimension() const { return mesh->getDim(); }
+
+// Dummy definitions
 int Ngx_MyMesh ::GetNLevels() const { return 1; }
 
 int Ngx_MyMesh ::GetNElements(int dim) const
@@ -71,9 +73,9 @@ Ng_Point Ngx_MyMesh ::GetPoint(int nr) const
     return Ng_Point(&mesh->getNodes()[nr].coord[0]);
 }
 
+// Dummy implementations
 int Ngx_MyMesh ::GetElementIndex0(size_t nr) const { return 1; }
 int Ngx_MyMesh ::GetElementIndex1(size_t nr) const { return 1; }
-//Needs to be properly implemented
 int Ngx_MyMesh ::GetElementIndex2(size_t nr) const { return 11; }
 int Ngx_MyMesh ::GetElementIndex3(size_t nr) const { return 0; }
 
@@ -426,13 +428,14 @@ NG_INLINE DLL_HEADER const Ng_Node<2> Ngx_MyMesh ::GetNode2(int nr) const
 int Ngx_MyMesh ::GetNNodes1() { return mesh->getNumNodes(); }
 int Ngx_MyMesh ::GetNNodes2() { return mesh->getNumEdges(); }
 
+// Empty or dummy implementations
 void Ngx_MyMesh ::GetParentNodes(int ni, int *parents) const {};
 int Ngx_MyMesh ::GetParentElement(int ei) const { return 0; };
 int Ngx_MyMesh ::GetParentSElement(int ei) const { return 0; };
 
 int Ngx_MyMesh ::GetNIdentifications() const { return 3; };
 int Ngx_MyMesh ::GetIdentificationType(int idnr) const { return 3; };
-Ng_Buffer<int[2]> Ngx_MyMesh ::GetPeriodicVertices(int idnr) const {};
+Ng_Buffer<int[2]> Ngx_MyMesh ::GetPeriodicVertices(int idnr) const { return Ng_Buffer<int[2]>{0, nullptr}; };
 
 inline int Ngx_MyMesh ::GetTimeStamp() const { return 0; };
 }
