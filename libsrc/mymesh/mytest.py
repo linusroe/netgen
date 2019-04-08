@@ -51,7 +51,8 @@ print("Int x*sin(y^2)+z dxdydz: ", integral, " == ", .655)
 
 
 # 2 Dimensional example
-mesh2 = MyMesh(2,2, 0)
+# Create 2 x 2 mesh
+mesh2 = MyMesh(2,2,0)
 ngxmymesh2 = Ngx_MyMesh(mesh2)
 ngsmesh2 = Mesh(ngxmymesh2)
 
